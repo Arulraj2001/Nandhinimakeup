@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import type { Metadata } from "next";
@@ -9,8 +10,6 @@ import { buildUpiPayUrl, generateUpiQrSvg } from "@/lib/utils/upi";
 import { OrderView } from "@/components/public/order/order-view";
 import { env } from "@/lib/config/env";
 import type { OrderStatus } from "@/types/orders";
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Order Details | Nandhini Makeup & Jewellery",
@@ -31,7 +30,16 @@ interface OrderPageProps {
   }>;
 }
 
-export default async function OrderPage({
+function OrderSkeleton() {
+  return (
+    <div className="mx-auto max-w-4xl p-10 text-center">
+      <div className="border-border bg-surface inline-flex h-12 w-12 items-center justify-center rounded-full border animate-pulse" />
+      <p className="text-foreground/70 text-sm mt-4">Loading your order details...</p>
+    </div>
+  );
+}
+
+async function OrderContent({
   params,
   searchParams,
 }: OrderPageProps) {
@@ -130,5 +138,13 @@ export default async function OrderPage({
       businessName={settings.business.business_name}
       orderUrl={orderUrl}
     />
+  );
+}
+
+export default function OrderPage({ params, searchParams }: OrderPageProps) {
+  return (
+    <Suspense fallback={<OrderSkeleton />}>
+      <OrderContent params={params} searchParams={searchParams} />
+    </Suspense>
   );
 }
