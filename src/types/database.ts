@@ -146,6 +146,111 @@ export interface Database {
         };
         Relationships: [];
       };
+      service_categories: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          description: string;
+          sort_order: number;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+          description?: string;
+          sort_order?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+          description?: string;
+          sort_order?: number;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      services: {
+        Row: {
+          id: string;
+          category_id: string;
+          name: string;
+          slug: string;
+          short_description: string;
+          long_description: string;
+          price_type: "fixed" | "starting_from" | "on_request";
+          price: number | null;
+          duration_minutes: number | null;
+          image_id: string | null;
+          includes_list: string[];
+          is_featured: boolean;
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          category_id: string;
+          name: string;
+          slug: string;
+          short_description?: string;
+          long_description?: string;
+          price_type: "fixed" | "starting_from" | "on_request";
+          price?: number | null;
+          duration_minutes?: number | null;
+          image_id?: string | null;
+          includes_list?: string[];
+          is_featured?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          category_id?: string;
+          name?: string;
+          slug?: string;
+          short_description?: string;
+          long_description?: string;
+          price_type?: "fixed" | "starting_from" | "on_request";
+          price?: number | null;
+          duration_minutes?: number | null;
+          image_id?: string | null;
+          includes_list?: string[];
+          is_featured?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "services_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "service_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "services_image_id_fkey";
+            columns: ["image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
