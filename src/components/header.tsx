@@ -37,14 +37,16 @@ export function Header({
           className="font-heading text-foreground flex items-center gap-3 text-lg font-semibold tracking-wide sm:text-2xl"
         >
           {logoUrl && (
-            <Image
-              src={logoUrl}
-              alt={logoAlt || businessName}
-              width={160}
-              height={44}
-              className="h-9 w-auto object-contain sm:h-10"
-              priority
-            />
+            <div className="relative h-10 w-10 flex-none overflow-hidden rounded-full border border-border/80 bg-white shadow-xs sm:h-11 sm:w-11">
+              <Image
+                src={logoUrl}
+                alt={logoAlt || businessName}
+                fill
+                sizes="44px"
+                className="rounded-full object-cover"
+                priority
+              />
+            </div>
           )}
           <span>{businessName}</span>
         </Link>
