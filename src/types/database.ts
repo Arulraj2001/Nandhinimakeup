@@ -756,6 +756,102 @@ export interface Database {
         };
         Relationships: [];
       };
+      blog_categories: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          description: string | null;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+          description?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+          description?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      blog_posts: {
+        Row: {
+          id: string;
+          title: string;
+          slug: string;
+          excerpt: string | null;
+          content: Json;
+          featured_image_id: string | null;
+          category_id: string | null;
+          author_name: string;
+          status: "draft" | "published";
+          published_at: string | null;
+          is_featured: boolean;
+          reading_time_minutes: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          slug: string;
+          excerpt?: string | null;
+          content?: Json;
+          featured_image_id?: string | null;
+          category_id?: string | null;
+          author_name?: string;
+          status?: "draft" | "published";
+          published_at?: string | null;
+          is_featured?: boolean;
+          reading_time_minutes?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          slug?: string;
+          excerpt?: string | null;
+          content?: Json;
+          featured_image_id?: string | null;
+          category_id?: string | null;
+          author_name?: string;
+          status?: "draft" | "published";
+          published_at?: string | null;
+          is_featured?: boolean;
+          reading_time_minutes?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "blog_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "blog_posts_featured_image_id_fkey";
+            columns: ["featured_image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
