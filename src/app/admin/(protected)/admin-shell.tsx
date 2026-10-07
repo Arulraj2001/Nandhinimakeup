@@ -111,6 +111,16 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
             >
               Product Categories
             </Link>
+            <Link
+              href="/admin/products"
+              className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                pathname === "/admin/products"
+                  ? "bg-surface text-foreground font-semibold"
+                  : "text-foreground hover:bg-surface"
+              }`}
+            >
+              Products
+            </Link>
           </nav>
         </aside>
 
@@ -172,6 +182,17 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
                 }`}
               >
                 Product Categories
+              </Link>
+              <Link
+                href="/admin/products"
+                onClick={() => setSidebarOpen(false)}
+                className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                  pathname === "/admin/products"
+                    ? "bg-card-surface text-foreground font-semibold"
+                    : "text-foreground hover:bg-card-surface"
+                }`}
+              >
+                Products
               </Link>
             </nav>
           </aside>

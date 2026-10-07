@@ -295,6 +295,110 @@ export interface Database {
           },
         ];
       };
+      products: {
+        Row: {
+          id: string;
+          category_id: string;
+          name: string;
+          slug: string;
+          description: string;
+          price: number;
+          sale_price: number | null;
+          sku: string | null;
+          stock_status: "in_stock" | "out_of_stock" | "made_to_order";
+          stock_quantity: number | null;
+          is_featured: boolean;
+          is_new: boolean;
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          category_id: string;
+          name: string;
+          slug: string;
+          description?: string;
+          price: number;
+          sale_price?: number | null;
+          sku?: string | null;
+          stock_status?: "in_stock" | "out_of_stock" | "made_to_order";
+          stock_quantity?: number | null;
+          is_featured?: boolean;
+          is_new?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          category_id?: string;
+          name?: string;
+          slug?: string;
+          description?: string;
+          price?: number;
+          sale_price?: number | null;
+          sku?: string | null;
+          stock_status?: "in_stock" | "out_of_stock" | "made_to_order";
+          stock_quantity?: number | null;
+          is_featured?: boolean;
+          is_new?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "product_categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      product_images: {
+        Row: {
+          id: string;
+          product_id: string;
+          media_id: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          product_id: string;
+          media_id: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          product_id?: string;
+          media_id?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "product_images_media_id_fkey";
+            columns: ["media_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
