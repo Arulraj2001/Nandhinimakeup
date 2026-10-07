@@ -16,32 +16,25 @@ import { TestimonialsCarousel } from "@/components/public/home/testimonials-caro
 import { ServiceCard } from "@/components/public/service-card";
 import { ProductCard } from "@/components/public/product-card";
 import { BeforeAfterSlider } from "@/components/public/before-after-slider";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const title = "Bridal Makeup Artistry & Curated Jewellery";
-  const description =
-    settings.home.hero_supporting_text ||
-    settings.business.tagline ||
-    "Professional bridal makeup artistry, saree draping, hairstyling, and handcrafted heirloom jewellery.";
-
   const heroMedia = await getPublicMedia(settings.home.hero_image_id);
-  const ogImageUrl = heroMedia
-    ? getPublicMediaUrl(heroMedia.storage_path)
-    : undefined;
+  const heroUrl = heroMedia ? getPublicMediaUrl(heroMedia.storage_path) : null;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/",
+  return buildMetadata({
+    path: "/",
+    generated: {
+      title: "Bridal Makeup Artistry & Curated Jewellery",
+      description:
+        settings.home.hero_supporting_text ||
+        settings.business.tagline ||
+        "Professional bridal makeup artistry, saree draping, hairstyling, and handcrafted heirloom jewellery.",
+      imageUrl: heroUrl,
+      imageAlt: heroMedia?.alt_text || "Nandhini Makeup & Jewellery",
     },
-    openGraph: {
-      title,
-      description,
-      images: ogImageUrl ? [{ url: ogImageUrl, alt: title }] : [],
-    },
-  };
+  });
 }
 
 export default async function HomePage() {

@@ -21,6 +21,7 @@ export default async function SettingsPage() {
     settings.payments.upi_qr_media_id,
     settings.home.hero_image_id,
     settings.about.portrait_image_id,
+    settings.seo.default_social_image_id,
   ].filter((id): id is string => Boolean(id));
 
   const mediaRes = await getMediaMapByIds(mediaIds);

@@ -5,32 +5,26 @@ import { getPublicMediaUrl } from "@/lib/utils/media";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { EmptyState } from "@/components/public/empty-state";
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const title = "About Us";
-  const description =
-    settings.about.story_text?.slice(0, 160) ||
-    `Learn about our journey, artistry, and bespoke bridal beauty philosophy at ${settings.business.business_name}.`;
-
   const portraitMedia = await getPublicMedia(settings.about.portrait_image_id);
   const ogImageUrl = portraitMedia
     ? getPublicMediaUrl(portraitMedia.storage_path)
     : undefined;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/about",
+  return buildMetadata({
+    path: "/about",
+    generated: {
+      title: "About Us",
+      description:
+        settings.about.story_text?.slice(0, 160) ||
+        `Learn about our journey, artistry, and bespoke bridal beauty philosophy at ${settings.business.business_name}.`,
+      imageUrl: ogImageUrl,
+      imageAlt: portraitMedia?.alt_text || settings.business.business_name,
     },
-    openGraph: {
-      title,
-      description,
-      images: ogImageUrl
-        ? [{ url: ogImageUrl, alt: settings.business.business_name }]
-        : [],
-    },
-  };
+  });
 }
 
 export default async function AboutPage() {

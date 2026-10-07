@@ -4,17 +4,28 @@ import { getPublishedLegalPage } from "@/lib/data/legal-pages";
 import { RichTextRenderer } from "@/components/public/rich-text-renderer";
 import { extractPlainText } from "@/lib/utils/rich-text";
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPublishedLegalPage("privacy-policy");
   if (!page) {
-    return { title: "Privacy Policy | Nandhini Makeup & Jewellery" };
+    return buildMetadata({
+      path: "/privacy-policy",
+      forceNoIndex: true,
+      generated: { title: "Privacy Policy" },
+    });
   }
 
   const excerpt = extractPlainText(page.content).slice(0, 160);
-  return {
-    title: `${page.title} | Nandhini Makeup & Jewellery`,
-    description: excerpt || "Read our privacy policy and how we protect your personal information.",
-  };
+  return buildMetadata({
+    path: "/privacy-policy",
+    generated: {
+      title: page.title,
+      description:
+        excerpt ||
+        "Read our privacy policy and how we protect your personal information.",
+    },
+  });
 }
 
 export default async function PrivacyPolicyPage() {

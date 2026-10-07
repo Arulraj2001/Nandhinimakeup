@@ -4,22 +4,20 @@ import { Breadcrumb } from "@/components/public/breadcrumb";
 import { EmptyState } from "@/components/public/empty-state";
 import type { FAQ } from "@/types/content";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = "Frequently Asked Questions";
-  const description =
-    "Find answers to common questions about bridal bookings, salon services, jewellery purchases, and shipping.";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/faq",
+export async function generateMetadata(): Promise<Metadata> {
+  const faqs = await getPublicFAQs();
+
+  return buildMetadata({
+    path: "/faq",
+    hasItems: faqs.length > 0,
+    generated: {
+      title: "Frequently Asked Questions",
+      description:
+        "Find answers to common questions about bridal bookings, salon services, jewellery purchases, and shipping.",
     },
-    openGraph: {
-      title,
-      description,
-    },
-  };
+  });
 }
 
 const GROUP_LABELS: Record<string, string> = {

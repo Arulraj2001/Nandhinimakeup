@@ -4,22 +4,18 @@ import { getPublicSiteSettings } from "@/lib/data/settings";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const title = "Contact Us";
-  const description = `Get in touch with ${settings.business.business_name} for bridal appointments, makeover bookings, bespoke jewellery consultations, and studio visits.`;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/contact",
+  return buildMetadata({
+    path: "/contact",
+    generated: {
+      title: "Contact Us",
+      description: `Get in touch with ${settings.business.business_name} for bridal appointments, makeover bookings, bespoke jewellery consultations, and studio visits.`,
     },
-    openGraph: {
-      title,
-      description,
-    },
-  };
+  });
 }
 
 const WEEKDAYS: Array<{

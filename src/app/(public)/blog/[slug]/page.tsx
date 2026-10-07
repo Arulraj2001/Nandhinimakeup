@@ -13,6 +13,8 @@ interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
 }
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
@@ -20,7 +22,13 @@ export async function generateMetadata({
   const post = await getPublicBlogPost(slug);
 
   if (!post) {
-    return { title: "Article Not Found | Nandhini Makeup & Jewellery" };
+    return buildMetadata({
+      path: `/blog/${slug}`,
+      forceNoIndex: true,
+      generated: {
+        title: "Article Not Found",
+      },
+    });
   }
 
   const desc = post.excerpt || extractPlainText(post.content).slice(0, 160);
@@ -28,16 +36,22 @@ export async function generateMetadata({
     ? getPublicMediaUrl(post.featured_image.storage_path)
     : undefined;
 
-  return {
-    title: `${post.title} | Blog | Nandhini Makeup & Jewellery`,
-    description: desc,
-    openGraph: {
+  return buildMetadata({
+    path: `/blog/${slug}`,
+    type: "article",
+    entity: {
+      seo_title: post.seo_title,
+      seo_description: post.seo_description,
+      seo_social_image_id: post.seo_social_image_id,
+      noindex: post.noindex,
+    },
+    generated: {
       title: post.title,
       description: desc,
-      type: "article",
-      images: featuredImgUrl ? [{ url: featuredImgUrl }] : undefined,
+      imageUrl: featuredImgUrl,
+      imageAlt: post.featured_image?.alt_text || post.title,
     },
-  };
+  });
 }
 
 export default async function BlogPostDetailPage({ params }: BlogPostPageProps) {

@@ -17,22 +17,24 @@ interface JewelleryPageProps {
   }>;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = "Jewellery Collection";
-  const description =
-    "Explore our handcrafted bridal jewellery, bespoke accessories, and traditional ornaments.";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/jewellery",
+export async function generateMetadata({
+  searchParams,
+}: JewelleryPageProps): Promise<Metadata> {
+  const sp = await searchParams;
+  const productsData = await getPublicProducts({ limit: 1 });
+
+  return buildMetadata({
+    path: "/jewellery",
+    searchParams: sp,
+    hasItems: productsData.total > 0,
+    generated: {
+      title: "Jewellery Collection",
+      description:
+        "Explore our handcrafted bridal jewellery, bespoke accessories, and traditional ornaments.",
     },
-    openGraph: {
-      title,
-      description,
-    },
-  };
+  });
 }
 
 async function JewelleryProductList({

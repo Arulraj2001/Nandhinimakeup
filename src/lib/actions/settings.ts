@@ -18,6 +18,7 @@ import {
   type AnalyticsSettings,
   type HomeSettings,
   type AboutSettings,
+  type SeoSettings,
   DEFAULT_SITE_SETTINGS,
   DEFAULT_BUSINESS_SETTINGS,
   DEFAULT_SOCIAL_SETTINGS,
@@ -27,6 +28,7 @@ import {
   DEFAULT_ANALYTICS_SETTINGS,
   DEFAULT_HOME_SETTINGS,
   DEFAULT_ABOUT_SETTINGS,
+  DEFAULT_SEO_SETTINGS,
   businessSettingsSchema,
   socialSettingsSchema,
   paymentsSettingsSchema,
@@ -35,6 +37,7 @@ import {
   analyticsSettingsSchema,
   homeSettingsSchema,
   aboutSettingsSchema,
+  seoSettingsSchema,
 } from "@/types/settings";
 
 /**
@@ -131,6 +134,11 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
       }
     : DEFAULT_ABOUT_SETTINGS;
 
+  const rawSeo = map.get("seo") as Record<string, unknown> | undefined;
+  const seo: SeoSettings = rawSeo
+    ? { ...DEFAULT_SEO_SETTINGS, ...rawSeo }
+    : DEFAULT_SEO_SETTINGS;
+
   return {
     business,
     social,
@@ -140,6 +148,7 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     analytics,
     home,
     about,
+    seo,
   };
 }
 
@@ -374,3 +383,34 @@ export async function saveAboutSettings(
   revalidateCacheTag("settings");
   return actionSuccess(parsed.data);
 }
+
+/**
+ * Save SEO settings section
+ */
+export async function saveSeoSettings(
+  input: unknown
+): Promise<ActionResult<SeoSettings>> {
+  const auth = await verifyAdmin();
+  if (!auth.ok) {
+    return actionError(auth.error);
+  }
+
+  const parsed = seoSettingsSchema.safeParse(input);
+  if (!parsed.success) {
+    return actionError("Validation failed", parsed.error.flatten().fieldErrors);
+  }
+
+  const { error } = await auth.data.supabase.from("site_settings").upsert({
+    key: "seo",
+    value: parsed.data,
+  });
+
+  if (error) {
+    return actionError(error.message || "Failed to save SEO settings.");
+  }
+
+  revalidateCacheTag("settings");
+  revalidateCacheTag("seo");
+  return actionSuccess(parsed.data);
+}
+

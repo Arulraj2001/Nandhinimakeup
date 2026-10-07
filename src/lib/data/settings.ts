@@ -11,6 +11,7 @@ import {
   type AnalyticsSettings,
   type HomeSettings,
   type AboutSettings,
+  type SeoSettings,
   DEFAULT_SITE_SETTINGS,
   DEFAULT_BUSINESS_SETTINGS,
   DEFAULT_SOCIAL_SETTINGS,
@@ -20,6 +21,7 @@ import {
   DEFAULT_ANALYTICS_SETTINGS,
   DEFAULT_HOME_SETTINGS,
   DEFAULT_ABOUT_SETTINGS,
+  DEFAULT_SEO_SETTINGS,
 } from "@/types/settings";
 import type { Database } from "@/types/database";
 
@@ -123,6 +125,11 @@ export async function getPublicSiteSettings(): Promise<SiteSettingsData> {
       }
     : DEFAULT_ABOUT_SETTINGS;
 
+  const rawSeo = map.get("seo") as Record<string, unknown> | undefined;
+  const seo: SeoSettings = rawSeo
+    ? { ...DEFAULT_SEO_SETTINGS, ...rawSeo }
+    : DEFAULT_SEO_SETTINGS;
+
   return {
     business,
     social,
@@ -132,6 +139,7 @@ export async function getPublicSiteSettings(): Promise<SiteSettingsData> {
     analytics,
     home,
     about,
+    seo,
   };
 }
 

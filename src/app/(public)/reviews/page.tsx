@@ -3,22 +3,20 @@ import { getPublicTestimonials } from "@/lib/data/testimonials";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { EmptyState } from "@/components/public/empty-state";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = "Client Reviews";
-  const description =
-    "Read real words of love and testimonials from our lovely brides and makeover clients.";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/reviews",
+export async function generateMetadata(): Promise<Metadata> {
+  const testimonials = await getPublicTestimonials();
+
+  return buildMetadata({
+    path: "/reviews",
+    hasItems: testimonials.length > 0,
+    generated: {
+      title: "Client Reviews",
+      description:
+        "Read real words of love and testimonials from our lovely brides and makeover clients.",
     },
-    openGraph: {
-      title,
-      description,
-    },
-  };
+  });
 }
 
 export default async function ReviewsPage() {

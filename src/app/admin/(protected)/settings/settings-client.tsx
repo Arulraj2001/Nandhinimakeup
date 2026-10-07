@@ -15,6 +15,7 @@ import {
   type AnalyticsSettings,
   type HomeSettings,
   type AboutSettings,
+  type SeoSettings,
   businessSettingsSchema,
   socialSettingsSchema,
   paymentsSettingsSchema,
@@ -23,6 +24,7 @@ import {
   analyticsSettingsSchema,
   homeSettingsSchema,
   aboutSettingsSchema,
+  seoSettingsSchema,
 } from "@/types/settings";
 import {
   saveBusinessSettings,
@@ -33,6 +35,7 @@ import {
   saveAnalyticsSettings,
   saveHomeSettings,
   saveAboutSettings,
+  saveSeoSettings,
 } from "@/lib/actions/settings";
 import {
   MediaPicker,
@@ -61,7 +64,8 @@ type SettingsTab =
   | "payments"
   | "shipping"
   | "branding"
-  | "analytics";
+  | "analytics"
+  | "seo";
 
 export function SettingsClient({
   initialSettings,
@@ -79,7 +83,8 @@ export function SettingsClient({
     { id: "payments", label: "Payments (UPI)" },
     { id: "shipping", label: "Shipping" },
     { id: "branding", label: "Branding" },
-    { id: "analytics", label: "Analytics & SEO" },
+    { id: "analytics", label: "Analytics" },
+    { id: "seo", label: "Global SEO" },
   ];
 
   return (
@@ -159,6 +164,15 @@ export function SettingsClient({
         )}
         {activeTab === "analytics" && (
           <AnalyticsSettingsForm initialValues={initialSettings.analytics} />
+        )}
+        {activeTab === "seo" && (
+          <SeoSettingsForm
+            initialValues={initialSettings.seo}
+            mediaMap={mediaMap}
+            onMediaMapUpdate={(newItem) =>
+              setMediaMap((prev) => ({ ...prev, [newItem.id]: newItem }))
+            }
+          />
         )}
       </div>
     </div>
@@ -321,6 +335,64 @@ function BusinessSettingsForm({
           placeholder="Shop 4, Gandhi Road, Chennai, Tamil Nadu - 600001"
         />
       </FormField>
+
+      {/* Structured Address (for Search Engines / Structured Data) */}
+      <div className="space-y-4 rounded-lg border border-border p-4 bg-muted/20">
+        <div>
+          <h3 className="text-foreground text-sm font-semibold">
+            Structured Address Parts (for Search Engines)
+          </h3>
+          <p className="text-foreground/70 text-xs">
+            Used specifically for LocalBusiness structured data (Schema.org).
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <FormField
+            id="street_address"
+            label="Street Address"
+            error={form.formState.errors.street_address?.message}
+          >
+            <Input
+              id="street_address"
+              {...form.register("street_address")}
+              placeholder="e.g. Shop 4, Gandhi Road"
+            />
+          </FormField>
+          <FormField
+            id="address_locality"
+            label="City / Locality"
+            error={form.formState.errors.address_locality?.message}
+          >
+            <Input
+              id="address_locality"
+              {...form.register("address_locality")}
+              placeholder="e.g. T. Nagar, Chennai"
+            />
+          </FormField>
+          <FormField
+            id="address_region"
+            label="State / Region"
+            error={form.formState.errors.address_region?.message}
+          >
+            <Input
+              id="address_region"
+              {...form.register("address_region")}
+              placeholder="e.g. Tamil Nadu"
+            />
+          </FormField>
+          <FormField
+            id="postal_code"
+            label="Postal / PIN Code"
+            error={form.formState.errors.postal_code?.message}
+          >
+            <Input
+              id="postal_code"
+              {...form.register("postal_code")}
+              placeholder="e.g. 600017"
+            />
+          </FormField>
+        </div>
+      </div>
 
       {/* Opening Hours */}
       <div className="space-y-4">
@@ -1634,6 +1706,215 @@ function AboutSettingsForm({
         <SubmitButton
           isLoading={form.formState.isSubmitting}
           label="Save About Content"
+        />
+      </div>
+    </form>
+  );
+}
+
+// ----------------------------------------------------------------------
+// 10. Global SEO Settings Form
+// ----------------------------------------------------------------------
+function SeoSettingsForm({
+  initialValues,
+  mediaMap,
+  onMediaMapUpdate,
+}: {
+  initialValues: SeoSettings;
+  mediaMap: Record<string, MediaItem>;
+  onMediaMapUpdate: (item: MediaItem) => void;
+}) {
+  const [pickerOpen, setPickerOpen] = React.useState(false);
+
+  const form = useForm<SeoSettings>({
+    resolver: zodResolver(seoSettingsSchema),
+    defaultValues: initialValues,
+  });
+
+  useUnsavedChangesWarning(form.formState.isDirty);
+
+  const socialImageId = form.watch("default_social_image_id");
+  const socialImageMedia = socialImageId ? mediaMap[socialImageId] : null;
+
+  const onSubmit = async (values: SeoSettings) => {
+    const res = await saveSeoSettings(values);
+    if (!res.success) {
+      toast.error(res.error || "Failed to save SEO settings");
+      return;
+    }
+    form.reset(values);
+    toast.success("Global SEO settings saved successfully");
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="border-border border-b pb-4">
+        <h2 className="text-foreground text-lg font-semibold">
+          Global SEO Settings
+        </h2>
+        <p className="text-foreground/70 text-sm">
+          Default meta tags, Open Graph fallbacks, and local business discovery parameters.
+        </p>
+      </div>
+
+      <FormField
+        id="default_meta_description"
+        label="Default Meta Description"
+        hint="Used when a page or product does not provide its own description."
+        error={form.formState.errors.default_meta_description?.message}
+      >
+        <textarea
+          id="default_meta_description"
+          rows={3}
+          {...form.register("default_meta_description")}
+          className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
+          placeholder="Professional bridal makeup artistry and premium handcrafted jewellery in Chennai..."
+        />
+      </FormField>
+
+      {/* Default Social Share Image */}
+      <div className="space-y-2 rounded-lg border border-border p-4">
+        <label className="text-foreground text-sm font-semibold">
+          Default Social Share Image (OG Image)
+        </label>
+        <p className="text-foreground/70 text-xs">
+          Fallback image displayed when links to pages without a dedicated image are shared on social media (1200x630 recommended).
+        </p>
+
+        {socialImageMedia ? (
+          <div className="flex items-center gap-4 pt-2">
+            <img
+              src={getPublicMediaUrl(socialImageMedia.storage_path)}
+              alt={socialImageMedia.alt_text || "Default social share"}
+              className="h-20 w-36 rounded border bg-white object-cover shadow-xs"
+            />
+            <div className="space-y-1">
+              <p className="text-foreground text-sm font-medium">
+                {socialImageMedia.file_name}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPickerOpen(true)}
+                >
+                  Change Image
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-600 hover:text-red-700"
+                  onClick={() =>
+                    form.setValue("default_social_image_id", null, {
+                      shouldDirty: true,
+                    })
+                  }
+                >
+                  Remove
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setPickerOpen(true)}
+            >
+              Select from Media Library
+            </Button>
+          </div>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <FormField
+          id="price_range"
+          label="Price Range Indicator"
+          hint="e.g. ₹₹ or ₹1,000 - ₹50,000 for structured data"
+          error={form.formState.errors.price_range?.message}
+        >
+          <Input
+            id="price_range"
+            {...form.register("price_range")}
+            placeholder="₹₹"
+          />
+        </FormField>
+
+        <FormField
+          id="area_served"
+          label="Area Served"
+          hint="Geographical service region (e.g. Chennai, Tamil Nadu)"
+          error={form.formState.errors.area_served?.message}
+        >
+          <Input
+            id="area_served"
+            {...form.register("area_served")}
+            placeholder="Chennai, Tamil Nadu"
+          />
+        </FormField>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <FormField
+          id="latitude"
+          label="Latitude (Optional)"
+          hint="GPS coordinate for LocalBusiness map schema"
+          error={form.formState.errors.latitude?.message}
+        >
+          <Input
+            id="latitude"
+            type="number"
+            step="any"
+            {...form.register("latitude", {
+              setValueAs: (v) => (v === "" || v === null || isNaN(Number(v)) ? null : Number(v)),
+            })}
+            placeholder="e.g. 13.0827"
+          />
+        </FormField>
+
+        <FormField
+          id="longitude"
+          label="Longitude (Optional)"
+          hint="GPS coordinate for LocalBusiness map schema"
+          error={form.formState.errors.longitude?.message}
+        >
+          <Input
+            id="longitude"
+            type="number"
+            step="any"
+            {...form.register("longitude", {
+              setValueAs: (v) => (v === "" || v === null || isNaN(Number(v)) ? null : Number(v)),
+            })}
+            placeholder="e.g. 80.2707"
+          />
+        </FormField>
+      </div>
+
+      <MediaPicker
+        open={pickerOpen}
+        selectedIds={socialImageId ? [socialImageId] : []}
+        onClose={() => setPickerOpen(false)}
+        onSelect={(items) => {
+          if (items.length > 0) {
+            const item = items[0];
+            form.setValue("default_social_image_id", item.id, {
+              shouldDirty: true,
+            });
+            onMediaMapUpdate(item);
+          }
+          setPickerOpen(false);
+        }}
+      />
+
+      <div className="flex justify-end pt-4">
+        <SubmitButton
+          isLoading={form.formState.isSubmitting}
+          label="Save Global SEO Settings"
         />
       </div>
     </form>

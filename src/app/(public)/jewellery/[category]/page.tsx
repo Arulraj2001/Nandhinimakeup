@@ -18,37 +18,46 @@ interface CategoryListingPageProps {
   }>;
 }
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata({
   params,
+  searchParams,
 }: CategoryListingPageProps): Promise<Metadata> {
   const { category: categorySlug } = await params;
-  const [category, settings] = await Promise.all([
+  const sp = await searchParams;
+  const [category, productsData] = await Promise.all([
     getPublicProductCategoryBySlug(categorySlug),
-    getPublicSiteSettings(),
+    getPublicProducts({ categorySlug, limit: 1 }),
   ]);
 
   if (!category) {
-    return {
-      title: `Category Not Found | ${settings.business.business_name}`,
-    };
+    return buildMetadata({
+      path: `/jewellery/${categorySlug}`,
+      forceNoIndex: true,
+      generated: {
+        title: "Category Not Found",
+      },
+    });
   }
 
-  const title = `${category.name} Jewellery`;
-  const description =
-    category.description ||
-    `Browse handcrafted ${category.name} pieces from ${settings.business.business_name}.`;
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `/jewellery/${categorySlug}`,
+  return buildMetadata({
+    path: `/jewellery/${categorySlug}`,
+    searchParams: sp,
+    hasItems: productsData.total > 0,
+    entity: {
+      seo_title: category.seo_title,
+      seo_description: category.seo_description,
+      seo_social_image_id: category.seo_social_image_id,
+      noindex: category.noindex,
     },
-    openGraph: {
-      title,
-      description,
+    generated: {
+      title: `${category.name} Jewellery`,
+      description:
+        category.description ||
+        `Browse handcrafted ${category.name} pieces.`,
     },
-  };
+  });
 }
 
 async function CategoryListingContent({

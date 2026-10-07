@@ -24,43 +24,46 @@ interface ProductDetailPageProps {
   }>;
 }
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata({
   params,
 }: ProductDetailPageProps): Promise<Metadata> {
   const { category: categorySlug, product: productSlug } = await params;
-  const [product, settings] = await Promise.all([
-    getPublicProductBySlug(categorySlug, productSlug),
-    getPublicSiteSettings(),
-  ]);
+  const product = await getPublicProductBySlug(categorySlug, productSlug);
 
   if (!product) {
-    return {
-      title: `Product Not Found | ${settings.business.business_name}`,
-    };
+    return buildMetadata({
+      path: `/jewellery/${categorySlug}/${productSlug}`,
+      forceNoIndex: true,
+      generated: {
+        title: "Product Not Found",
+      },
+    });
   }
-
-  const title = product.name;
-  const description =
-    product.description?.slice(0, 160) ||
-    `${product.name} handcrafted jewellery piece from ${settings.business.business_name}.`;
 
   const primaryImage = product.images?.[0]?.media;
   const ogImageUrl = primaryImage
     ? getPublicMediaUrl(primaryImage.storage_path)
     : undefined;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `/jewellery/${categorySlug}/${productSlug}`,
+  return buildMetadata({
+    path: `/jewellery/${categorySlug}/${productSlug}`,
+    entity: {
+      seo_title: product.seo_title,
+      seo_description: product.seo_description,
+      seo_social_image_id: product.seo_social_image_id,
+      noindex: product.noindex,
     },
-    openGraph: {
-      title,
-      description,
-      images: ogImageUrl ? [{ url: ogImageUrl, alt: product.name }] : [],
+    generated: {
+      title: product.name,
+      description:
+        product.description?.slice(0, 160) ||
+        `${product.name} handcrafted jewellery piece.`,
+      imageUrl: ogImageUrl,
+      imageAlt: primaryImage?.alt_text || product.name,
     },
-  };
+  });
 }
 
 async function ProductDetailContent({

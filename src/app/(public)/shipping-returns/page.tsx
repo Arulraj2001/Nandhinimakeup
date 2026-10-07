@@ -4,17 +4,28 @@ import { getPublishedLegalPage } from "@/lib/data/legal-pages";
 import { RichTextRenderer } from "@/components/public/rich-text-renderer";
 import { extractPlainText } from "@/lib/utils/rich-text";
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPublishedLegalPage("shipping-and-returns");
   if (!page) {
-    return { title: "Shipping & Returns | Nandhini Makeup & Jewellery" };
+    return buildMetadata({
+      path: "/shipping-returns",
+      forceNoIndex: true,
+      generated: { title: "Shipping & Returns" },
+    });
   }
 
   const excerpt = extractPlainText(page.content).slice(0, 160);
-  return {
-    title: `${page.title} | Nandhini Makeup & Jewellery`,
-    description: excerpt || "Read our shipping timelines, domestic delivery rules, and return policy.",
-  };
+  return buildMetadata({
+    path: "/shipping-returns",
+    generated: {
+      title: page.title,
+      description:
+        excerpt ||
+        "Read our shipping timelines, domestic delivery rules, and return policy.",
+    },
+  });
 }
 
 export default async function ShippingReturnsPage() {

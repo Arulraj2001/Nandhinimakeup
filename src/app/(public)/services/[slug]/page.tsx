@@ -14,6 +14,8 @@ import { PriceDisplay } from "@/components/public/price-display";
 import { ServiceCard } from "@/components/public/service-card";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -22,39 +24,40 @@ export async function generateMetadata({
   params,
 }: ServiceDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const [service, settings] = await Promise.all([
-    getPublicServiceBySlug(slug),
-    getPublicSiteSettings(),
-  ]);
+  const service = await getPublicServiceBySlug(slug);
 
   if (!service) {
-    return {
-      title: `Service Not Found | ${settings.business.business_name}`,
-    };
+    return buildMetadata({
+      path: `/services/${slug}`,
+      forceNoIndex: true,
+      generated: {
+        title: "Service Not Found",
+      },
+    });
   }
-
-  const title = service.name;
-  const description =
-    service.short_description ||
-    service.long_description?.slice(0, 160) ||
-    `${service.name} bridal services by ${settings.business.business_name}.`;
 
   const ogImageUrl = service.image
     ? getPublicMediaUrl(service.image.storage_path)
     : undefined;
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: `/services/${slug}`,
+  return buildMetadata({
+    path: `/services/${slug}`,
+    entity: {
+      seo_title: service.seo_title,
+      seo_description: service.seo_description,
+      seo_social_image_id: service.seo_social_image_id,
+      noindex: service.noindex,
     },
-    openGraph: {
-      title,
-      description,
-      images: ogImageUrl ? [{ url: ogImageUrl, alt: service.name }] : [],
+    generated: {
+      title: service.name,
+      description:
+        service.short_description ||
+        service.long_description?.slice(0, 160) ||
+        `${service.name} bridal services.`,
+      imageUrl: ogImageUrl,
+      imageAlt: service.image?.alt_text || service.name,
     },
-  };
+  });
 }
 
 async function ServiceDetailContent({

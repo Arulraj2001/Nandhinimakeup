@@ -5,22 +5,19 @@ import { ServiceCard } from "@/components/public/service-card";
 import { EmptyState } from "@/components/public/empty-state";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = "Bridal & Beauty Services";
-  const description =
-    "Explore our professional bridal makeup services, reception transformations, and party look packages.";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/services",
+export async function generateMetadata(): Promise<Metadata> {
+  const services = await getPublicServices();
+  return buildMetadata({
+    path: "/services",
+    hasItems: services.length > 0,
+    generated: {
+      title: "Bridal & Beauty Services",
+      description:
+        "Explore our professional bridal makeup services, reception transformations, and party look packages.",
     },
-    openGraph: {
-      title,
-      description,
-    },
-  };
+  });
 }
 
 export default async function ServicesPage() {

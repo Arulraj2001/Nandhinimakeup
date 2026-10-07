@@ -96,8 +96,10 @@ export interface Database {
           title: string;
           description: string;
           og_image_url: string | null;
+          og_image_id: string | null;
           canonical_url: string | null;
           noindex: boolean;
+          focus_keyword: string | null;
           updated_at: string;
         };
         Insert: {
@@ -106,8 +108,10 @@ export interface Database {
           title: string;
           description: string;
           og_image_url?: string | null;
+          og_image_id?: string | null;
           canonical_url?: string | null;
           noindex?: boolean;
+          focus_keyword?: string | null;
           updated_at?: string;
         };
         Update: {
@@ -116,11 +120,21 @@ export interface Database {
           title?: string;
           description?: string;
           og_image_url?: string | null;
+          og_image_id?: string | null;
           canonical_url?: string | null;
           noindex?: boolean;
+          focus_keyword?: string | null;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "seo_pages_og_image_id_fkey";
+            columns: ["og_image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       redirects: {
         Row: {
@@ -195,6 +209,11 @@ export interface Database {
           is_featured: boolean;
           is_published: boolean;
           sort_order: number;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_social_image_id: string | null;
+          noindex: boolean;
+          focus_keyword: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -213,6 +232,11 @@ export interface Database {
           is_featured?: boolean;
           is_published?: boolean;
           sort_order?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -231,6 +255,11 @@ export interface Database {
           is_featured?: boolean;
           is_published?: boolean;
           sort_order?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -249,6 +278,13 @@ export interface Database {
             referencedRelation: "media";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "services_seo_social_image_id_fkey";
+            columns: ["seo_social_image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
         ];
       };
       product_categories: {
@@ -260,6 +296,11 @@ export interface Database {
           image_id: string | null;
           sort_order: number;
           is_published: boolean;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_social_image_id: string | null;
+          noindex: boolean;
+          focus_keyword: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -271,6 +312,11 @@ export interface Database {
           image_id?: string | null;
           sort_order?: number;
           is_published?: boolean;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -282,6 +328,11 @@ export interface Database {
           image_id?: string | null;
           sort_order?: number;
           is_published?: boolean;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -289,6 +340,13 @@ export interface Database {
           {
             foreignKeyName: "product_categories_image_id_fkey";
             columns: ["image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "product_categories_seo_social_image_id_fkey";
+            columns: ["seo_social_image_id"];
             isOneToOne: false;
             referencedRelation: "media";
             referencedColumns: ["id"];
@@ -311,6 +369,11 @@ export interface Database {
           is_new: boolean;
           is_published: boolean;
           sort_order: number;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_social_image_id: string | null;
+          noindex: boolean;
+          focus_keyword: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -329,6 +392,11 @@ export interface Database {
           is_new?: boolean;
           is_published?: boolean;
           sort_order?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -347,6 +415,11 @@ export interface Database {
           is_new?: boolean;
           is_published?: boolean;
           sort_order?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -356,6 +429,13 @@ export interface Database {
             columns: ["category_id"];
             isOneToOne: false;
             referencedRelation: "product_categories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_seo_social_image_id_fkey";
+            columns: ["seo_social_image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
             referencedColumns: ["id"];
           },
         ];
@@ -763,6 +843,11 @@ export interface Database {
           slug: string;
           description: string | null;
           sort_order: number;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_social_image_id: string | null;
+          noindex: boolean;
+          focus_keyword: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -772,6 +857,11 @@ export interface Database {
           slug: string;
           description?: string | null;
           sort_order?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -781,10 +871,23 @@ export interface Database {
           slug?: string;
           description?: string | null;
           sort_order?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "blog_categories_seo_social_image_id_fkey";
+            columns: ["seo_social_image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       blog_posts: {
         Row: {
@@ -800,6 +903,11 @@ export interface Database {
           published_at: string | null;
           is_featured: boolean;
           reading_time_minutes: number;
+          seo_title: string | null;
+          seo_description: string | null;
+          seo_social_image_id: string | null;
+          noindex: boolean;
+          focus_keyword: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -816,6 +924,11 @@ export interface Database {
           published_at?: string | null;
           is_featured?: boolean;
           reading_time_minutes?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -832,6 +945,11 @@ export interface Database {
           published_at?: string | null;
           is_featured?: boolean;
           reading_time_minutes?: number;
+          seo_title?: string | null;
+          seo_description?: string | null;
+          seo_social_image_id?: string | null;
+          noindex?: boolean;
+          focus_keyword?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -846,6 +964,13 @@ export interface Database {
           {
             foreignKeyName: "blog_posts_featured_image_id_fkey";
             columns: ["featured_image_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "blog_posts_seo_social_image_id_fkey";
+            columns: ["seo_social_image_id"];
             isOneToOne: false;
             referencedRelation: "media";
             referencedColumns: ["id"];

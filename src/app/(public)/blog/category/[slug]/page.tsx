@@ -14,22 +14,46 @@ interface CategoryPageProps {
   searchParams?: Promise<{ page?: string }>;
 }
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata({
   params,
+  searchParams,
 }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const category = await getPublicBlogCategoryBySlug(slug);
+  const sp = await searchParams;
+  const [category, postsData] = await Promise.all([
+    getPublicBlogCategoryBySlug(slug),
+    getPublicBlogPosts({ categorySlug: slug, page: 1, limit: 1 }),
+  ]);
 
   if (!category) {
-    return { title: "Category Not Found | Nandhini Makeup & Jewellery" };
+    return buildMetadata({
+      path: `/blog/category/${slug}`,
+      forceNoIndex: true,
+      generated: {
+        title: "Category Not Found",
+      },
+    });
   }
 
-  return {
-    title: `${category.name} | Blog | Nandhini Makeup & Jewellery`,
-    description:
-      category.description ||
-      `Articles and tips in ${category.name} from Nandhini Makeup & Jewellery.`,
-  };
+  return buildMetadata({
+    path: `/blog/category/${slug}`,
+    searchParams: sp,
+    hasItems: postsData.total > 0,
+    entity: {
+      seo_title: category.seo_title,
+      seo_description: category.seo_description,
+      seo_social_image_id: category.seo_social_image_id,
+      noindex: category.noindex,
+    },
+    generated: {
+      title: `${category.name} | Blog`,
+      description:
+        category.description ||
+        `Articles and tips in ${category.name}.`,
+    },
+  });
 }
 
 export default async function BlogCategoryPage({

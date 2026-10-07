@@ -11,15 +11,22 @@ import { OrderView } from "@/components/public/order/order-view";
 import { env } from "@/lib/config/env";
 import type { OrderStatus } from "@/types/orders";
 
-export const metadata: Metadata = {
-  title: "Order Details | Nandhini Makeup & Jewellery",
-  description: "View your order confirmation and payment instructions.",
-  robots: {
-    index: false,
-    follow: false,
-  },
-  referrer: "no-referrer",
-};
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const meta = await buildMetadata({
+    path: "/order",
+    forceNoIndex: true,
+    generated: {
+      title: "Order Details",
+      description: "View your order confirmation and payment instructions.",
+    },
+  });
+  return {
+    ...meta,
+    referrer: "no-referrer",
+  };
+}
 
 interface OrderPageProps {
   params: Promise<{

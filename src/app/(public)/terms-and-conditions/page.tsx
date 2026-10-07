@@ -4,17 +4,28 @@ import { getPublishedLegalPage } from "@/lib/data/legal-pages";
 import { RichTextRenderer } from "@/components/public/rich-text-renderer";
 import { extractPlainText } from "@/lib/utils/rich-text";
 
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPublishedLegalPage("terms-and-conditions");
   if (!page) {
-    return { title: "Terms & Conditions | Nandhini Makeup & Jewellery" };
+    return buildMetadata({
+      path: "/terms-and-conditions",
+      forceNoIndex: true,
+      generated: { title: "Terms & Conditions" },
+    });
   }
 
   const excerpt = extractPlainText(page.content).slice(0, 160);
-  return {
-    title: `${page.title} | Nandhini Makeup & Jewellery`,
-    description: excerpt || "Read our terms and conditions for bookings, orders, and services.",
-  };
+  return buildMetadata({
+    path: "/terms-and-conditions",
+    generated: {
+      title: page.title,
+      description:
+        excerpt ||
+        "Read our terms and conditions for bookings, orders, and services.",
+    },
+  });
 }
 
 export default async function TermsAndConditionsPage() {

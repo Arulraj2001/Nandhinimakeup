@@ -7,14 +7,28 @@ import {
 import { BlogCard } from "@/components/public/blog/blog-card";
 import { Pagination } from "@/components/public/pagination";
 
-export const metadata: Metadata = {
-  title: "Blog & Beauty Journal | Nandhini Makeup & Jewellery",
-  description:
-    "Expert bridal beauty tips, skincare advice, jewellery styling guides, and parlour insights.",
-};
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
 interface BlogIndexPageProps {
   searchParams?: Promise<{ page?: string }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: BlogIndexPageProps): Promise<Metadata> {
+  const sp = await searchParams;
+  const postsData = await getPublicBlogPosts({ page: 1, limit: 1 });
+
+  return buildMetadata({
+    path: "/blog",
+    searchParams: sp,
+    hasItems: postsData.total > 0,
+    generated: {
+      title: "Blog & Beauty Journal",
+      description:
+        "Expert bridal beauty tips, skincare advice, jewellery styling guides, and parlour insights.",
+    },
+  });
 }
 
 export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps) {

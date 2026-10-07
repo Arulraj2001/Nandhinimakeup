@@ -15,22 +15,24 @@ interface GalleryPageProps {
   }>;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const title = "Portfolio & Gallery";
-  const description =
-    "Explore our bridal makeup transformations, before-and-after looks, saree draping, and artistry portfolio.";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: "/gallery",
+export async function generateMetadata({
+  searchParams,
+}: GalleryPageProps): Promise<Metadata> {
+  const sp = await searchParams;
+  const galleryData = await getPublicGalleryItems({ limit: 1 });
+
+  return buildMetadata({
+    path: "/gallery",
+    searchParams: sp,
+    hasItems: galleryData.total > 0,
+    generated: {
+      title: "Portfolio & Gallery",
+      description:
+        "Explore our bridal makeup transformations, before-and-after looks, saree draping, and artistry portfolio.",
     },
-    openGraph: {
-      title,
-      description,
-    },
-  };
+  });
 }
 
 async function GalleryContent({

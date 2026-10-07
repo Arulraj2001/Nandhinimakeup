@@ -33,6 +33,10 @@ export const businessSettingsSchema = z.object({
     ),
   email: z.string().email("Invalid email address"),
   full_address: z.string(),
+  street_address: z.string(),
+  address_locality: z.string(),
+  address_region: z.string(),
+  postal_code: z.string(),
   google_maps_link: z.string().url("Must be a valid URL").or(z.literal("")),
   opening_hours: weekdayHoursSchema,
 });
@@ -134,6 +138,18 @@ export const aboutSettingsSchema = z.object({
 
 export type AboutSettings = z.infer<typeof aboutSettingsSchema>;
 
+// 9. SEO Schema
+export const seoSettingsSchema = z.object({
+  default_meta_description: z.string().trim(),
+  default_social_image_id: z.string().uuid("Invalid media ID").nullable(),
+  price_range: z.string().trim(),
+  area_served: z.string().trim(),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
+});
+
+export type SeoSettings = z.infer<typeof seoSettingsSchema>;
+
 // Complete Site Settings Bundle
 export type SiteSettingsData = {
   business: BusinessSettings;
@@ -144,6 +160,7 @@ export type SiteSettingsData = {
   analytics: AnalyticsSettings;
   home: HomeSettings;
   about: AboutSettings;
+  seo: SeoSettings;
 };
 
 // Safe Defaults
@@ -160,6 +177,10 @@ export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
   whatsapp_number: "+919876543210",
   email: "contact@nandhinimakeup.com",
   full_address: "Chennai, Tamil Nadu, India",
+  street_address: "",
+  address_locality: "",
+  address_region: "",
+  postal_code: "",
   google_maps_link: "",
   opening_hours: {
     monday: { ...DEFAULT_DAY_SCHEDULE },
@@ -231,6 +252,15 @@ export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
   ],
 };
 
+export const DEFAULT_SEO_SETTINGS: SeoSettings = {
+  default_meta_description: "",
+  default_social_image_id: null,
+  price_range: "₹₹",
+  area_served: "",
+  latitude: null,
+  longitude: null,
+};
+
 export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
   business: DEFAULT_BUSINESS_SETTINGS,
   social: DEFAULT_SOCIAL_SETTINGS,
@@ -240,4 +270,5 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
   analytics: DEFAULT_ANALYTICS_SETTINGS,
   home: DEFAULT_HOME_SETTINGS,
   about: DEFAULT_ABOUT_SETTINGS,
+  seo: DEFAULT_SEO_SETTINGS,
 };
