@@ -31,23 +31,22 @@ export function Header({
   return (
     <header className="border-border bg-page-background sticky top-0 z-30 border-b">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-        {/* Brand Logo / Business Name */}
+        {/* Brand Logo & Business Name */}
         <Link
           href="/"
-          className="font-heading text-foreground flex items-center gap-2 text-xl font-semibold tracking-wide sm:text-2xl"
+          className="font-heading text-foreground flex items-center gap-3 text-lg font-semibold tracking-wide sm:text-2xl"
         >
-          {logoUrl ? (
+          {logoUrl && (
             <Image
               src={logoUrl}
               alt={logoAlt || businessName}
               width={160}
               height={44}
-              className="h-10 w-auto object-contain"
+              className="h-9 w-auto object-contain sm:h-10"
               priority
             />
-          ) : (
-            <span>{businessName}</span>
           )}
+          <span>{businessName}</span>
         </Link>
 
         {/* Desktop Navigation & Actions */}
