@@ -18,18 +18,24 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
-    remotePatterns: supabaseHost
-      ? [
-          {
-            protocol: "https",
-            hostname: supabaseHost,
-          },
-          {
-            protocol: "http",
-            hostname: supabaseHost,
-          },
-        ]
-      : [],
+    remotePatterns: [
+      {
+        protocol: "https" as const,
+        hostname: "**.supabase.co",
+      },
+      ...(supabaseHost
+        ? [
+            {
+              protocol: "https" as const,
+              hostname: supabaseHost,
+            },
+            {
+              protocol: "http" as const,
+              hostname: supabaseHost,
+            },
+          ]
+        : []),
+    ],
   },
 };
 
