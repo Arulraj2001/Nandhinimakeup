@@ -5,6 +5,7 @@ import { FloatingWhatsApp } from "@/components/public/floating-whatsapp";
 import { getPublicSiteSettings, getPublicMedia } from "@/lib/data/settings";
 import { getPublicActiveAnnouncement } from "@/lib/data/announcements";
 import { getPublishedLegalPages } from "@/lib/data/legal-pages";
+import { hasPublishedBlogPosts } from "@/lib/data/blog";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 
 export default async function PublicLayout({
@@ -12,10 +13,11 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [settings, announcement, legalPages] = await Promise.all([
+  const [settings, announcement, legalPages, hasBlog] = await Promise.all([
     getPublicSiteSettings(),
     getPublicActiveAnnouncement(),
     getPublishedLegalPages(),
+    hasPublishedBlogPosts(),
   ]);
 
   const logoMedia = await getPublicMedia(settings.branding.logo_media_id);
@@ -30,6 +32,7 @@ export default async function PublicLayout({
         logoAlt={logoMedia?.alt_text}
         whatsappNumber={settings.business.whatsapp_number}
         acceptOrders={settings.shipping.accept_orders}
+        hasBlog={hasBlog}
       />
       <main className="flex-1">{children}</main>
       <Footer

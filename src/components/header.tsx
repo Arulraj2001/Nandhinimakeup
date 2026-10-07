@@ -13,6 +13,7 @@ interface HeaderProps {
   logoAlt?: string;
   whatsappNumber?: string;
   acceptOrders?: boolean;
+  hasBlog?: boolean;
 }
 
 export function Header({
@@ -21,6 +22,7 @@ export function Header({
   logoAlt,
   whatsappNumber,
   acceptOrders = true,
+  hasBlog = false,
 }: HeaderProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -30,6 +32,19 @@ export function Header({
         greeting: `Hello ${businessName}! I would like to book an appointment / make an enquiry.`,
       })
     : "";
+
+  const navItems = React.useMemo(() => {
+    const items = [...siteConfig.nav];
+    if (hasBlog) {
+      const aboutIdx = items.findIndex((i) => i.href === "/about");
+      if (aboutIdx !== -1) {
+        items.splice(aboutIdx, 0, { title: "Blog", href: "/blog" });
+      } else {
+        items.push({ title: "Blog", href: "/blog" });
+      }
+    }
+    return items;
+  }, [hasBlog]);
 
   return (
     <header className="border-border bg-page-background sticky top-0 z-30 border-b">
@@ -57,7 +72,7 @@ export function Header({
           {/* Desktop Navigation & Actions */}
         <div className="hidden md:flex md:items-center md:gap-6">
           <nav className="flex items-center gap-6" aria-label="Main Navigation">
-            {siteConfig.nav.map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -120,7 +135,7 @@ export function Header({
           aria-label="Mobile Navigation"
         >
           <ul className="flex flex-col gap-2">
-            {siteConfig.nav.map((item) => (
+            {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
