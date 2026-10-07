@@ -148,6 +148,11 @@ export async function saveProduct(
         is_new: parsed.data.is_new,
         is_published: parsed.data.is_published,
         sort_order: parsed.data.sort_order,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
       })
       .eq("id", productId)
       .select()
@@ -174,6 +179,7 @@ export async function saveProduct(
     }
 
     revalidateCacheTag("products");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   } else {
     // Insert: calculate sort order
@@ -203,6 +209,11 @@ export async function saveProduct(
         is_new: parsed.data.is_new,
         is_published: parsed.data.is_published,
         sort_order: parsed.data.sort_order || nextOrder,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
       })
       .select()
       .single();

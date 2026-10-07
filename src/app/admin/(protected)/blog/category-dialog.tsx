@@ -11,6 +11,8 @@ import { slugify } from "@/lib/utils/slug";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SeoPanel } from "@/components/admin/seo-panel";
+import type { MediaItem } from "@/lib/actions/media";
 
 interface CategoryDialogProps {
   open: boolean;
@@ -33,16 +35,44 @@ export function CategoryDialog({
   const [isSlugManual, setIsSlugManual] = React.useState(Boolean(category));
   const [isSaving, setIsSaving] = React.useState(false);
 
+  // SEO fields
+  const [seoTitle, setSeoTitle] = React.useState(
+    (category as any)?.seo_title || ""
+  );
+  const [seoDescription, setSeoDescription] = React.useState(
+    (category as any)?.seo_description || ""
+  );
+  const [seoSocialImageId, setSeoSocialImageId] = React.useState<string | null>(
+    (category as any)?.seo_social_image_id || null
+  );
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [noindex, setNoindex] = React.useState<boolean>(
+    (category as any)?.noindex ?? false
+  );
+  const [focusKeyword, setFocusKeyword] = React.useState(
+    (category as any)?.focus_keyword || ""
+  );
+
   React.useEffect(() => {
     if (category) {
       setName(category.name);
       setSlug(category.slug);
       setDescription(category.description || "");
+      setSeoTitle((category as any).seo_title || "");
+      setSeoDescription((category as any).seo_description || "");
+      setSeoSocialImageId((category as any).seo_social_image_id || null);
+      setNoindex((category as any).noindex ?? false);
+      setFocusKeyword((category as any).focus_keyword || "");
       setIsSlugManual(true);
     } else {
       setName("");
       setSlug("");
       setDescription("");
+      setSeoTitle("");
+      setSeoDescription("");
+      setSeoSocialImageId(null);
+      setNoindex(false);
+      setFocusKeyword("");
       setIsSlugManual(false);
     }
   }, [category, open]);
@@ -74,6 +104,11 @@ export function CategoryDialog({
         slug: slug.trim(),
         description: description.trim() || null,
         sort_order: category?.sort_order ?? 0,
+        seo_title: seoTitle.trim() || null,
+        seo_description: seoDescription.trim() || null,
+        seo_social_image_id: seoSocialImageId,
+        noindex,
+        focus_keyword: focusKeyword.trim() || null,
       };
 
       const res = await saveBlogCategory(payload);
@@ -99,7 +134,7 @@ export function CategoryDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-md rounded-lg border border-border bg-surface p-6 shadow-xl space-y-4">
+      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-surface p-6 shadow-xl space-y-4">
         <h2 className="font-heading text-lg font-semibold text-foreground">
           {category ? "Edit Category" : "New Category"}
         </h2>
@@ -143,6 +178,31 @@ export function CategoryDialog({
               placeholder="Short description of this category..."
             />
           </div>
+
+          {/* SEO Optimization Panel */}
+          <SeoPanel
+            seoTitle={seoTitle}
+            onSeoTitleChange={setSeoTitle}
+            seoDescription={seoDescription}
+            onSeoDescriptionChange={setSeoDescription}
+            seoSocialImageId={seoSocialImageId}
+            onSeoSocialImageChange={(id, media) => {
+              setSeoSocialImageId(id);
+              setSeoSocialMedia(media || null);
+            }}
+            noindex={noindex}
+            onNoindexChange={setNoindex}
+            focusKeyword={focusKeyword}
+            onFocusKeywordChange={setFocusKeyword}
+            socialImageMedia={seoSocialMedia}
+            context={{
+              slug: slug || slugify(name || ""),
+              pathPrefix: "/blog/category",
+              generatedTitle: `${name || ""} | Blog`,
+              generatedDescription: description || "",
+              firstParagraphText: description || "",
+            }}
+          />
 
           <div className="flex justify-end gap-3 pt-2">
             <Button

@@ -181,6 +181,16 @@ export function AdminShell({
             >
               Blog
             </Link>
+            <Link
+              href="/admin/seo"
+              className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                pathname?.startsWith("/admin/seo")
+                  ? "bg-surface text-foreground font-semibold"
+                  : "text-foreground hover:bg-surface"
+              }`}
+            >
+              SEO
+            </Link>
           </nav>
         </aside>
 
@@ -313,6 +323,17 @@ export function AdminShell({
                 }`}
               >
                 Blog
+              </Link>
+              <Link
+                href="/admin/seo"
+                onClick={() => setSidebarOpen(false)}
+                className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                  pathname?.startsWith("/admin/seo")
+                    ? "bg-card-surface text-foreground font-semibold"
+                    : "text-foreground hover:bg-card-surface"
+                }`}
+              >
+                SEO
               </Link>
             </nav>
           </aside>

@@ -87,6 +87,11 @@ export async function saveProductCategory(
         image_id: parsed.data.image_id,
         sort_order: parsed.data.sort_order,
         is_published: parsed.data.is_published,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
       })
       .eq("id", parsed.data.id)
       .select()
@@ -97,6 +102,7 @@ export async function saveProductCategory(
     }
 
     revalidateCacheTag("productCategories");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   } else {
     // Insert: calculate next sort order
@@ -118,6 +124,11 @@ export async function saveProductCategory(
         image_id: parsed.data.image_id,
         sort_order: parsed.data.sort_order || nextOrder,
         is_published: parsed.data.is_published,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
       })
       .select()
       .single();
@@ -127,6 +138,7 @@ export async function saveProductCategory(
     }
 
     revalidateCacheTag("productCategories");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   }
 }

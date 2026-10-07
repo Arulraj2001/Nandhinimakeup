@@ -43,6 +43,7 @@ import {
 import type { MediaItem } from "@/lib/actions/media";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SeoPanel } from "@/components/admin/seo-panel";
 
 interface ServiceEditDialogProps {
   open: boolean;
@@ -138,6 +139,7 @@ function ServiceEditDialogInner({
   const [selectedMedia, setSelectedMedia] = React.useState<MediaItem | null>(
     (service?.image as MediaItem) || null
   );
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
   const [newIncludeText, setNewIncludeText] = React.useState("");
 
   const form = useForm<SaveServiceInput>({
@@ -162,6 +164,11 @@ function ServiceEditDialogInner({
       is_featured: service?.is_featured ?? false,
       is_published: service?.is_published ?? true,
       sort_order: service?.sort_order ?? 0,
+      seo_title: service?.seo_title || "",
+      seo_description: service?.seo_description || "",
+      seo_social_image_id: service?.seo_social_image_id || null,
+      noindex: service?.noindex ?? false,
+      focus_keyword: service?.focus_keyword || "",
     },
   });
 
@@ -567,6 +574,48 @@ function ServiceEditDialogInner({
               </span>
             </label>
           </div>
+
+          {/* SEO Optimization Panel */}
+          <SeoPanel
+            seoTitle={form.watch("seo_title") || ""}
+            onSeoTitleChange={(val) =>
+              form.setValue("seo_title", val, { shouldDirty: true })
+            }
+            seoDescription={form.watch("seo_description") || ""}
+            onSeoDescriptionChange={(val) =>
+              form.setValue("seo_description", val, { shouldDirty: true })
+            }
+            seoSocialImageId={form.watch("seo_social_image_id") || null}
+            onSeoSocialImageChange={(id, media) => {
+              form.setValue("seo_social_image_id", id, { shouldDirty: true });
+              setSeoSocialMedia(media || null);
+            }}
+            noindex={form.watch("noindex")}
+            onNoindexChange={(val) =>
+              form.setValue("noindex", val, { shouldDirty: true })
+            }
+            focusKeyword={form.watch("focus_keyword") || ""}
+            onFocusKeywordChange={(val) =>
+              form.setValue("focus_keyword", val, { shouldDirty: true })
+            }
+            socialImageMedia={seoSocialMedia}
+            context={{
+              slug: form.watch("slug") || slugify(form.watch("name") || ""),
+              pathPrefix: "/services",
+              generatedTitle: form.watch("name") || "",
+              generatedDescription: form.watch("short_description") || "",
+              featuredImage: selectedMedia
+                ? {
+                    storagePath: selectedMedia.storage_path,
+                    altText: selectedMedia.alt_text,
+                  }
+                : null,
+              firstParagraphText:
+                form.watch("short_description") ||
+                form.watch("long_description") ||
+                "",
+            }}
+          />
 
           {/* Form Actions */}
           <div className="border-border flex justify-end gap-3 border-t pt-4">

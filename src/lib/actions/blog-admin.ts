@@ -27,6 +27,11 @@ const saveBlogCategorySchema = z.object({
   slug: z.string().trim().min(1, "Category slug is required"),
   description: z.string().trim().optional().nullable(),
   sort_order: z.number().int().default(0),
+  seo_title: z.string().trim().max(70, "SEO title must not exceed 70 characters").nullable().optional(),
+  seo_description: z.string().trim().max(200, "SEO description must not exceed 200 characters").nullable().optional(),
+  seo_social_image_id: z.string().uuid("Invalid image ID").nullable().optional(),
+  noindex: z.boolean().default(false),
+  focus_keyword: z.string().trim().nullable().optional(),
 });
 
 export type SaveBlogCategoryInput = z.infer<typeof saveBlogCategorySchema>;
@@ -91,6 +96,11 @@ export async function saveBlogCategory(
         slug,
         description: description || null,
         sort_order,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)
@@ -102,6 +112,7 @@ export async function saveBlogCategory(
     }
 
     revalidateCacheTag("blog");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   } else {
     const { data, error } = await auth.data.supabase
@@ -111,6 +122,11 @@ export async function saveBlogCategory(
         slug,
         description: description || null,
         sort_order,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
       })
       .select()
       .single();
@@ -120,6 +136,7 @@ export async function saveBlogCategory(
     }
 
     revalidateCacheTag("blog");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   }
 }
@@ -200,6 +217,11 @@ const saveBlogPostSchema = z.object({
   status: z.enum(["draft", "published"]),
   published_at: z.string().optional().nullable(),
   is_featured: z.boolean().default(false),
+  seo_title: z.string().trim().max(70, "SEO title must not exceed 70 characters").nullable().optional(),
+  seo_description: z.string().trim().max(200, "SEO description must not exceed 200 characters").nullable().optional(),
+  seo_social_image_id: z.string().uuid("Invalid image ID").nullable().optional(),
+  noindex: z.boolean().default(false),
+  focus_keyword: z.string().trim().nullable().optional(),
 });
 
 export type SaveBlogPostInput = z.infer<typeof saveBlogPostSchema>;
@@ -231,7 +253,7 @@ export async function getAdminBlogPosts(params?: {
   let query = auth.data.supabase
     .from("blog_posts")
     .select(
-      "*, category:category_id(*), featured_image:featured_image_id(*)",
+      "*, category:category_id(*), featured_image:featured_image_id(*), seo_social_image:seo_social_image_id(*)",
       { count: "exact" }
     )
     .order("created_at", { ascending: false });
@@ -265,6 +287,7 @@ export async function getAdminBlogPosts(params?: {
     content: (p.content as unknown as RichTextDoc) || { type: "doc", content: [] },
     category: p.category as unknown as BlogCategory | null,
     featured_image: p.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    seo_social_image: p.seo_social_image as unknown as BlogPostWithDetails["seo_social_image"],
   }));
 
   return actionSuccess({
@@ -286,7 +309,7 @@ export async function getAdminBlogPost(
 
   const { data, error } = await auth.data.supabase
     .from("blog_posts")
-    .select("*, category:category_id(*), featured_image:featured_image_id(*)")
+    .select("*, category:category_id(*), featured_image:featured_image_id(*), seo_social_image:seo_social_image_id(*)")
     .eq("id", id)
     .maybeSingle();
 
@@ -303,6 +326,7 @@ export async function getAdminBlogPost(
     content: (data.content as unknown as RichTextDoc) || { type: "doc", content: [] },
     category: data.category as unknown as BlogCategory | null,
     featured_image: data.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    seo_social_image: data.seo_social_image as unknown as BlogPostWithDetails["seo_social_image"],
   };
 
   return actionSuccess(formatted);
@@ -394,6 +418,11 @@ export async function saveBlogPost(
         published_at: finalPublishedAt,
         is_featured,
         reading_time_minutes: readingTime,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)
@@ -405,6 +434,7 @@ export async function saveBlogPost(
     }
 
     revalidateCacheTag("blog");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   } else {
     const { data, error } = await auth.data.supabase
@@ -421,6 +451,11 @@ export async function saveBlogPost(
         published_at: finalPublishedAt,
         is_featured,
         reading_time_minutes: readingTime,
+        seo_title: parsed.data.seo_title || null,
+        seo_description: parsed.data.seo_description || null,
+        seo_social_image_id: parsed.data.seo_social_image_id || null,
+        noindex: parsed.data.noindex ?? false,
+        focus_keyword: parsed.data.focus_keyword || null,
       })
       .select()
       .single();
@@ -430,6 +465,7 @@ export async function saveBlogPost(
     }
 
     revalidateCacheTag("blog");
+    revalidateCacheTag("seo");
     return actionSuccess(data);
   }
 }

@@ -9,4 +9,5 @@ export interface BlogPostWithDetails extends Omit<BlogPost, "content"> {
   content: RichTextDoc;
   category: BlogCategory | null;
   featured_image: MediaItem | null;
+  seo_social_image?: MediaItem | null;
 }

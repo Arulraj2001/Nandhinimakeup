@@ -37,6 +37,11 @@ export const saveProductSchema = z
     is_new: z.boolean(),
     is_published: z.boolean(),
     sort_order: z.number().int(),
+    seo_title: z.string().trim().max(70, "SEO title must not exceed 70 characters").nullable().optional(),
+    seo_description: z.string().trim().max(200, "SEO description must not exceed 200 characters").nullable().optional(),
+    seo_social_image_id: z.string().uuid("Invalid image ID").nullable().optional(),
+    noindex: z.boolean(),
+    focus_keyword: z.string().trim().nullable().optional(),
   })
   .refine(
     (data) => {

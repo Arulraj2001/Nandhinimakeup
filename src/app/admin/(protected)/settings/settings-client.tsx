@@ -1715,7 +1715,7 @@ function AboutSettingsForm({
 // ----------------------------------------------------------------------
 // 10. Global SEO Settings Form
 // ----------------------------------------------------------------------
-function SeoSettingsForm({
+export function SeoSettingsForm({
   initialValues,
   mediaMap,
   onMediaMapUpdate,

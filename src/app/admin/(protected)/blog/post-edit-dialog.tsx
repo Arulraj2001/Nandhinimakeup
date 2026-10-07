@@ -12,11 +12,14 @@ import {
 import type { BlogCategory, BlogPostWithDetails } from "@/types/blog";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { MediaPicker, getPublicMediaUrl } from "@/components/admin/media-picker";
+import { SeoPanel } from "@/components/admin/seo-panel";
 import type { MediaItem } from "@/lib/actions/media";
 import {
   calculateReadingTime,
   isEmptyRichText,
+  extractPlainText,
   type RichTextDoc,
+  type RichTextNode,
 } from "@/lib/utils/rich-text";
 import { slugify } from "@/lib/utils/slug";
 import { Button } from "@/components/ui/button";
@@ -56,6 +59,13 @@ export function PostEditDialog({
   const [publishedAt, setPublishedAt] = React.useState<string>("");
   const [isFeatured, setIsFeatured] = React.useState(false);
 
+  // SEO fields
+  const [seoTitle, setSeoTitle] = React.useState("");
+  const [seoDescription, setSeoDescription] = React.useState("");
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [noindex, setNoindex] = React.useState(false);
+  const [focusKeyword, setFocusKeyword] = React.useState("");
+
   const [isSaving, setIsSaving] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [hasChanges, setHasChanges] = React.useState(false);
@@ -75,6 +85,11 @@ export function PostEditDialog({
         post.published_at ? post.published_at.slice(0, 16) : ""
       );
       setIsFeatured(Boolean(post.is_featured));
+      setSeoTitle(post.seo_title || "");
+      setSeoDescription(post.seo_description || "");
+      setSeoSocialMedia(post.seo_social_image || null);
+      setNoindex(Boolean(post.noindex));
+      setFocusKeyword(post.focus_keyword || "");
     } else {
       setTitle("");
       setSlug("");
@@ -87,6 +102,11 @@ export function PostEditDialog({
       setStatus("draft");
       setPublishedAt(new Date().toISOString().slice(0, 16));
       setIsFeatured(false);
+      setSeoTitle("");
+      setSeoDescription("");
+      setSeoSocialMedia(null);
+      setNoindex(false);
+      setFocusKeyword("");
     }
     setHasChanges(false);
   }, [post, categories, defaultAuthorName, open]);
@@ -107,6 +127,40 @@ export function PostEditDialog({
 
   const estimatedReadingTime = React.useMemo(() => {
     return calculateReadingTime(content);
+  }, [content]);
+
+  const { wordCount, firstParagraph, hasInternalLink } = React.useMemo(() => {
+    let firstP = "";
+    let internalLink = false;
+    const fullText = extractPlainText(content);
+    const words = fullText ? fullText.split(/\s+/).filter(Boolean).length : 0;
+
+    function walk(node: RichTextNode | RichTextDoc) {
+      if ("type" in node && node.type === "paragraph" && !firstP) {
+        const pText = extractPlainText(node as RichTextNode);
+        if (pText.trim()) {
+          firstP = pText.trim();
+        }
+      }
+      if ("marks" in node && Array.isArray(node.marks)) {
+        for (const m of node.marks) {
+          if (m.type === "link" && m.attrs?.href) {
+            const href = String(m.attrs.href).trim();
+            if (href.startsWith("/") || href.startsWith("#") || href.includes("nandhinimakeup")) {
+              internalLink = true;
+            }
+          }
+        }
+      }
+      if (node.content && Array.isArray(node.content)) {
+        for (const child of node.content) {
+          walk(child);
+        }
+      }
+    }
+
+    walk(content);
+    return { wordCount: words, firstParagraph: firstP, hasInternalLink: internalLink };
   }, [content]);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -152,6 +206,11 @@ export function PostEditDialog({
         status,
         published_at: publishedAt ? new Date(publishedAt).toISOString() : null,
         is_featured: isFeatured,
+        seo_title: seoTitle.trim() || null,
+        seo_description: seoDescription.trim() || null,
+        seo_social_image_id: seoSocialMedia?.id || null,
+        noindex,
+        focus_keyword: focusKeyword.trim() || null,
       };
 
       const res = await saveBlogPost(payload);
@@ -447,6 +506,54 @@ export function PostEditDialog({
             <Label htmlFor="is-featured" className="cursor-pointer font-medium text-xs">
               Highlight as Featured Post (shown first on blog page 1)
             </Label>
+          </div>
+
+          {/* SEO Settings */}
+          <div className="border-t border-border pt-6">
+            <SeoPanel
+              seoTitle={seoTitle}
+              onSeoTitleChange={(val) => {
+                setSeoTitle(val);
+                setHasChanges(true);
+              }}
+              seoDescription={seoDescription}
+              onSeoDescriptionChange={(val) => {
+                setSeoDescription(val);
+                setHasChanges(true);
+              }}
+              seoSocialImageId={seoSocialMedia?.id || null}
+              onSeoSocialImageChange={(id, item) => {
+                setSeoSocialMedia(item || null);
+                setHasChanges(true);
+              }}
+              socialImageMedia={seoSocialMedia}
+              noindex={noindex}
+              onNoindexChange={(val) => {
+                setNoindex(val);
+                setHasChanges(true);
+              }}
+              focusKeyword={focusKeyword}
+              onFocusKeywordChange={(val) => {
+                setFocusKeyword(val);
+                setHasChanges(true);
+              }}
+              context={{
+                slug,
+                pathPrefix: "/blog",
+                generatedTitle: title,
+                generatedDescription: excerpt,
+                featuredImage: featuredMedia
+                  ? {
+                      storagePath: featuredMedia.storage_path,
+                      altText: featuredMedia.alt_text,
+                    }
+                  : null,
+                firstParagraphText: firstParagraph,
+                isBlogPost: true,
+                wordCount,
+                hasInternalLink,
+              }}
+            />
           </div>
 
           {/* Action Buttons */}
