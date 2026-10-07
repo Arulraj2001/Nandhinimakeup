@@ -1,8 +1,14 @@
+export interface NavItem {
+  title: string;
+  href: string;
+}
+
 export interface SiteConfig {
   name: string;
   shortDescription: string;
   defaultLanguage: string;
   primaryWhatsAppNumber: string;
+  nav: NavItem[];
 }
 
 export const siteConfig: SiteConfig = {
@@ -11,4 +17,10 @@ export const siteConfig: SiteConfig = {
     "Professional beauty parlour, bridal makeup artistry, and curated jewellery accessories.",
   defaultLanguage: "en",
   primaryWhatsAppNumber: "",
+  nav: [
+    {
+      title: "Home",
+      href: "/",
+    },
+  ],
 };

@@ -1,1 +1,94 @@
 @import "tailwindcss";
+
+@theme {
+  --color-background: #fff5f5;
+  --color-surface: #f7d6d0;
+  --color-accent: #e2b4bd;
+  --color-foreground: #4a4a4a;
+
+  /* Semantic aliases */
+  --color-page-background: #fff5f5;
+  --color-card-surface: #f7d6d0;
+  --color-text: #4a4a4a;
+  --color-border: #e2b4bd;
+
+  /* Typography */
+  --font-heading: var(--font-cormorant), Georgia, serif;
+  --font-body: var(--font-poppins), system-ui, sans-serif;
+}
+
+:root {
+  --background: #fff5f5;
+  --surface: #f7d6d0;
+  --accent: #e2b4bd;
+  --foreground: #4a4a4a;
+  --page-background: #fff5f5;
+  --card-surface: #f7d6d0;
+  --text: #4a4a4a;
+  --border: #e2b4bd;
+}
+
+/* Smooth scrolling that respects prefers-reduced-motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Selection colour using the accent */
+::selection {
+  background-color: #e2b4bd;
+  color: #4a4a4a;
+}
+
+/* Base typography scale */
+body {
+  background-color: #fff5f5;
+  color: #4a4a4a;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  color: #4a4a4a;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 3rem;
+  }
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  h2 {
+    font-size: 2.25rem;
+  }
+}
+
+h3 {
+  font-size: 1.35rem;
+}
+
+/* Focus-visible styles */
+:focus-visible {
+  outline: 2px solid #4a4a4a;
+  outline-offset: 2px;
+}
