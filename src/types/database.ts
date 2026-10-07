@@ -716,7 +716,15 @@ export interface Database {
           quantity?: number;
           line_total?: number;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey";
+            columns: ["order_id"];
+            isOneToOne: false;
+            referencedRelation: "orders";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: {
