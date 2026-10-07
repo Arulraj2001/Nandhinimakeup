@@ -15,6 +15,7 @@ import { PriceDisplay } from "@/components/public/price-display";
 import { ProductCard } from "@/components/public/product-card";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { Badge } from "@/components/public/badges";
+import { AddToCart } from "@/components/public/product-detail/add-to-cart";
 
 interface ProductDetailPageProps {
   params: Promise<{
@@ -189,6 +190,17 @@ async function ProductDetailContent({
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Ordering & Add to Cart */}
+            <div className="border-border border-t pt-6 space-y-4">
+              <AddToCart
+                productId={product.id}
+                productName={product.name}
+                stockStatus={product.stock_status}
+                stockQuantity={product.stock_quantity}
+                acceptOrders={settings.shipping.accept_orders}
+              />
             </div>
 
             {/* Actions: Enquire on WhatsApp */}

@@ -5,12 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/lib/config/site";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
+import { HeaderCartIcon } from "@/components/header-cart-icon";
 
 interface HeaderProps {
   businessName?: string;
   logoUrl?: string | null;
   logoAlt?: string;
   whatsappNumber?: string;
+  acceptOrders?: boolean;
 }
 
 export function Header({
@@ -18,6 +20,7 @@ export function Header({
   logoUrl,
   logoAlt,
   whatsappNumber,
+  acceptOrders = true,
 }: HeaderProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -51,8 +54,8 @@ export function Header({
           <span>{businessName}</span>
         </Link>
 
-        {/* Desktop Navigation & Actions */}
-        <div className="hidden md:flex md:items-center md:gap-8">
+          {/* Desktop Navigation & Actions */}
+        <div className="hidden md:flex md:items-center md:gap-6">
           <nav className="flex items-center gap-6" aria-label="Main Navigation">
             {siteConfig.nav.map((item) => (
               <Link
@@ -65,21 +68,27 @@ export function Header({
             ))}
           </nav>
 
-          {/* Primary WhatsApp CTA button when number exists */}
-          {whatsAppLink && (
-            <Link
-              href={whatsAppLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground inline-flex items-center justify-center rounded-md px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
-            >
-              WhatsApp
-            </Link>
-          )}
+          <div className="flex items-center gap-3">
+            <HeaderCartIcon acceptOrders={acceptOrders} />
+
+            {/* Primary WhatsApp CTA button when number exists */}
+            {whatsAppLink && (
+              <Link
+                href={whatsAppLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground inline-flex items-center justify-center rounded-md px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              >
+                WhatsApp
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Mobile Menu & Action Controls */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <HeaderCartIcon acceptOrders={acceptOrders} />
+
           {whatsAppLink && (
             <Link
               href={whatsAppLink}

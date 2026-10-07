@@ -27,6 +27,7 @@ export default async function PublicLayout({
         logoUrl={logoUrl}
         logoAlt={logoMedia?.alt_text}
         whatsappNumber={settings.business.whatsapp_number}
+        acceptOrders={settings.shipping.accept_orders}
       />
       <main className="flex-1">{children}</main>
       <Footer business={settings.business} social={settings.social} />
