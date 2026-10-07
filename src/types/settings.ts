@@ -66,6 +66,14 @@ export type PaymentsSettings = z.infer<typeof paymentsSettingsSchema>;
 
 // 4. Shipping Schema
 export const shippingSettingsSchema = z.object({
+  accept_orders: z.boolean(),
+  order_number_prefix: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .min(2, "Prefix must be at least 2 characters")
+    .max(6, "Prefix must be at most 6 characters")
+    .regex(/^[A-Z0-9]+$/, "Prefix can only contain letters and digits"),
   flat_delivery_charge: z.number().min(0, "Delivery charge cannot be negative"),
   free_delivery_threshold: z
     .number()
@@ -178,6 +186,8 @@ export const DEFAULT_PAYMENTS_SETTINGS: PaymentsSettings = {
 };
 
 export const DEFAULT_SHIPPING_SETTINGS: ShippingSettings = {
+  accept_orders: true,
+  order_number_prefix: "ORD",
   flat_delivery_charge: 50,
   free_delivery_threshold: 999,
   delivery_note: "Standard delivery across India within 3-5 business days.",

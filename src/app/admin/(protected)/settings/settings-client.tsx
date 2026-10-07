@@ -681,15 +681,52 @@ function ShippingSettingsForm({
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <div className="border-border border-b pb-4">
         <h2 className="text-foreground text-lg font-semibold">
-          Shipping & Delivery Charges
+          Shipping & Orders Configuration
         </h2>
         <p className="text-foreground/70 text-sm">
-          Configure default domestic shipping rates and free delivery thresholds
-          in Indian Rupees.
+          Configure online order acceptance, order numbering prefix, and domestic shipping rates.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div className="bg-surface border-border rounded-lg border p-4 space-y-4">
+        <label className="flex cursor-pointer items-start gap-3">
+          <input
+            type="checkbox"
+            id="accept_orders"
+            {...form.register("accept_orders")}
+            className="mt-1 h-4 w-4 rounded border-gray-300 text-foreground focus:ring-foreground"
+          />
+          <div>
+            <span className="text-foreground text-sm font-medium">
+              Accept Online Orders
+            </span>
+            <p className="text-foreground/70 text-xs mt-0.5">
+              Allow customers to add products to cart and proceed to checkout. When turned off, cart and checkout are paused with a notice to enquire on WhatsApp.
+            </p>
+          </div>
+        </label>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <FormField
+          id="order_number_prefix"
+          label="Order Number Prefix"
+          required
+          hint="Letters & digits only, 2 to 6 characters (e.g., ORD)"
+          error={form.formState.errors.order_number_prefix?.message}
+        >
+          <Input
+            id="order_number_prefix"
+            type="text"
+            maxLength={6}
+            placeholder="ORD"
+            {...form.register("order_number_prefix", {
+              onChange: (e) => {
+                e.target.value = e.target.value.toUpperCase();
+              },
+            })}
+          />
+        </FormField>
         <FormField
           id="flat_delivery_charge"
           label="Flat Delivery Charge (₹)"

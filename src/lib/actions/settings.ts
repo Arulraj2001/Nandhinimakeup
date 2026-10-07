@@ -82,7 +82,19 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
   const rawShipping = map.get("shipping") as
     Record<string, unknown> | undefined;
   const shipping: ShippingSettings = rawShipping
-    ? { ...DEFAULT_SHIPPING_SETTINGS, ...rawShipping }
+    ? {
+        ...DEFAULT_SHIPPING_SETTINGS,
+        ...rawShipping,
+        accept_orders:
+          typeof rawShipping.accept_orders === "boolean"
+            ? rawShipping.accept_orders
+            : DEFAULT_SHIPPING_SETTINGS.accept_orders,
+        order_number_prefix:
+          typeof rawShipping.order_number_prefix === "string" &&
+          rawShipping.order_number_prefix.trim().length >= 2
+            ? rawShipping.order_number_prefix.trim().toUpperCase()
+            : DEFAULT_SHIPPING_SETTINGS.order_number_prefix,
+      }
     : DEFAULT_SHIPPING_SETTINGS;
 
   const rawBranding = map.get("branding") as
