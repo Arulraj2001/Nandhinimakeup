@@ -726,6 +726,36 @@ export interface Database {
           },
         ];
       };
+      legal_pages: {
+        Row: {
+          id: string;
+          slug: "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
+          title: string;
+          content: Json;
+          is_published: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
+          title: string;
+          content?: Json;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
+          title?: string;
+          content?: Json;
+          is_published?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

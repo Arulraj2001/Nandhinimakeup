@@ -4,9 +4,10 @@ import type { BusinessSettings, SocialSettings } from "@/types/settings";
 interface FooterProps {
   business?: BusinessSettings;
   social?: SocialSettings;
+  legalPages?: Array<{ slug: string; title: string }>;
 }
 
-export function Footer({ business, social }: FooterProps) {
+export function Footer({ business, social, legalPages = [] }: FooterProps) {
   const currentYear = 2026;
   const name = business?.business_name || "Nandhini Makeup & Jewellery";
 
@@ -171,8 +172,26 @@ export function Footer({ business, social }: FooterProps) {
           </div>
         </div>
 
+        {legalPages.length > 0 && (
+          <div className="border-border border-t mt-8 pt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
+            {legalPages.map((lp) => (
+              <Link
+                key={lp.slug}
+                href={
+                  lp.slug === "shipping-and-returns"
+                    ? "/shipping-returns"
+                    : `/${lp.slug}`
+                }
+                className="text-foreground/60 hover:text-foreground transition-colors"
+              >
+                {lp.title}
+              </Link>
+            ))}
+          </div>
+        )}
+
         {/* Bottom copyright line */}
-        <div className="border-border text-foreground/60 mt-8 border-t pt-6 text-center text-xs">
+        <div className="border-border text-foreground/60 mt-4 border-t pt-4 text-center text-xs">
           <p>
             © {currentYear} {name}. All rights reserved.
           </p>

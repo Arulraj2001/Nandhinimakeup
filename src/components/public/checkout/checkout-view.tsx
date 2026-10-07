@@ -20,9 +20,10 @@ import { formatINR } from "@/lib/utils/currency";
 
 interface CheckoutViewProps {
   settings: SiteSettingsData;
+  legalPages?: Array<{ slug: string; title: string }>;
 }
 
-export function CheckoutView({ settings }: CheckoutViewProps) {
+export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
   const router = useRouter();
   const { items, clearCart } = useCart();
   const [productsMap, setProductsMap] = React.useState<
@@ -473,6 +474,73 @@ export function CheckoutView({ settings }: CheckoutViewProps) {
             </div>
 
             <div className="pt-4">
+              {(() => {
+                const terms = legalPages.find(
+                  (p) => p.slug === "terms-and-conditions"
+                );
+                const shipping = legalPages.find(
+                  (p) => p.slug === "shipping-and-returns"
+                );
+
+                if (terms && shipping) {
+                  return (
+                    <p className="text-foreground/70 text-xs mb-3 text-center sm:text-left">
+                      By placing this order you agree to our{" "}
+                      <Link
+                        href="/terms-and-conditions"
+                        className="underline hover:text-foreground underline-offset-2"
+                        target="_blank"
+                      >
+                        Terms &amp; Conditions
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/shipping-returns"
+                        className="underline hover:text-foreground underline-offset-2"
+                        target="_blank"
+                      >
+                        Shipping &amp; Returns
+                      </Link>
+                      .
+                    </p>
+                  );
+                }
+
+                if (terms) {
+                  return (
+                    <p className="text-foreground/70 text-xs mb-3 text-center sm:text-left">
+                      By placing this order you agree to our{" "}
+                      <Link
+                        href="/terms-and-conditions"
+                        className="underline hover:text-foreground underline-offset-2"
+                        target="_blank"
+                      >
+                        Terms &amp; Conditions
+                      </Link>
+                      .
+                    </p>
+                  );
+                }
+
+                if (shipping) {
+                  return (
+                    <p className="text-foreground/70 text-xs mb-3 text-center sm:text-left">
+                      By placing this order you agree to our{" "}
+                      <Link
+                        href="/shipping-returns"
+                        className="underline hover:text-foreground underline-offset-2"
+                        target="_blank"
+                      >
+                        Shipping &amp; Returns
+                      </Link>
+                      .
+                    </p>
+                  );
+                }
+
+                return null;
+              })()}
+
               <button
                 type="submit"
                 disabled={isSubmitting || items.length === 0}
