@@ -26,5 +26,9 @@ export const siteConfig: SiteConfig = {
       title: "Services",
       href: "/services",
     },
+    {
+      title: "Jewellery",
+      href: "/jewellery",
+    },
   ],
 };

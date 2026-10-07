@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export type BadgeVariant =
-  "new" | "sale" | "out_of_stock" | "made_to_order" | "featured";
+  "new" | "sale" | "out_of_stock" | "made_to_order" | "featured" | "in_stock";
 
 interface BadgeProps {
   variant: BadgeVariant;
@@ -38,6 +38,11 @@ export function Badge({ variant, className, children }: BadgeProps) {
     case "featured":
       label = label || "Featured";
       variantStyles = "bg-accent text-foreground font-semibold text-[10px]";
+      break;
+    case "in_stock":
+      label = label || "In Stock";
+      variantStyles =
+        "bg-surface text-foreground border border-foreground/30 font-medium text-[10px]";
       break;
   }
 
