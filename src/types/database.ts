@@ -32,6 +32,45 @@ export interface Database {
         };
         Relationships: [];
       };
+      media: {
+        Row: {
+          id: string;
+          storage_path: string;
+          file_name: string;
+          alt_text: string;
+          width: number;
+          height: number;
+          mime_type: string;
+          size_bytes: number;
+          created_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          storage_path: string;
+          file_name: string;
+          alt_text: string;
+          width: number;
+          height: number;
+          mime_type: string;
+          size_bytes: number;
+          created_by?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          storage_path?: string;
+          file_name?: string;
+          alt_text?: string;
+          width?: number;
+          height?: number;
+          mime_type?: string;
+          size_bytes?: number;
+          created_by?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       site_settings: {
         Row: {
           key: string;
