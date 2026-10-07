@@ -81,6 +81,16 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
             >
               Media
             </Link>
+            <Link
+              href="/admin/settings"
+              className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                pathname === "/admin/settings"
+                  ? "bg-surface text-foreground font-semibold"
+                  : "text-foreground hover:bg-surface"
+              }`}
+            >
+              Settings
+            </Link>
           </nav>
         </aside>
 
@@ -109,6 +119,17 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
                 }`}
               >
                 Media
+              </Link>
+              <Link
+                href="/admin/settings"
+                onClick={() => setSidebarOpen(false)}
+                className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                  pathname === "/admin/settings"
+                    ? "bg-card-surface text-foreground font-semibold"
+                    : "text-foreground hover:bg-card-surface"
+                }`}
+              >
+                Settings
               </Link>
             </nav>
           </aside>

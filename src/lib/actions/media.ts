@@ -297,3 +297,54 @@ export async function getMediaList(params?: {
     totalPages,
   });
 }
+
+export async function getMediaById(
+  id: string
+): Promise<ActionResult<MediaItem>> {
+  const auth = await verifyAdmin();
+  if (!auth.ok) {
+    return actionError(auth.error);
+  }
+
+  const { data, error } = await auth.data.supabase
+    .from("media")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !data) {
+    return actionError(error?.message || "Media not found.");
+  }
+
+  return actionSuccess(data);
+}
+
+export async function getMediaMapByIds(
+  ids: string[]
+): Promise<ActionResult<Record<string, MediaItem>>> {
+  const auth = await verifyAdmin();
+  if (!auth.ok) {
+    return actionError(auth.error);
+  }
+
+  const filtered = ids.filter(Boolean);
+  if (filtered.length === 0) {
+    return actionSuccess({});
+  }
+
+  const { data, error } = await auth.data.supabase
+    .from("media")
+    .select("*")
+    .in("id", filtered);
+
+  if (error) {
+    return actionError(error.message);
+  }
+
+  const map: Record<string, MediaItem> = {};
+  for (const item of data || []) {
+    map[item.id] = item;
+  }
+
+  return actionSuccess(map);
+}
