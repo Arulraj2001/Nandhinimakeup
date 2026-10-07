@@ -399,6 +399,73 @@ export interface Database {
           },
         ];
       };
+      gallery_items: {
+        Row: {
+          id: string;
+          media_id: string;
+          before_media_id: string | null;
+          type: "single" | "before_after";
+          title: string;
+          caption: string;
+          service_category_id: string | null;
+          is_featured: boolean;
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          media_id: string;
+          before_media_id?: string | null;
+          type?: "single" | "before_after";
+          title?: string;
+          caption?: string;
+          service_category_id?: string | null;
+          is_featured?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          media_id?: string;
+          before_media_id?: string | null;
+          type?: "single" | "before_after";
+          title?: string;
+          caption?: string;
+          service_category_id?: string | null;
+          is_featured?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "gallery_items_media_id_fkey";
+            columns: ["media_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "gallery_items_before_media_id_fkey";
+            columns: ["before_media_id"];
+            isOneToOne: false;
+            referencedRelation: "media";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "gallery_items_service_category_id_fkey";
+            columns: ["service_category_id"];
+            isOneToOne: false;
+            referencedRelation: "service_categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;

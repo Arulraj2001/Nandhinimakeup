@@ -195,6 +195,39 @@ export async function checkMediaUsage(
     // Table may not exist yet in this phase step
   }
 
+  // 5. Check gallery_items if table exists
+  try {
+    const { data: galleryItems } = await (
+      dynamicDb as unknown as {
+        from: (table: string) => {
+          select: (cols: string) => {
+            or: (query: string) => {
+              limit: (n: number) => Promise<{
+                data: Array<{ title?: string; type?: string }> | null;
+              }>;
+            };
+          };
+        };
+      }
+    )
+      .from("gallery_items")
+      .select("title, type")
+      .or(`media_id.eq.${mediaId},before_media_id.eq.${mediaId}`)
+      .limit(1);
+
+    if (galleryItems && galleryItems.length > 0) {
+      const itemTitle = galleryItems[0].title
+        ? ` "${galleryItems[0].title}"`
+        : "";
+      return {
+        inUse: true,
+        usageLocation: `Gallery Item${itemTitle} (${galleryItems[0].type || "single"})`,
+      };
+    }
+  } catch {
+    // Table may not exist yet
+  }
+
   return { inUse: false };
 }
 

@@ -7,6 +7,10 @@ export const CACHE_TAGS = {
   serviceCategories: "service-categories",
   productCategories: "product-categories",
   products: "products",
+  gallery: "gallery",
+  testimonials: "testimonials",
+  faqs: "faqs",
+  announcements: "announcements",
 } as const;
 
 export type CacheTagKey = keyof typeof CACHE_TAGS;

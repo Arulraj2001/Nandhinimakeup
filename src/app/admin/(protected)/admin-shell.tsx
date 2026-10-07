@@ -121,6 +121,16 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
             >
               Products
             </Link>
+            <Link
+              href="/admin/gallery"
+              className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                pathname === "/admin/gallery"
+                  ? "bg-surface text-foreground font-semibold"
+                  : "text-foreground hover:bg-surface"
+              }`}
+            >
+              Gallery
+            </Link>
           </nav>
         </aside>
 
@@ -193,6 +203,17 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
                 }`}
               >
                 Products
+              </Link>
+              <Link
+                href="/admin/gallery"
+                onClick={() => setSidebarOpen(false)}
+                className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                  pathname === "/admin/gallery"
+                    ? "bg-card-surface text-foreground font-semibold"
+                    : "text-foreground hover:bg-card-surface"
+                }`}
+              >
+                Gallery
               </Link>
             </nav>
           </aside>
