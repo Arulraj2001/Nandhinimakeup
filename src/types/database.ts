@@ -466,6 +466,132 @@ export interface Database {
           },
         ];
       };
+      testimonials: {
+        Row: {
+          id: string;
+          customer_name: string;
+          occasion: string | null;
+          quote: string;
+          rating: number;
+          source: "google" | "instagram" | "whatsapp" | "direct";
+          is_featured: boolean;
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          customer_name: string;
+          occasion?: string | null;
+          quote: string;
+          rating: number;
+          source: "google" | "instagram" | "whatsapp" | "direct";
+          is_featured?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          customer_name?: string;
+          occasion?: string | null;
+          quote?: string;
+          rating?: number;
+          source?: "google" | "instagram" | "whatsapp" | "direct";
+          is_featured?: boolean;
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      faqs: {
+        Row: {
+          id: string;
+          question: string;
+          answer: string;
+          group:
+            | "general"
+            | "services"
+            | "jewellery"
+            | "orders_and_shipping"
+            | "orders and shipping";
+          is_published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          question: string;
+          answer: string;
+          group:
+            | "general"
+            | "services"
+            | "jewellery"
+            | "orders_and_shipping"
+            | "orders and shipping";
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          question?: string;
+          answer?: string;
+          group?:
+            | "general"
+            | "services"
+            | "jewellery"
+            | "orders_and_shipping"
+            | "orders and shipping";
+          is_published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      announcements: {
+        Row: {
+          id: string;
+          message: string;
+          link_url: string | null;
+          link_label: string | null;
+          is_active: boolean;
+          start_date: string | null;
+          end_date: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          message: string;
+          link_url?: string | null;
+          link_label?: string | null;
+          is_active?: boolean;
+          start_date?: string | null;
+          end_date?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          message?: string;
+          link_url?: string | null;
+          link_label?: string | null;
+          is_active?: boolean;
+          start_date?: string | null;
+          end_date?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
