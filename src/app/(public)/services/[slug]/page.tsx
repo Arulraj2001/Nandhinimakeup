@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -10,9 +11,8 @@ import { getPublicSiteSettings } from "@/lib/data/settings";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import { PriceDisplay } from "@/components/public/price-display";
-import { Breadcrumb } from "@/components/public/breadcrumb";
 import { ServiceCard } from "@/components/public/service-card";
-import { Badge } from "@/components/public/badges";
+import { Breadcrumb } from "@/components/public/breadcrumb";
 
 interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -33,7 +33,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${service.name} | ${settings.business.business_name}`;
+  const title = service.name;
   const description =
     service.short_description ||
     service.long_description?.slice(0, 160) ||
@@ -46,6 +46,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: `/services/${slug}`,
+    },
     openGraph: {
       title,
       description,
@@ -54,9 +57,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function ServiceDetailPage({
+async function ServiceDetailContent({
   params,
-}: ServiceDetailPageProps) {
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const [service, settings] = await Promise.all([
     getPublicServiceBySlug(slug),
@@ -114,14 +119,9 @@ export default async function ServiceDetailPage({
                 No image available
               </div>
             )}
-            {service.is_featured && (
-              <div className="absolute top-4 left-4 z-10">
-                <Badge variant="featured">Featured Service</Badge>
-              </div>
-            )}
           </div>
 
-          {/* Service Info */}
+          {/* Service Details & Booking */}
           <div className="flex flex-col justify-between space-y-6">
             <div className="space-y-4">
               {service.category && (
@@ -130,53 +130,56 @@ export default async function ServiceDetailPage({
                 </p>
               )}
 
-              <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
+              <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
                 {service.name}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-6 pt-1">
+              {/* Price and Duration */}
+              <div className="flex flex-wrap items-center gap-4 pt-1">
                 <PriceDisplay
                   price={service.price}
                   priceType={service.price_type}
                   size="lg"
                 />
 
-                {service.duration_minutes ? (
-                  <span className="bg-surface text-foreground border-border rounded-full border px-3 py-1 text-xs font-medium">
-                    ⏱ {service.duration_minutes} Minutes Duration
+                {service.duration_minutes && (
+                  <span className="border-border bg-surface text-foreground/80 flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium">
+                    <svg
+                      className="h-3.5 w-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {service.duration_minutes} mins
                   </span>
-                ) : null}
+                )}
               </div>
 
-              {service.short_description && (
-                <p className="text-foreground/90 text-base leading-relaxed italic">
-                  &ldquo;{service.short_description}&rdquo;
-                </p>
-              )}
+              {/* Description */}
+              <div className="text-foreground/85 border-border border-t pt-4 text-base leading-relaxed whitespace-pre-line">
+                {service.long_description || service.short_description}
+              </div>
 
-              {/* Long Description */}
-              {service.long_description && (
-                <div className="border-border border-t pt-4">
-                  <h2 className="text-foreground text-sm font-semibold tracking-wide uppercase">
-                    About This Service
-                  </h2>
-                  <div className="text-foreground/80 mt-2 text-sm leading-relaxed whitespace-pre-line">
-                    {service.long_description}
-                  </div>
-                </div>
-              )}
-
-              {/* What's Included */}
+              {/* Includes List */}
               {service.includes_list && service.includes_list.length > 0 && (
                 <div className="border-border border-t pt-4">
                   <h2 className="text-foreground text-sm font-semibold tracking-wide uppercase">
                     What&apos;s Included
                   </h2>
-                  <ul className="text-foreground/80 mt-3 space-y-2 text-sm">
-                    {service.includes_list.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-foreground font-bold">✓</span>
-                        <span>{item}</span>
+                  <ul className="mt-3 space-y-2">
+                    {service.includes_list.map((inc: string, idx: number) => (
+                      <li
+                        key={idx}
+                        className="text-foreground/80 flex items-start gap-2.5 text-sm"
+                      >
+                        <span className="text-foreground mt-0.5 font-bold">
+                          ✓
+                        </span>
+                        <span>{inc}</span>
                       </li>
                     ))}
                   </ul>
@@ -184,7 +187,7 @@ export default async function ServiceDetailPage({
               )}
             </div>
 
-            {/* Action Buttons */}
+            {/* Actions: Book on WhatsApp */}
             {bookWhatsAppUrl && (
               <div className="border-border border-t pt-6">
                 <Link
@@ -196,20 +199,20 @@ export default async function ServiceDetailPage({
                   Book on WhatsApp
                 </Link>
                 <p className="text-foreground/60 mt-2 text-xs">
-                  Direct appointment booking and instant consultation via
-                  WhatsApp.
+                  Direct consultation and appointment confirmation with our
+                  stylist.
                 </p>
               </div>
             )}
           </div>
         </article>
 
-        {/* Related Services in Same Category */}
+        {/* Related Services */}
         {relatedServices.length > 0 && (
           <section className="border-border mt-20 border-t pt-12 sm:mt-24">
             <div className="mb-8">
               <h2 className="font-heading text-foreground text-2xl font-semibold sm:text-3xl">
-                Related Services in {service.category?.name || "Category"}
+                Related Services in {service.category?.name || "This Category"}
               </h2>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -221,5 +224,19 @@ export default async function ServiceDetailPage({
         )}
       </div>
     </div>
+  );
+}
+
+export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="text-foreground/40 flex min-h-[400px] items-center justify-center text-sm">
+          Loading service details...
+        </div>
+      }
+    >
+      <ServiceDetailContent params={params} />
+    </Suspense>
   );
 }

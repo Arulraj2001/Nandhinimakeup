@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -32,7 +33,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${category.name} Jewellery | ${settings.business.business_name}`;
+  const title = `${category.name} Jewellery`;
   const description =
     category.description ||
     `Browse handcrafted ${category.name} pieces from ${settings.business.business_name}.`;
@@ -40,6 +41,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: `/jewellery/${categorySlug}`,
+    },
     openGraph: {
       title,
       description,
@@ -47,7 +51,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryListingPage({
+async function CategoryListingContent({
   params,
   searchParams,
 }: CategoryListingPageProps) {
@@ -168,5 +172,22 @@ export default async function CategoryListingPage({
         </section>
       </div>
     </div>
+  );
+}
+
+export default function CategoryListingPage({
+  params,
+  searchParams,
+}: CategoryListingPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="text-foreground/40 flex min-h-[400px] items-center justify-center text-sm">
+          Loading category...
+        </div>
+      }
+    >
+      <CategoryListingContent params={params} searchParams={searchParams} />
+    </Suspense>
   );
 }

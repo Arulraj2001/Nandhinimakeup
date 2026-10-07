@@ -1,9 +1,9 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { getPublicProductCategories } from "@/lib/data/product-categories";
 import { getPublicProducts } from "@/lib/data/products";
-import { getPublicSiteSettings } from "@/lib/data/settings";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 import { ProductCard } from "@/components/public/product-card";
 import { Pagination } from "@/components/public/pagination";
@@ -18,14 +18,16 @@ interface JewelleryPageProps {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getPublicSiteSettings();
-  const title = `Jewellery Collection | ${settings.business.business_name}`;
+  const title = "Jewellery Collection";
   const description =
     "Explore our handcrafted bridal jewellery, bespoke accessories, and traditional ornaments.";
 
   return {
     title,
     description,
+    alternates: {
+      canonical: "/jewellery",
+    },
     openGraph: {
       title,
       description,
@@ -33,9 +35,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function JewelleryPage({
+async function JewelleryProductList({
   searchParams,
-}: JewelleryPageProps) {
+}: {
+  searchParams: Promise<{
+    sort?: string;
+    page?: string;
+  }>;
+}) {
   const resolvedParams = await searchParams;
   const sort =
     resolvedParams.sort === "price_asc" || resolvedParams.sort === "price_desc"
@@ -43,10 +50,84 @@ export default async function JewelleryPage({
       : "newest";
   const page = Math.max(1, parseInt(resolvedParams.page || "1", 10) || 1);
 
-  const [categories, productsResult] = await Promise.all([
-    getPublicProductCategories(),
-    getPublicProducts({ sort, page, limit: 12 }),
-  ]);
+  const productsResult = await getPublicProducts({ sort, page, limit: 12 });
+
+  return (
+    <section className="space-y-6">
+      <div className="border-border flex flex-col gap-4 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="font-heading text-foreground text-2xl font-semibold tracking-wide">
+            All Jewellery ({productsResult.total})
+          </h2>
+        </div>
+
+        {/* Sort Options via URL Parameters */}
+        <div className="flex items-center gap-2">
+          <span className="text-foreground/70 text-xs font-medium">
+            Sort by:
+          </span>
+          <div className="flex items-center gap-1 text-xs">
+            <Link
+              href={`/jewellery?sort=newest&page=1`}
+              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                sort === "newest"
+                  ? "bg-foreground text-background"
+                  : "bg-surface text-foreground hover:bg-accent"
+              }`}
+            >
+              Newest
+            </Link>
+            <Link
+              href={`/jewellery?sort=price_asc&page=1`}
+              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                sort === "price_asc"
+                  ? "bg-foreground text-background"
+                  : "bg-surface text-foreground hover:bg-accent"
+              }`}
+            >
+              Price: Low to High
+            </Link>
+            <Link
+              href={`/jewellery?sort=price_desc&page=1`}
+              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                sort === "price_desc"
+                  ? "bg-foreground text-background"
+                  : "bg-surface text-foreground hover:bg-accent"
+              }`}
+            >
+              Price: High to Low
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Product Grid or Empty State */}
+      {productsResult.products.length === 0 ? (
+        <EmptyState message="No jewellery pieces available matching the criteria." />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {productsResult.products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+
+          <Pagination
+            currentPage={productsResult.currentPage}
+            totalPages={productsResult.totalPages}
+            baseUrl="/jewellery"
+            searchParams={{ sort }}
+          />
+        </>
+      )}
+    </section>
+  );
+}
+
+export default async function JewelleryPage({
+  searchParams,
+}: JewelleryPageProps) {
+  const categories = await getPublicProductCategories();
 
   return (
     <div className="py-8 sm:py-12 md:py-16">
@@ -109,75 +190,15 @@ export default async function JewelleryPage({
           </section>
         )}
 
-        {/* All Products Section */}
-        <section className="space-y-6">
-          <div className="border-border flex flex-col gap-4 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="font-heading text-foreground text-2xl font-semibold tracking-wide">
-                All Jewellery ({productsResult.total})
-              </h2>
+        <Suspense
+          fallback={
+            <div className="text-foreground/40 flex min-h-[300px] items-center justify-center text-sm">
+              Loading jewellery pieces...
             </div>
-
-            {/* Sort Options via URL Parameters */}
-            <div className="flex items-center gap-2">
-              <span className="text-foreground/70 text-xs font-medium">
-                Sort by:
-              </span>
-              <div className="flex items-center gap-1 text-xs">
-                <Link
-                  href={`/jewellery?sort=newest&page=1`}
-                  className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
-                    sort === "newest"
-                      ? "bg-foreground text-background"
-                      : "bg-surface text-foreground hover:bg-accent"
-                  }`}
-                >
-                  Newest
-                </Link>
-                <Link
-                  href={`/jewellery?sort=price_asc&page=1`}
-                  className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
-                    sort === "price_asc"
-                      ? "bg-foreground text-background"
-                      : "bg-surface text-foreground hover:bg-accent"
-                  }`}
-                >
-                  Price: Low to High
-                </Link>
-                <Link
-                  href={`/jewellery?sort=price_desc&page=1`}
-                  className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
-                    sort === "price_desc"
-                      ? "bg-foreground text-background"
-                      : "bg-surface text-foreground hover:bg-accent"
-                  }`}
-                >
-                  Price: High to Low
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Product Grid or Empty State */}
-          {productsResult.products.length === 0 ? (
-            <EmptyState message="No jewellery pieces available matching the criteria." />
-          ) : (
-            <>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {productsResult.products.map((p) => (
-                  <ProductCard key={p.id} product={p} />
-                ))}
-              </div>
-
-              <Pagination
-                currentPage={productsResult.currentPage}
-                totalPages={productsResult.totalPages}
-                baseUrl="/jewellery"
-                searchParams={{ sort }}
-              />
-            </>
-          )}
-        </section>
+          }
+        >
+          <JewelleryProductList searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   );

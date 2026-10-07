@@ -6,12 +6,15 @@ import { Breadcrumb } from "@/components/public/breadcrumb";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const title = `Contact Us | ${settings.business.business_name}`;
+  const title = "Contact Us";
   const description = `Get in touch with ${settings.business.business_name} for bridal appointments, makeover bookings, bespoke jewellery consultations, and studio visits.`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: "/contact",
+    },
     openGraph: {
       title,
       description,

@@ -7,7 +7,7 @@ import { EmptyState } from "@/components/public/empty-state";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const title = `About Us | ${settings.business.business_name}`;
+  const title = "About Us";
   const description =
     settings.about.story_text?.slice(0, 160) ||
     `Learn about our journey, artistry, and bespoke bridal beauty philosophy at ${settings.business.business_name}.`;
@@ -20,6 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
+    alternates: {
+      canonical: "/about",
+    },
     openGraph: {
       title,
       description,

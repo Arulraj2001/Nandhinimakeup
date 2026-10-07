@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import { getPublicFAQs } from "@/lib/data/faqs";
-import { getPublicSiteSettings } from "@/lib/data/settings";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { EmptyState } from "@/components/public/empty-state";
 import type { FAQ } from "@/types/content";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getPublicSiteSettings();
-  const title = `Frequently Asked Questions | ${settings.business.business_name}`;
+  const title = "Frequently Asked Questions";
   const description =
     "Find answers to common questions about bridal bookings, salon services, jewellery purchases, and shipping.";
 
   return {
     title,
     description,
+    alternates: {
+      canonical: "/faq",
+    },
     openGraph: {
       title,
       description,

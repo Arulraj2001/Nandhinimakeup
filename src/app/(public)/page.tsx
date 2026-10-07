@@ -19,7 +19,7 @@ import { BeforeAfterSlider } from "@/components/public/before-after-slider";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const title = `${settings.business.business_name} | Bridal Makeup Artistry & Curated Jewellery`;
+  const title = "Bridal Makeup Artistry & Curated Jewellery";
   const description =
     settings.home.hero_supporting_text ||
     settings.business.tagline ||
@@ -33,6 +33,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
+    alternates: {
+      canonical: "/",
+    },
     openGraph: {
       title,
       description,

@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import { getPublicServices } from "@/lib/data/services";
 import { getPublicServiceCategories } from "@/lib/data/service-categories";
-import { getPublicSiteSettings } from "@/lib/data/settings";
 import { ServiceCard } from "@/components/public/service-card";
 import { EmptyState } from "@/components/public/empty-state";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getPublicSiteSettings();
-  const title = `Services | ${settings.business.business_name}`;
+  const title = "Bridal & Beauty Services";
   const description =
     "Explore our professional bridal makeup services, reception transformations, and party look packages.";
 
   return {
     title,
     description,
+    alternates: {
+      canonical: "/services",
+    },
     openGraph: {
       title,
       description,

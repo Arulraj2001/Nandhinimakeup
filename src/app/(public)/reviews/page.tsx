@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import { getPublicTestimonials } from "@/lib/data/testimonials";
-import { getPublicSiteSettings } from "@/lib/data/settings";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { EmptyState } from "@/components/public/empty-state";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getPublicSiteSettings();
-  const title = `Client Reviews & Testimonials | ${settings.business.business_name}`;
+  const title = "Client Reviews";
   const description =
     "Read real words of love and testimonials from our lovely brides and makeover clients.";
 
   return {
     title,
     description,
+    alternates: {
+      canonical: "/reviews",
+    },
     openGraph: {
       title,
       description,

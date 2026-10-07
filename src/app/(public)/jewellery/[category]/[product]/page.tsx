@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { permanentRedirect, notFound } from "next/navigation";
 import Link from "next/link";
@@ -37,7 +38,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${product.name} | ${settings.business.business_name}`;
+  const title = product.name;
   const description =
     product.description?.slice(0, 160) ||
     `${product.name} handcrafted jewellery piece from ${settings.business.business_name}.`;
@@ -50,6 +51,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: `/jewellery/${categorySlug}/${productSlug}`,
+    },
     openGraph: {
       title,
       description,
@@ -58,9 +62,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductDetailPage({
+async function ProductDetailContent({
   params,
-}: ProductDetailPageProps) {
+}: {
+  params: Promise<{
+    category: string;
+    product: string;
+  }>;
+}) {
   const { category: categorySlug, product: productSlug } = await params;
   const settings = await getPublicSiteSettings();
 
@@ -220,5 +229,19 @@ export default async function ProductDetailPage({
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="text-foreground/40 flex min-h-[400px] items-center justify-center text-sm">
+          Loading product details...
+        </div>
+      }
+    >
+      <ProductDetailContent params={params} />
+    </Suspense>
   );
 }

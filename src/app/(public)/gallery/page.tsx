@@ -1,8 +1,8 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPublicGalleryItems } from "@/lib/data/gallery";
 import { getPublicServiceCategories } from "@/lib/data/service-categories";
-import { getPublicSiteSettings } from "@/lib/data/settings";
 import { GalleryGrid } from "@/components/public/gallery-grid";
 import { Pagination } from "@/components/public/pagination";
 import { EmptyState } from "@/components/public/empty-state";
@@ -16,14 +16,16 @@ interface GalleryPageProps {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getPublicSiteSettings();
-  const title = `Portfolio & Gallery | ${settings.business.business_name}`;
+  const title = "Portfolio & Gallery";
   const description =
     "Explore our bridal makeup transformations, before-and-after looks, saree draping, and artistry portfolio.";
 
   return {
     title,
     description,
+    alternates: {
+      canonical: "/gallery",
+    },
     openGraph: {
       title,
       description,
@@ -31,7 +33,14 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function GalleryPage({ searchParams }: GalleryPageProps) {
+async function GalleryContent({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    category?: string;
+    page?: string;
+  }>;
+}) {
   const resolvedParams = await searchParams;
   const categorySlug = resolvedParams.category;
   const page = Math.max(1, parseInt(resolvedParams.page || "1", 10) || 1);
@@ -59,6 +68,67 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
   });
 
   return (
+    <>
+      {/* Category Filters (Pills) */}
+      {categories.length > 0 && (
+        <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
+          <Link
+            href="/gallery"
+            className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
+              !categorySlug || categorySlug === "all"
+                ? "bg-foreground text-background"
+                : "bg-surface text-foreground border-border hover:bg-accent border"
+            }`}
+          >
+            All Works
+          </Link>
+
+          {categories.map((cat) => {
+            const isActive = categorySlug === cat.slug;
+            return (
+              <Link
+                key={cat.id}
+                href={`/gallery?category=${cat.slug}`}
+                className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
+                  isActive
+                    ? "bg-foreground text-background"
+                    : "bg-surface text-foreground border-border hover:bg-accent border"
+                }`}
+              >
+                {cat.name}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Gallery Grid or Empty State */}
+      {galleryResult.items.length === 0 ? (
+        <EmptyState
+          message={
+            selectedCategoryName
+              ? `No portfolio items found under "${selectedCategoryName}".`
+              : "No portfolio items have been published yet."
+          }
+        />
+      ) : (
+        <div className="space-y-12">
+          <GalleryGrid items={galleryResult.items} />
+
+          <Pagination
+            currentPage={galleryResult.currentPage}
+            totalPages={galleryResult.totalPages}
+            baseUrl="/gallery"
+            searchParams={categorySlug ? { category: categorySlug } : undefined}
+          />
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function GalleryPage({ searchParams }: GalleryPageProps) {
+  return (
     <div className="py-8 sm:py-12 md:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumb items={[{ label: "Gallery" }]} />
@@ -77,62 +147,15 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
           </p>
         </div>
 
-        {/* Category Filters (Pills) */}
-        {categories.length > 0 && (
-          <div className="mb-10 flex flex-wrap items-center justify-center gap-2">
-            <Link
-              href="/gallery"
-              className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-                !categorySlug || categorySlug === "all"
-                  ? "bg-foreground text-background"
-                  : "bg-surface text-foreground border-border hover:bg-accent border"
-              }`}
-            >
-              All Works
-            </Link>
-
-            {categories.map((cat) => {
-              const isActive = categorySlug === cat.slug;
-              return (
-                <Link
-                  key={cat.id}
-                  href={`/gallery?category=${cat.slug}`}
-                  className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-                    isActive
-                      ? "bg-foreground text-background"
-                      : "bg-surface text-foreground border-border hover:bg-accent border"
-                  }`}
-                >
-                  {cat.name}
-                </Link>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Gallery Grid or Empty State */}
-        {galleryResult.items.length === 0 ? (
-          <EmptyState
-            message={
-              selectedCategoryName
-                ? `No portfolio items found under "${selectedCategoryName}".`
-                : "No portfolio items have been published yet."
-            }
-          />
-        ) : (
-          <div className="space-y-12">
-            <GalleryGrid items={galleryResult.items} />
-
-            <Pagination
-              currentPage={galleryResult.currentPage}
-              totalPages={galleryResult.totalPages}
-              baseUrl="/gallery"
-              searchParams={
-                categorySlug ? { category: categorySlug } : undefined
-              }
-            />
-          </div>
-        )}
+        <Suspense
+          fallback={
+            <div className="text-foreground/40 flex min-h-[300px] items-center justify-center text-sm">
+              Loading portfolio...
+            </div>
+          }
+        >
+          <GalleryContent searchParams={searchParams} />
+        </Suspense>
       </div>
     </div>
   );
