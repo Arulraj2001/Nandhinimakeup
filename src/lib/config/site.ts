@@ -30,5 +30,9 @@ export const siteConfig: SiteConfig = {
       title: "Jewellery",
       href: "/jewellery",
     },
+    {
+      title: "Gallery",
+      href: "/gallery",
+    },
   ],
 };
