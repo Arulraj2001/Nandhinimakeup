@@ -13,12 +13,16 @@ import {
   type ShippingSettings,
   type BrandingSettings,
   type AnalyticsSettings,
+  type HomeSettings,
+  type AboutSettings,
   businessSettingsSchema,
   socialSettingsSchema,
   paymentsSettingsSchema,
   shippingSettingsSchema,
   brandingSettingsSchema,
   analyticsSettingsSchema,
+  homeSettingsSchema,
+  aboutSettingsSchema,
 } from "@/types/settings";
 import {
   saveBusinessSettings,
@@ -27,6 +31,8 @@ import {
   saveShippingSettings,
   saveBrandingSettings,
   saveAnalyticsSettings,
+  saveHomeSettings,
+  saveAboutSettings,
 } from "@/lib/actions/settings";
 import {
   MediaPicker,
@@ -48,7 +54,14 @@ interface SettingsClientProps {
 }
 
 type SettingsTab =
-  "business" | "social" | "payments" | "shipping" | "branding" | "analytics";
+  | "business"
+  | "home"
+  | "about"
+  | "social"
+  | "payments"
+  | "shipping"
+  | "branding"
+  | "analytics";
 
 export function SettingsClient({
   initialSettings,
@@ -60,6 +73,8 @@ export function SettingsClient({
 
   const tabs: { id: SettingsTab; label: string }[] = [
     { id: "business", label: "Business Details" },
+    { id: "home", label: "Home Content" },
+    { id: "about", label: "About Content" },
     { id: "social", label: "Social Media" },
     { id: "payments", label: "Payments (UPI)" },
     { id: "shipping", label: "Shipping" },
@@ -118,6 +133,24 @@ export function SettingsClient({
         {activeTab === "branding" && (
           <BrandingSettingsForm
             initialValues={initialSettings.branding}
+            mediaMap={mediaMap}
+            onMediaMapUpdate={(newItem) =>
+              setMediaMap((prev) => ({ ...prev, [newItem.id]: newItem }))
+            }
+          />
+        )}
+        {activeTab === "home" && (
+          <HomeSettingsForm
+            initialValues={initialSettings.home}
+            mediaMap={mediaMap}
+            onMediaMapUpdate={(newItem) =>
+              setMediaMap((prev) => ({ ...prev, [newItem.id]: newItem }))
+            }
+          />
+        )}
+        {activeTab === "about" && (
+          <AboutSettingsForm
+            initialValues={initialSettings.about}
             mediaMap={mediaMap}
             onMediaMapUpdate={(newItem) =>
               setMediaMap((prev) => ({ ...prev, [newItem.id]: newItem }))
@@ -997,6 +1030,573 @@ function AnalyticsSettingsForm({
         <SubmitButton
           isLoading={form.formState.isSubmitting}
           label="Save Analytics Settings"
+        />
+      </div>
+    </form>
+  );
+}
+
+// ----------------------------------------------------------------------
+// 7. Home Content Form
+// ----------------------------------------------------------------------
+function HomeSettingsForm({
+  initialValues,
+  mediaMap,
+  onMediaMapUpdate,
+}: {
+  initialValues: HomeSettings;
+  mediaMap: Record<string, MediaItem>;
+  onMediaMapUpdate: (item: MediaItem) => void;
+}) {
+  const [pickerOpen, setPickerOpen] = React.useState(false);
+
+  const form = useForm<HomeSettings>({
+    resolver: zodResolver(homeSettingsSchema),
+    defaultValues: initialValues,
+  });
+
+  useUnsavedChangesWarning(form.formState.isDirty);
+
+  const heroImageId = form.watch("hero_image_id");
+  const heroImageMedia = heroImageId ? mediaMap[heroImageId] : null;
+  const counters = form.watch("counters") || [];
+
+  const handleAddCounter = () => {
+    if (counters.length >= 3) return;
+    form.setValue("counters", [...counters, { label: "", number: 0 }], {
+      shouldDirty: true,
+    });
+  };
+
+  const handleRemoveCounter = (index: number) => {
+    form.setValue(
+      "counters",
+      counters.filter((_, i) => i !== index),
+      { shouldDirty: true }
+    );
+  };
+
+  const handleCounterChange = (
+    index: number,
+    field: "label" | "number",
+    val: string | number
+  ) => {
+    const next = [...counters];
+    if (field === "number") {
+      next[index] = { ...next[index], number: Number(val) || 0 };
+    } else {
+      next[index] = { ...next[index], label: String(val) };
+    }
+    form.setValue("counters", next, { shouldDirty: true });
+  };
+
+  const onSubmit = async (values: HomeSettings) => {
+    const res = await saveHomeSettings(values);
+    if (!res.success) {
+      toast.error(res.error || "Failed to save home settings");
+      return;
+    }
+    toast.success("Home content settings saved successfully");
+    form.reset(res.data);
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="border-border border-b pb-4">
+        <h2 className="text-foreground text-lg font-semibold">
+          Home Page Content
+        </h2>
+        <p className="text-foreground/70 text-sm">
+          Hero headline, supporting narrative, hero background image, primary
+          button destination, key statistic counters, and closing call to
+          action.
+        </p>
+      </div>
+
+      {/* Hero Section */}
+      <div className="space-y-4">
+        <h3 className="text-foreground text-sm font-semibold">Hero Banner</h3>
+
+        <FormField
+          id="hero_headline"
+          label="Hero Headline"
+          required
+          error={form.formState.errors.hero_headline?.message}
+        >
+          <Input
+            id="hero_headline"
+            {...form.register("hero_headline")}
+            placeholder="e.g. Elegance Crafted for Your Special Day"
+          />
+        </FormField>
+
+        <FormField
+          id="hero_supporting_text"
+          label="Hero Supporting Text"
+          error={form.formState.errors.hero_supporting_text?.message}
+        >
+          <textarea
+            id="hero_supporting_text"
+            rows={3}
+            {...form.register("hero_supporting_text")}
+            className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
+            placeholder="Supporting description under the hero headline..."
+          />
+        </FormField>
+
+        {/* Hero Image */}
+        <div className="space-y-2 rounded-lg border p-4">
+          <label className="text-foreground text-sm font-semibold">
+            Hero Image (LCP Element)
+          </label>
+          <p className="text-foreground/70 text-xs">
+            Showcased in the hero section. Will load with high priority.
+          </p>
+
+          {heroImageMedia ? (
+            <div className="flex items-center gap-4 pt-2">
+              <img
+                src={getPublicMediaUrl(heroImageMedia.storage_path)}
+                alt={heroImageMedia.alt_text}
+                className="h-20 w-28 rounded border bg-white object-cover shadow-xs"
+              />
+              <div className="space-y-1">
+                <p className="text-foreground text-sm font-medium">
+                  {heroImageMedia.file_name}
+                </p>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPickerOpen(true)}
+                  >
+                    Change Image
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-red-600 hover:text-red-700"
+                    onClick={() =>
+                      form.setValue("hero_image_id", null, {
+                        shouldDirty: true,
+                      })
+                    }
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setPickerOpen(true)}
+              >
+                Select from Media Library
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Hero Primary Button Choice */}
+        <FormField
+          id="hero_primary_button"
+          label="Hero Primary Call To Action"
+          hint="Choose which entry route is emphasized in the hero section"
+          error={form.formState.errors.hero_primary_button?.message}
+        >
+          <select
+            id="hero_primary_button"
+            {...form.register("hero_primary_button")}
+            className="border-input bg-background text-foreground h-9 w-full max-w-xs rounded-md border px-3 text-sm"
+          >
+            <option value="services">Services (Book Makeup)</option>
+            <option value="jewellery">Jewellery (Shop Jewellery)</option>
+          </select>
+        </FormField>
+      </div>
+
+      {/* Counters Section */}
+      <div className="space-y-4 border-t pt-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-foreground text-sm font-semibold">
+              Highlight Counters (up to 3)
+            </h3>
+            <p className="text-foreground/70 text-xs">
+              Key metrics shown on the Home page (e.g. Brides Served, Years
+              Experience).
+            </p>
+          </div>
+          {counters.length < 3 && (
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleAddCounter}
+            >
+              Add Counter
+            </Button>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          {counters.map((c, index) => (
+            <div
+              key={index}
+              className="bg-surface flex items-center gap-3 rounded-lg border p-3"
+            >
+              <div className="flex-1">
+                <label className="text-foreground/70 text-xs font-medium">
+                  Label
+                </label>
+                <Input
+                  value={c.label}
+                  onChange={(e) =>
+                    handleCounterChange(index, "label", e.target.value)
+                  }
+                  placeholder="e.g. Brides Served"
+                  className="mt-1"
+                />
+              </div>
+
+              <div className="w-32">
+                <label className="text-foreground/70 text-xs font-medium">
+                  Number
+                </label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={c.number}
+                  onChange={(e) =>
+                    handleCounterChange(index, "number", e.target.value)
+                  }
+                  placeholder="500"
+                  className="mt-1"
+                />
+              </div>
+
+              <div className="pt-5">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-600 hover:text-red-700"
+                  onClick={() => handleRemoveCounter(index)}
+                >
+                  ✕
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Closing Call to Action */}
+      <div className="space-y-4 border-t pt-4">
+        <h3 className="text-foreground text-sm font-semibold">
+          Closing Call To Action Section
+        </h3>
+
+        <FormField
+          id="closing_cta_headline"
+          label="Closing CTA Headline"
+          error={form.formState.errors.closing_cta_headline?.message}
+        >
+          <Input
+            id="closing_cta_headline"
+            {...form.register("closing_cta_headline")}
+            placeholder="e.g. Ready to Create Your Dream Bridal Look?"
+          />
+        </FormField>
+
+        <FormField
+          id="closing_cta_text"
+          label="Closing CTA Supporting Text"
+          error={form.formState.errors.closing_cta_text?.message}
+        >
+          <textarea
+            id="closing_cta_text"
+            rows={3}
+            {...form.register("closing_cta_text")}
+            className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
+            placeholder="Text next to the WhatsApp and Phone call buttons..."
+          />
+        </FormField>
+      </div>
+
+      <MediaPicker
+        open={pickerOpen}
+        selectedIds={heroImageId ? [heroImageId] : []}
+        onClose={() => setPickerOpen(false)}
+        onSelect={(items) => {
+          if (items.length > 0) {
+            const item = items[0];
+            form.setValue("hero_image_id", item.id, { shouldDirty: true });
+            onMediaMapUpdate(item);
+          }
+          setPickerOpen(false);
+        }}
+      />
+
+      <div className="flex justify-end pt-4">
+        <SubmitButton
+          isLoading={form.formState.isSubmitting}
+          label="Save Home Content"
+        />
+      </div>
+    </form>
+  );
+}
+
+// ----------------------------------------------------------------------
+// 8. About Content Form
+// ----------------------------------------------------------------------
+function AboutSettingsForm({
+  initialValues,
+  mediaMap,
+  onMediaMapUpdate,
+}: {
+  initialValues: AboutSettings;
+  mediaMap: Record<string, MediaItem>;
+  onMediaMapUpdate: (item: MediaItem) => void;
+}) {
+  const [pickerOpen, setPickerOpen] = React.useState(false);
+  const [newHighlight, setNewHighlight] = React.useState("");
+
+  const form = useForm<AboutSettings>({
+    resolver: zodResolver(aboutSettingsSchema),
+    defaultValues: initialValues,
+  });
+
+  useUnsavedChangesWarning(form.formState.isDirty);
+
+  const portraitImageId = form.watch("portrait_image_id");
+  const portraitMedia = portraitImageId ? mediaMap[portraitImageId] : null;
+  const highlights = form.watch("highlights") || [];
+
+  const handleAddHighlight = () => {
+    const trimmed = newHighlight.trim();
+    if (!trimmed) return;
+    form.setValue("highlights", [...highlights, trimmed], {
+      shouldDirty: true,
+    });
+    setNewHighlight("");
+  };
+
+  const handleRemoveHighlight = (index: number) => {
+    form.setValue(
+      "highlights",
+      highlights.filter((_, i) => i !== index),
+      { shouldDirty: true }
+    );
+  };
+
+  const handleMoveHighlight = (index: number, direction: "up" | "down") => {
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= highlights.length) return;
+    const next = [...highlights];
+    const temp = next[index];
+    next[index] = next[targetIndex];
+    next[targetIndex] = temp;
+    form.setValue("highlights", next, { shouldDirty: true });
+  };
+
+  const onSubmit = async (values: AboutSettings) => {
+    const res = await saveAboutSettings(values);
+    if (!res.success) {
+      toast.error(res.error || "Failed to save about settings");
+      return;
+    }
+    toast.success("About content settings saved successfully");
+    form.reset(res.data);
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="border-border border-b pb-4">
+        <h2 className="text-foreground text-lg font-semibold">
+          About Page Content
+        </h2>
+        <p className="text-foreground/70 text-sm">
+          Brand story narrative, portrait or studio photograph, and bullet
+          highlights.
+        </p>
+      </div>
+
+      {/* Story Text */}
+      <FormField
+        id="story_text"
+        label="Story Text"
+        hint="Plain text with line breaks allowed. Narrates your journey, philosophy, and expertise."
+        error={form.formState.errors.story_text?.message}
+      >
+        <textarea
+          id="story_text"
+          rows={7}
+          {...form.register("story_text")}
+          className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
+          placeholder="Our journey began with a passion for bringing beauty and confidence to brides..."
+        />
+      </FormField>
+
+      {/* Portrait / Studio Image */}
+      <div className="space-y-2 rounded-lg border p-4">
+        <label className="text-foreground text-sm font-semibold">
+          Portrait / Studio Photo
+        </label>
+        <p className="text-foreground/70 text-xs">
+          Professional photograph of the artist or studio for the About section.
+        </p>
+
+        {portraitMedia ? (
+          <div className="flex items-center gap-4 pt-2">
+            <img
+              src={getPublicMediaUrl(portraitMedia.storage_path)}
+              alt={portraitMedia.alt_text}
+              className="h-24 w-20 rounded border bg-white object-cover shadow-xs"
+            />
+            <div className="space-y-1">
+              <p className="text-foreground text-sm font-medium">
+                {portraitMedia.file_name}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPickerOpen(true)}
+                >
+                  Change Photo
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-600 hover:text-red-700"
+                  onClick={() =>
+                    form.setValue("portrait_image_id", null, {
+                      shouldDirty: true,
+                    })
+                  }
+                >
+                  Remove
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setPickerOpen(true)}
+            >
+              Select from Media Library
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Highlights List */}
+      <div className="space-y-3 border-t pt-4">
+        <div>
+          <h3 className="text-foreground text-sm font-semibold">
+            Highlights & Accreditations
+          </h3>
+          <p className="text-foreground/70 text-xs">
+            Short bullet items displayed as feature highlights on the About
+            page.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Input
+            value={newHighlight}
+            onChange={(e) => setNewHighlight(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleAddHighlight();
+              }
+            }}
+            placeholder="e.g. Certified Professional Bridal Makeup Artist"
+            className="flex-1"
+          />
+          <Button type="button" variant="outline" onClick={handleAddHighlight}>
+            Add
+          </Button>
+        </div>
+
+        <div className="space-y-2 pt-2">
+          {highlights.map((item, index) => (
+            <div
+              key={index}
+              className="bg-surface flex items-center justify-between rounded-md border p-2.5 text-sm"
+            >
+              <span className="text-foreground flex-1 pr-3">• {item}</span>
+              <div className="flex items-center gap-1">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={index === 0}
+                  onClick={() => handleMoveHighlight(index, "up")}
+                  className="h-7 px-2 text-xs"
+                >
+                  ↑
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={index === highlights.length - 1}
+                  onClick={() => handleMoveHighlight(index, "down")}
+                  className="h-7 px-2 text-xs"
+                >
+                  ↓
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleRemoveHighlight(index)}
+                  className="h-7 px-2 text-xs text-red-600 hover:text-red-700"
+                >
+                  ✕
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <MediaPicker
+        open={pickerOpen}
+        selectedIds={portraitImageId ? [portraitImageId] : []}
+        onClose={() => setPickerOpen(false)}
+        onSelect={(items) => {
+          if (items.length > 0) {
+            const item = items[0];
+            form.setValue("portrait_image_id", item.id, {
+              shouldDirty: true,
+            });
+            onMediaMapUpdate(item);
+          }
+          setPickerOpen(false);
+        }}
+      />
+
+      <div className="flex justify-end pt-4">
+        <SubmitButton
+          isLoading={form.formState.isSubmitting}
+          label="Save About Content"
         />
       </div>
     </form>

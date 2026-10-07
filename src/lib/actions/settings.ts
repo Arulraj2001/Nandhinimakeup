@@ -16,6 +16,8 @@ import {
   type ShippingSettings,
   type BrandingSettings,
   type AnalyticsSettings,
+  type HomeSettings,
+  type AboutSettings,
   DEFAULT_SITE_SETTINGS,
   DEFAULT_BUSINESS_SETTINGS,
   DEFAULT_SOCIAL_SETTINGS,
@@ -23,12 +25,16 @@ import {
   DEFAULT_SHIPPING_SETTINGS,
   DEFAULT_BRANDING_SETTINGS,
   DEFAULT_ANALYTICS_SETTINGS,
+  DEFAULT_HOME_SETTINGS,
+  DEFAULT_ABOUT_SETTINGS,
   businessSettingsSchema,
   socialSettingsSchema,
   paymentsSettingsSchema,
   shippingSettingsSchema,
   brandingSettingsSchema,
   analyticsSettingsSchema,
+  homeSettingsSchema,
+  aboutSettingsSchema,
 } from "@/types/settings";
 
 /**
@@ -91,6 +97,28 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     ? { ...DEFAULT_ANALYTICS_SETTINGS, ...rawAnalytics }
     : DEFAULT_ANALYTICS_SETTINGS;
 
+  const rawHome = map.get("home") as Record<string, unknown> | undefined;
+  const home: HomeSettings = rawHome
+    ? {
+        ...DEFAULT_HOME_SETTINGS,
+        ...rawHome,
+        counters: Array.isArray(rawHome.counters)
+          ? rawHome.counters
+          : DEFAULT_HOME_SETTINGS.counters,
+      }
+    : DEFAULT_HOME_SETTINGS;
+
+  const rawAbout = map.get("about") as Record<string, unknown> | undefined;
+  const about: AboutSettings = rawAbout
+    ? {
+        ...DEFAULT_ABOUT_SETTINGS,
+        ...rawAbout,
+        highlights: Array.isArray(rawAbout.highlights)
+          ? rawAbout.highlights
+          : DEFAULT_ABOUT_SETTINGS.highlights,
+      }
+    : DEFAULT_ABOUT_SETTINGS;
+
   return {
     business,
     social,
@@ -98,6 +126,8 @@ export async function getSiteSettings(): Promise<SiteSettingsData> {
     shipping,
     branding,
     analytics,
+    home,
+    about,
   };
 }
 
@@ -269,6 +299,64 @@ export async function saveAnalyticsSettings(
 
   if (error) {
     return actionError(error.message || "Failed to save analytics settings.");
+  }
+
+  revalidateCacheTag("settings");
+  return actionSuccess(parsed.data);
+}
+
+/**
+ * Save home settings section
+ */
+export async function saveHomeSettings(
+  input: unknown
+): Promise<ActionResult<HomeSettings>> {
+  const auth = await verifyAdmin();
+  if (!auth.ok) {
+    return actionError(auth.error);
+  }
+
+  const parsed = homeSettingsSchema.safeParse(input);
+  if (!parsed.success) {
+    return actionError("Validation failed", parsed.error.flatten().fieldErrors);
+  }
+
+  const { error } = await auth.data.supabase.from("site_settings").upsert({
+    key: "home",
+    value: parsed.data,
+  });
+
+  if (error) {
+    return actionError(error.message || "Failed to save home settings.");
+  }
+
+  revalidateCacheTag("settings");
+  return actionSuccess(parsed.data);
+}
+
+/**
+ * Save about settings section
+ */
+export async function saveAboutSettings(
+  input: unknown
+): Promise<ActionResult<AboutSettings>> {
+  const auth = await verifyAdmin();
+  if (!auth.ok) {
+    return actionError(auth.error);
+  }
+
+  const parsed = aboutSettingsSchema.safeParse(input);
+  if (!parsed.success) {
+    return actionError("Validation failed", parsed.error.flatten().fieldErrors);
+  }
+
+  const { error } = await auth.data.supabase.from("site_settings").upsert({
+    key: "about",
+    value: parsed.data,
+  });
+
+  if (error) {
+    return actionError(error.message || "Failed to save about settings.");
   }
 
   revalidateCacheTag("settings");

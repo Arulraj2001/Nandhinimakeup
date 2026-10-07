@@ -98,6 +98,34 @@ export const analyticsSettingsSchema = z.object({
 
 export type AnalyticsSettings = z.infer<typeof analyticsSettingsSchema>;
 
+// 7. Home Schema
+export const homeCounterSchema = z.object({
+  label: z.string().trim().min(1, "Label is required"),
+  number: z.number().int().min(0, "Number must be 0 or greater"),
+});
+
+export const homeSettingsSchema = z.object({
+  hero_headline: z.string().trim().min(1, "Hero headline is required"),
+  hero_supporting_text: z.string().trim(),
+  hero_image_id: z.string().uuid("Invalid media ID").nullable().optional(),
+  hero_primary_button: z.enum(["services", "jewellery"]),
+  counters: z.array(homeCounterSchema).max(3, "Maximum 3 counters allowed"),
+  closing_cta_headline: z.string().trim(),
+  closing_cta_text: z.string().trim(),
+});
+
+export type HomeCounter = z.infer<typeof homeCounterSchema>;
+export type HomeSettings = z.infer<typeof homeSettingsSchema>;
+
+// 8. About Schema
+export const aboutSettingsSchema = z.object({
+  story_text: z.string().trim(),
+  portrait_image_id: z.string().uuid("Invalid media ID").nullable().optional(),
+  highlights: z.array(z.string().trim()),
+});
+
+export type AboutSettings = z.infer<typeof aboutSettingsSchema>;
+
 // Complete Site Settings Bundle
 export type SiteSettingsData = {
   business: BusinessSettings;
@@ -106,6 +134,8 @@ export type SiteSettingsData = {
   shipping: ShippingSettings;
   branding: BrandingSettings;
   analytics: AnalyticsSettings;
+  home: HomeSettings;
+  about: AboutSettings;
 };
 
 // Safe Defaults
@@ -163,6 +193,34 @@ export const DEFAULT_ANALYTICS_SETTINGS: AnalyticsSettings = {
   search_console_code: "",
 };
 
+export const DEFAULT_HOME_SETTINGS: HomeSettings = {
+  hero_headline: "Elegance Crafted for Your Special Day",
+  hero_supporting_text:
+    "Professional bridal artistry and handcrafted jewellery that bring your dream look to life.",
+  hero_image_id: null,
+  hero_primary_button: "services",
+  counters: [
+    { label: "Brides Served", number: 500 },
+    { label: "Years Experience", number: 8 },
+    { label: "Happy Clients", number: 1200 },
+  ],
+  closing_cta_headline: "Ready to Create Your Dream Bridal Look?",
+  closing_cta_text:
+    "Book your consultation or enquire about bespoke jewellery pieces today.",
+};
+
+export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
+  story_text:
+    "Founded with a passion for beauty and tradition, Nandhini Makeup & Jewellery brings together expert bridal artistry and timeless jewellery creations. We believe every bride deserves to look and feel breathtaking on her special day.",
+  portrait_image_id: null,
+  highlights: [
+    "Certified Professional Bridal Makeup Artist",
+    "Over 8+ years of bridal transformation experience",
+    "Handcrafted jewellery curated for special occasions",
+    "On-location destination wedding services",
+  ],
+};
+
 export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
   business: DEFAULT_BUSINESS_SETTINGS,
   social: DEFAULT_SOCIAL_SETTINGS,
@@ -170,4 +228,6 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
   shipping: DEFAULT_SHIPPING_SETTINGS,
   branding: DEFAULT_BRANDING_SETTINGS,
   analytics: DEFAULT_ANALYTICS_SETTINGS,
+  home: DEFAULT_HOME_SETTINGS,
+  about: DEFAULT_ABOUT_SETTINGS,
 };

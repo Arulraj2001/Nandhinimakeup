@@ -108,6 +108,27 @@ export async function checkMediaUsage(
 
   if (settings) {
     for (const setting of settings) {
+      const val = setting.value as Record<string, unknown> | null;
+      if (val && typeof val === "object") {
+        if (setting.key === "home" && val.hero_image_id === mediaId) {
+          return { inUse: true, usageLocation: "Home Content (Hero Image)" };
+        }
+        if (setting.key === "about" && val.portrait_image_id === mediaId) {
+          return {
+            inUse: true,
+            usageLocation: "About Content (Portrait Image)",
+          };
+        }
+        if (setting.key === "branding" && val.logo_media_id === mediaId) {
+          return { inUse: true, usageLocation: "Branding (Logo)" };
+        }
+        if (setting.key === "branding" && val.favicon_media_id === mediaId) {
+          return { inUse: true, usageLocation: "Branding (Favicon)" };
+        }
+        if (setting.key === "payments" && val.upi_qr_media_id === mediaId) {
+          return { inUse: true, usageLocation: "Payments (UPI QR Code)" };
+        }
+      }
       const valStr = JSON.stringify(setting.value);
       if (valStr.includes(mediaId)) {
         return {
