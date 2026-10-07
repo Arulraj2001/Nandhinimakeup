@@ -34,5 +34,13 @@ export const siteConfig: SiteConfig = {
       title: "Gallery",
       href: "/gallery",
     },
+    {
+      title: "About",
+      href: "/about",
+    },
+    {
+      title: "Contact",
+      href: "/contact",
+    },
   ],
 };

@@ -118,14 +118,55 @@ export function Footer({ business, social }: FooterProps) {
                 </a>
               )}
             </div>
-            {/* Quick Links for completed public pages (Home only in 3.4) */}
-            <div className="pt-2">
-              <Link
-                href="/"
-                className="text-foreground/70 hover:text-foreground text-xs transition-colors"
-              >
-                Home
-              </Link>
+            {/* Quick Links for completed public pages */}
+            <div className="space-y-1.5 pt-2">
+              <h5 className="text-foreground/80 text-[11px] font-semibold tracking-wider uppercase">
+                Explore & Support
+              </h5>
+              <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
+                <Link
+                  href="/services"
+                  className="text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  Services
+                </Link>
+                <Link
+                  href="/jewellery"
+                  className="text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  Jewellery
+                </Link>
+                <Link
+                  href="/gallery"
+                  className="text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  Gallery
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  About
+                </Link>
+                <Link
+                  href="/contact"
+                  className="text-foreground/70 hover:text-foreground transition-colors"
+                >
+                  Contact
+                </Link>
+                <Link
+                  href="/reviews"
+                  className="text-foreground/70 hover:text-foreground font-medium transition-colors"
+                >
+                  Reviews
+                </Link>
+                <Link
+                  href="/faq"
+                  className="text-foreground/70 hover:text-foreground font-medium transition-colors"
+                >
+                  FAQ
+                </Link>
+              </div>
             </div>
           </div>
         </div>
