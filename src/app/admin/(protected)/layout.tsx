@@ -33,5 +33,18 @@ export default async function AdminProtectedLayout({
     redirect("/admin/login?error=unauthorized");
   }
 
-  return <AdminShell userEmail={user.email ?? ""}>{children}</AdminShell>;
+  // Count orders in payment_submitted status for sidebar badge
+  const { count: paymentSubmittedCount } = await supabase
+    .from("orders")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "payment_submitted");
+
+  return (
+    <AdminShell
+      userEmail={user.email ?? ""}
+      paymentSubmittedCount={paymentSubmittedCount ?? 0}
+    >
+      {children}
+    </AdminShell>
+  );
 }

@@ -8,10 +8,15 @@ import { Button } from "@/components/ui/button";
 
 interface AdminShellProps {
   userEmail: string;
+  paymentSubmittedCount?: number;
   children: React.ReactNode;
 }
 
-export function AdminShell({ userEmail, children }: AdminShellProps) {
+export function AdminShell({
+  userEmail,
+  paymentSubmittedCount = 0,
+  children,
+}: AdminShellProps) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -70,6 +75,21 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
               }`}
             >
               Dashboard
+            </Link>
+            <Link
+              href="/admin/orders"
+              className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium ${
+                pathname?.startsWith("/admin/orders")
+                  ? "bg-surface text-foreground font-semibold"
+                  : "text-foreground hover:bg-surface"
+              }`}
+            >
+              <span>Orders</span>
+              {paymentSubmittedCount > 0 && (
+                <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-bold leading-none">
+                  {paymentSubmittedCount}
+                </span>
+              )}
             </Link>
             <Link
               href="/admin/media"
@@ -158,6 +178,22 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
                 }`}
               >
                 Dashboard
+              </Link>
+              <Link
+                href="/admin/orders"
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium ${
+                  pathname?.startsWith("/admin/orders")
+                    ? "bg-card-surface text-foreground font-semibold"
+                    : "text-foreground hover:bg-card-surface"
+                }`}
+              >
+                <span>Orders</span>
+                {paymentSubmittedCount > 0 && (
+                  <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-bold leading-none">
+                    {paymentSubmittedCount}
+                  </span>
+                )}
               </Link>
               <Link
                 href="/admin/media"
