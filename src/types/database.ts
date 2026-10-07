@@ -592,6 +592,132 @@ export interface Database {
         };
         Relationships: [];
       };
+      orders: {
+        Row: {
+          id: string;
+          order_number: string;
+          access_token: string;
+          status: string;
+          customer_name: string;
+          phone: string;
+          email: string | null;
+          address_line_1: string;
+          address_line_2: string | null;
+          city: string;
+          state: string;
+          pin_code: string;
+          customer_note: string | null;
+          subtotal: number;
+          delivery_charge: number;
+          total: number;
+          payment_reference: string | null;
+          courier_name: string | null;
+          tracking_number: string | null;
+          admin_note: string | null;
+          stock_restored: boolean;
+          created_at: string;
+          updated_at: string;
+          paid_at: string | null;
+          shipped_at: string | null;
+          delivered_at: string | null;
+          cancelled_at: string | null;
+          cancel_reason: string | null;
+        };
+        Insert: {
+          id?: string;
+          order_number: string;
+          access_token: string;
+          status?: string;
+          customer_name: string;
+          phone: string;
+          email?: string | null;
+          address_line_1: string;
+          address_line_2?: string | null;
+          city: string;
+          state: string;
+          pin_code: string;
+          customer_note?: string | null;
+          subtotal: number;
+          delivery_charge: number;
+          total: number;
+          payment_reference?: string | null;
+          courier_name?: string | null;
+          tracking_number?: string | null;
+          admin_note?: string | null;
+          stock_restored?: boolean;
+          created_at?: string;
+          updated_at?: string;
+          paid_at?: string | null;
+          shipped_at?: string | null;
+          delivered_at?: string | null;
+          cancelled_at?: string | null;
+          cancel_reason?: string | null;
+        };
+        Update: {
+          id?: string;
+          order_number?: string;
+          access_token?: string;
+          status?: string;
+          customer_name?: string;
+          phone?: string;
+          email?: string | null;
+          address_line_1?: string;
+          address_line_2?: string | null;
+          city?: string;
+          state?: string;
+          pin_code?: string;
+          customer_note?: string | null;
+          subtotal?: number;
+          delivery_charge?: number;
+          total?: number;
+          payment_reference?: string | null;
+          courier_name?: string | null;
+          tracking_number?: string | null;
+          admin_note?: string | null;
+          stock_restored?: boolean;
+          created_at?: string;
+          updated_at?: string;
+          paid_at?: string | null;
+          shipped_at?: string | null;
+          delivered_at?: string | null;
+          cancelled_at?: string | null;
+          cancel_reason?: string | null;
+        };
+        Relationships: [];
+      };
+      order_items: {
+        Row: {
+          id: string;
+          order_id: string;
+          product_id: string | null;
+          product_name: string;
+          sku: string | null;
+          unit_price: number;
+          quantity: number;
+          line_total: number;
+        };
+        Insert: {
+          id?: string;
+          order_id: string;
+          product_id?: string | null;
+          product_name: string;
+          sku?: string | null;
+          unit_price: number;
+          quantity: number;
+          line_total: number;
+        };
+        Update: {
+          id?: string;
+          order_id?: string;
+          product_id?: string | null;
+          product_name?: string;
+          sku?: string | null;
+          unit_price?: number;
+          quantity?: number;
+          line_total?: number;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -600,6 +726,31 @@ export interface Database {
       is_admin: {
         Args: Record<PropertyKey, never>;
         Returns: boolean;
+      };
+      create_order: {
+        Args: {
+          p_items: Json;
+          p_customer_name: string;
+          p_phone: string;
+          p_email: string | null;
+          p_address_line_1: string;
+          p_address_line_2: string | null;
+          p_city: string;
+          p_state: string;
+          p_pin_code: string;
+          p_customer_note: string | null;
+          p_flat_delivery_charge: number;
+          p_free_delivery_threshold: number;
+          p_order_number_prefix: string;
+        };
+        Returns: Json;
+      };
+      cancel_order: {
+        Args: {
+          p_order_id: string;
+          p_cancel_reason?: string | null;
+        };
+        Returns: Json;
       };
     };
     Enums: {
