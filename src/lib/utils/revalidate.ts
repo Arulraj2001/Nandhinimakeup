@@ -11,6 +11,10 @@ export const CACHE_TAGS = {
   testimonials: "testimonials",
   faqs: "faqs",
   announcements: "announcements",
+  blog: "blog",
+  legal: "legal",
+  seo: "seo",
+  redirects: "redirects",
 } as const;
 
 export type CacheTagKey = keyof typeof CACHE_TAGS;

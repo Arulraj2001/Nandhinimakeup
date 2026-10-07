@@ -249,6 +249,74 @@ export async function checkMediaUsage(
     // Table may not exist yet
   }
 
+  // 6. Check legal_pages for rich text content
+  try {
+    const { data: legalPages } = await (
+      supabase as unknown as {
+        from: (table: string) => {
+          select: (cols: string) => Promise<{
+            data: Array<{ title?: string; content?: unknown }> | null;
+          }>;
+        };
+      }
+    )
+      .from("legal_pages")
+      .select("title, content");
+
+    if (legalPages && Array.isArray(legalPages)) {
+      for (const page of legalPages) {
+        const contentStr = JSON.stringify(page.content || {});
+        if (contentStr.includes(mediaId)) {
+          return {
+            inUse: true,
+            usageLocation: `Legal Page: "${page.title || "Untitled"}" (Rich Text)`,
+          };
+        }
+      }
+    }
+  } catch {
+    // Table may not exist yet
+  }
+
+  // 7. Check blog_posts for featured image and rich text content
+  try {
+    const { data: blogPosts } = await (
+      supabase as unknown as {
+        from: (table: string) => {
+          select: (cols: string) => Promise<{
+            data: Array<{
+              title?: string;
+              featured_image_id?: string;
+              content?: unknown;
+            }> | null;
+          }>;
+        };
+      }
+    )
+      .from("blog_posts")
+      .select("title, featured_image_id, content");
+
+    if (blogPosts && Array.isArray(blogPosts)) {
+      for (const post of blogPosts) {
+        if (post.featured_image_id === mediaId) {
+          return {
+            inUse: true,
+            usageLocation: `Blog Post: "${post.title || "Untitled"}" (Featured Image)`,
+          };
+        }
+        const contentStr = JSON.stringify(post.content || {});
+        if (contentStr.includes(mediaId)) {
+          return {
+            inUse: true,
+            usageLocation: `Blog Post: "${post.title || "Untitled"}" (Rich Text)`,
+          };
+        }
+      }
+    }
+  } catch {
+    // Table may not exist yet
+  }
+
   return { inUse: false };
 }
 
