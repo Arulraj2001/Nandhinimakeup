@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Poppins } from "next/font/google";
 import { siteConfig } from "@/lib/config/site";
+import { env } from "@/lib/config/env";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -26,6 +27,15 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.shortDescription,
+  robots: env.ALLOW_INDEXING
+    ? {
+        index: true,
+        follow: true,
+      }
+    : {
+        index: false,
+        follow: false,
+      },
 };
 
 export default function RootLayout({
