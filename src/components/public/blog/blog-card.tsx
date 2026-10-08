@@ -87,17 +87,17 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
   }
 
   return (
-    <article className="group border-border bg-surface hover:border-foreground/30 flex h-full flex-col overflow-hidden rounded-xl border shadow-xs transition-all">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[#E5DFD7] bg-white shadow-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md">
       <Link
         href={`/blog/${post.slug}`}
-        className="bg-page-background relative block aspect-video w-full flex-none overflow-hidden"
+        className="bg-[#F4ECE4] relative block aspect-video w-full flex-none overflow-hidden"
       >
         {imageUrl ? (
           <Image
             src={imageUrl}
             alt={post.featured_image?.alt_text || post.title}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-103"
+            className="object-cover transition-transform duration-300 ease-out will-change-transform group-hover:scale-[1.025]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
@@ -131,9 +131,15 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
 
         <div className="border-border text-foreground/60 flex items-center justify-between border-t pt-3 text-xs">
           <time>{formattedDate}</time>
-          <span>{post.reading_time_minutes} min read</span>
+          <span className="font-medium">{post.reading_time_minutes} min read</span>
         </div>
       </div>
+
+      {/* Editorial Sweeping Gold Hairline on Card Bottom Edge */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-0 bg-[#C5A059] transition-all duration-300 ease-out group-hover:w-full"
+      />
     </article>
   );
 }

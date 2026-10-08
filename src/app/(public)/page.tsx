@@ -7,6 +7,7 @@ import { getPublicFeaturedProducts } from "@/lib/data/products";
 import { getPublicFeaturedGalleryItems } from "@/lib/data/gallery";
 import { getPublicServiceCategories } from "@/lib/data/service-categories";
 import { getPublicTestimonials } from "@/lib/data/testimonials";
+import { getPublicBlogPosts } from "@/lib/data/blog";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import { HomeHero } from "@/components/public/home/home-hero";
@@ -15,6 +16,7 @@ import { CategoryMarquee } from "@/components/public/home/category-marquee";
 import { TestimonialsCarousel } from "@/components/public/home/testimonials-carousel";
 import { ServiceCard } from "@/components/public/service-card";
 import { ProductCard } from "@/components/public/product-card";
+import { BlogCard } from "@/components/public/blog/blog-card";
 import { BeforeAfterSlider } from "@/components/public/before-after-slider";
 import {
   EditorialSection,
@@ -56,6 +58,7 @@ export default async function HomePage() {
     serviceCategories,
     featuredTestimonials,
     galleryTeaser,
+    latestBlogPosts,
   ] = await Promise.all([
     getPublicSiteSettings(),
     getPublicFeaturedServices(6),
@@ -64,6 +67,7 @@ export default async function HomePage() {
     getPublicServiceCategories(),
     getPublicTestimonials({ featuredOnly: true, limit: 6 }),
     getPublicFeaturedGalleryItems({ limit: 6 }),
+    getPublicBlogPosts({ page: 1, limit: 3 }),
   ]);
 
   // Resolve hero image
@@ -299,7 +303,43 @@ export default async function HomePage() {
         </EditorialSection>
       )}
 
-      {/* 9. Closing Call-to-Action (Skipped if no CTA text/headline) */}
+      {/* 9. Bridal Journal / Beauty Notes (Up to three articles, skipped if empty) */}
+      {latestBlogPosts.posts.length > 0 && (
+        <EditorialSection className="border-t border-[#E5DFD7] bg-[#FAF8F5] py-16 sm:py-20 md:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <EditorialEyebrow
+                  eyebrow="✦ Bridal Journal & Notes ✦"
+                  colorClass="text-[#8C2524]"
+                />
+                <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
+                  Editorial Beauty Guides
+                </h2>
+                <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
+                  Muhurtham skincare rituals, temple jewellery curation notes, and
+                  insider tips from our Salem bridal studio.
+                </p>
+              </div>
+
+              <Link
+                href="/blog"
+                className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-[#8C2524] uppercase transition-colors hover:text-[#731E1D]"
+              >
+                Read All Articles <span>→</span>
+              </Link>
+            </div>
+
+            <EditorialStaggerGrid className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+              {latestBlogPosts.posts.map((post) => (
+                <BlogCard key={post.id} post={post} />
+              ))}
+            </EditorialStaggerGrid>
+          </div>
+        </EditorialSection>
+      )}
+
+      {/* 10. Closing Call-to-Action (Skipped if no CTA text/headline) */}
       {hasClosingCta && (
         <EditorialSection className="border-t border-[#C5A059]/40 bg-[#FAF8F5] py-16 text-center sm:py-20 md:py-24">
           <div className="mx-auto max-w-3xl rounded-xl border border-[#E5DFD7] bg-white p-8 shadow-sm sm:p-12">
