@@ -19,6 +19,22 @@ export const weekdayHoursSchema = z.object({
 export type DaySchedule = z.infer<typeof dayScheduleSchema>;
 export type WeekdayHours = z.infer<typeof weekdayHoursSchema>;
 
+const httpsUrlSchema = z
+  .string()
+  .refine(
+    (val) => {
+      if (!val) return true;
+      try {
+        const parsed = new URL(val);
+        return parsed.protocol === "https:";
+      } catch {
+        return false;
+      }
+    },
+    { message: "Must be a valid https URL" }
+  )
+  .or(z.literal(""));
+
 // 1. Business Schema
 export const businessSettingsSchema = z.object({
   business_name: z.string().min(1, "Business name is required"),
@@ -37,7 +53,7 @@ export const businessSettingsSchema = z.object({
   address_locality: z.string(),
   address_region: z.string(),
   postal_code: z.string(),
-  google_maps_link: z.string().url("Must be a valid URL").or(z.literal("")),
+  google_maps_link: httpsUrlSchema,
   opening_hours: weekdayHoursSchema,
 });
 
@@ -45,10 +61,10 @@ export type BusinessSettings = z.infer<typeof businessSettingsSchema>;
 
 // 2. Social Schema
 export const socialSettingsSchema = z.object({
-  instagram_primary: z.string().url("Must be a valid URL").or(z.literal("")),
-  instagram_secondary: z.string().url("Must be a valid URL").or(z.literal("")),
-  facebook: z.string().url("Must be a valid URL").or(z.literal("")),
-  youtube: z.string().url("Must be a valid URL").or(z.literal("")),
+  instagram_primary: httpsUrlSchema,
+  instagram_secondary: httpsUrlSchema,
+  facebook: httpsUrlSchema,
+  youtube: httpsUrlSchema,
 });
 
 export type SocialSettings = z.infer<typeof socialSettingsSchema>;

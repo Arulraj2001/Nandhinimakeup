@@ -95,7 +95,7 @@ export async function updateMediaRecord(
   return actionSuccess(data);
 }
 
-export async function checkMediaUsage(
+async function checkMediaUsage(
   mediaId: string,
   supabase: Awaited<
     ReturnType<typeof import("@/lib/supabase/server").createClient>
