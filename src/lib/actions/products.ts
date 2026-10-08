@@ -8,6 +8,7 @@ import {
 } from "@/lib/actions/action-result";
 import { revalidateCacheTag } from "@/lib/utils/revalidate";
 import { slugify } from "@/lib/utils/slug";
+import { createAutomaticSlugRedirect } from "@/lib/actions/redirects-admin";
 import {
   type Product,
   type ProductWithDetails,
@@ -131,6 +132,34 @@ export async function saveProduct(
   let productId = parsed.data.id;
 
   if (productId) {
+    // Check if slug or category changed to create automatic redirect
+    const { data: currentProduct } = await auth.data.supabase
+      .from("products")
+      .select("slug, category_id, category:category_id(slug)")
+      .eq("id", productId)
+      .maybeSingle();
+
+    if (
+      currentProduct &&
+      (currentProduct.slug !== cleanSlug ||
+        currentProduct.category_id !== parsed.data.category_id)
+    ) {
+      const oldCat = currentProduct.category as { slug?: string } | null;
+      const { data: newCat } = await auth.data.supabase
+        .from("product_categories")
+        .select("slug")
+        .eq("id", parsed.data.category_id)
+        .maybeSingle();
+
+      if (oldCat?.slug && newCat?.slug) {
+        await createAutomaticSlugRedirect(
+          auth.data.supabase,
+          `/jewellery/${oldCat.slug}/${currentProduct.slug}`,
+          `/jewellery/${newCat.slug}/${cleanSlug}`
+        );
+      }
+    }
+
     // Update product record
     const { data, error } = await auth.data.supabase
       .from("products")

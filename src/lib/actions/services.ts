@@ -9,6 +9,7 @@ import {
 import { revalidateCacheTag } from "@/lib/utils/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import { slugify } from "@/lib/utils/slug";
+import { createAutomaticSlugRedirect } from "@/lib/actions/redirects-admin";
 import {
   type ServiceCategory,
   type ServiceItem,
@@ -294,6 +295,21 @@ export async function saveService(
     parsed.data.price_type === "on_request" ? null : parsed.data.price;
 
   if (parsed.data.id) {
+    // Check if slug changed to create automatic redirect
+    const { data: currentService } = await auth.data.supabase
+      .from("services")
+      .select("slug")
+      .eq("id", parsed.data.id)
+      .maybeSingle();
+
+    if (currentService && currentService.slug !== cleanSlug) {
+      await createAutomaticSlugRedirect(
+        auth.data.supabase,
+        `/services/${currentService.slug}`,
+        `/services/${cleanSlug}`
+      );
+    }
+
     // Update
     const { data, error } = await auth.data.supabase
       .from("services")

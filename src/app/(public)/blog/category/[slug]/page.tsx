@@ -15,6 +15,7 @@ interface CategoryPageProps {
 }
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
+import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 export async function generateMetadata({
   params,
@@ -71,6 +72,7 @@ export default async function BlogCategoryPage({
   ]);
 
   if (!category) {
+    await handleRedirectOrNotFound(`/blog/category/${slug}`);
     notFound();
   }
 

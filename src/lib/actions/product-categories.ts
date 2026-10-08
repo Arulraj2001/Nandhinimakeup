@@ -9,6 +9,7 @@ import {
 import { revalidateCacheTag } from "@/lib/utils/revalidate";
 import { createClient } from "@/lib/supabase/server";
 import { slugify } from "@/lib/utils/slug";
+import { createAutomaticSlugRedirect } from "@/lib/actions/redirects-admin";
 import {
   type ProductCategory,
   type ProductCategoryWithImage,
@@ -77,6 +78,21 @@ export async function saveProductCategory(
   }
 
   if (parsed.data.id) {
+    // Check if slug changed to create automatic redirect
+    const { data: currentCategory } = await auth.data.supabase
+      .from("product_categories")
+      .select("slug")
+      .eq("id", parsed.data.id)
+      .maybeSingle();
+
+    if (currentCategory && currentCategory.slug !== cleanSlug) {
+      await createAutomaticSlugRedirect(
+        auth.data.supabase,
+        `/jewellery/${currentCategory.slug}`,
+        `/jewellery/${cleanSlug}`
+      );
+    }
+
     // Update
     const { data, error } = await auth.data.supabase
       .from("product_categories")

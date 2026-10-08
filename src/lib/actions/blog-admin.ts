@@ -14,6 +14,7 @@ import {
   type RichTextDoc,
 } from "@/lib/utils/rich-text";
 import { slugify } from "@/lib/utils/slug";
+import { createAutomaticSlugRedirect } from "@/lib/actions/redirects-admin";
 import type { BlogCategory, BlogPost, BlogPostWithDetails } from "@/types/blog";
 import type { Json } from "@/types/database";
 
@@ -89,6 +90,21 @@ export async function saveBlogCategory(
   }
 
   if (id) {
+    // Check if slug changed to create automatic redirect
+    const { data: currentCat } = await auth.data.supabase
+      .from("blog_categories")
+      .select("slug")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (currentCat && currentCat.slug !== slug) {
+      await createAutomaticSlugRedirect(
+        auth.data.supabase,
+        `/blog/category/${currentCat.slug}`,
+        `/blog/category/${slug}`
+      );
+    }
+
     const { data, error } = await auth.data.supabase
       .from("blog_categories")
       .update({
@@ -404,6 +420,21 @@ export async function saveBlogPost(
       : published_at || null;
 
   if (id) {
+    // Check if slug changed to create automatic redirect
+    const { data: currentPost } = await auth.data.supabase
+      .from("blog_posts")
+      .select("slug")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (currentPost && currentPost.slug !== slug) {
+      await createAutomaticSlugRedirect(
+        auth.data.supabase,
+        `/blog/${currentPost.slug}`,
+        `/blog/${slug}`
+      );
+    }
+
     const { data, error } = await auth.data.supabase
       .from("blog_posts")
       .update({

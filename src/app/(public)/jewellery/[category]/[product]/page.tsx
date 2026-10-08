@@ -16,6 +16,7 @@ import { ProductCard } from "@/components/public/product-card";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { Badge } from "@/components/public/badges";
 import { AddToCart } from "@/components/public/product-detail/add-to-cart";
+import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 interface ProductDetailPageProps {
   params: Promise<{
@@ -94,6 +95,7 @@ async function ProductDetailContent({
       );
     }
 
+    await handleRedirectOrNotFound(`/jewellery/${categorySlug}/${productSlug}`);
     notFound();
   }
 

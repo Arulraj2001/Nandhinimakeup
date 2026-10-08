@@ -15,6 +15,7 @@ import { ServiceCard } from "@/components/public/service-card";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
+import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -72,6 +73,7 @@ async function ServiceDetailContent({
   ]);
 
   if (!service) {
+    await handleRedirectOrNotFound(`/services/${slug}`);
     notFound();
   }
 

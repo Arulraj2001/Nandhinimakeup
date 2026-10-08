@@ -19,6 +19,7 @@ interface CategoryListingPageProps {
 }
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
+import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 export async function generateMetadata({
   params,
@@ -69,6 +70,7 @@ async function CategoryListingContent({
 
   const category = await getPublicProductCategoryBySlug(categorySlug);
   if (!category) {
+    await handleRedirectOrNotFound(`/jewellery/${categorySlug}`);
     notFound();
   }
 

@@ -14,6 +14,7 @@ interface BlogPostPageProps {
 }
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
+import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 export async function generateMetadata({
   params,
@@ -62,6 +63,7 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
   ]);
 
   if (!post) {
+    await handleRedirectOrNotFound(`/blog/${slug}`);
     notFound();
   }
 
