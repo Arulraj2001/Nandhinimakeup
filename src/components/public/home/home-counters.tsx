@@ -67,16 +67,16 @@ export function HomeCounters({ counters }: HomeCountersProps) {
   return (
     <section
       ref={containerRef}
-      className="border-y border-[#E5DFD7] bg-[#F4ECE4]/50 py-12 sm:py-16"
+      className="border-y border-[#E5DFD7] bg-[#F4ECE4]/50 py-10 sm:py-14 md:py-16"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-col divide-y divide-[#E5DFD7]/80 md:flex-row md:divide-y-0 md:divide-x md:divide-[#E5DFD7]/80">
           {counters.map((counter, idx) => (
             <div
               key={idx}
-              className="flex flex-col items-center justify-center p-4 text-center"
+              className="flex flex-1 flex-col items-center justify-center py-6 px-4 text-center first:pt-0 last:pb-0 md:py-2 md:first:pt-2 md:last:pb-2"
             >
-              <p className="font-heading text-4xl font-semibold text-[#1C1917] sm:text-5xl md:text-6xl">
+              <p className="font-heading text-4xl font-semibold tracking-tight text-[#1C1917] sm:text-5xl md:text-6xl">
                 {displayValues[idx] ?? counter.number}
                 <span className="text-[#C5A059] font-normal">+</span>
               </p>
