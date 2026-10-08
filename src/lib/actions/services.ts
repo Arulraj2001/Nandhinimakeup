@@ -228,7 +228,7 @@ export async function getServices(params?: {
 
   let query = auth.data.supabase
     .from("services")
-    .select("*, category:service_categories(*), image:media(*)")
+    .select("*, category:service_categories(*), image:image_id(*)")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 

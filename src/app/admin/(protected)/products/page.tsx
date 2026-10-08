@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function ProductsPage() {
   await connection();
   const [productsRes, categoriesRes] = await Promise.all([
@@ -24,7 +26,7 @@ export default async function ProductsPage() {
   const categories = categoriesRes.success ? categoriesRes.data : [];
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       <PageHeader
         title="Products"
         description="Manage jewellery accessories, stock availability, pricing, and showcase images."

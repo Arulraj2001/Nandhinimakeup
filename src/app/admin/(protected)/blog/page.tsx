@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function AdminBlogPage() {
   await connection();
   const [postsRes, categoriesRes, settings] = await Promise.all([
@@ -31,7 +33,7 @@ export default async function AdminBlogPage() {
     settings.business.business_name || "Nandhini Makeup & Jewellery";
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       <PageHeader
         title="Blog"
         description="Write and publish educational articles, tips, and updates for your clients."

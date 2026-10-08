@@ -10,6 +10,8 @@ interface AdminOrderDetailPageProps {
   }>;
 }
 
+export const instant = false;
+
 export default async function AdminOrderDetailPage({
   params,
 }: AdminOrderDetailPageProps) {

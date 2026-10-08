@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function SeoAdminPage() {
   await connection();
   const [settings, staticPagesRes] = await Promise.all([
@@ -34,7 +36,7 @@ export default async function SeoAdminPage() {
   const mediaMap = mediaRes.success ? mediaRes.data : {};
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       <PageHeader
         title="SEO Management"
         description="Configure search engine optimization for all static pages and global discovery settings."

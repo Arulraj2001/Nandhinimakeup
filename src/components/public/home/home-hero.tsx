@@ -18,10 +18,8 @@ export function HomeHero({
   supportingText,
   heroImageUrl,
   heroImageAlt,
-  primaryButtonChoice,
 }: HomeHeroProps) {
   const reducedMotion = useReducedMotion();
-  const isServicesPrimary = primaryButtonChoice === "services";
 
   return (
     <section className="relative overflow-hidden border-b border-[#E5DFD7] bg-[#FAF8F5] py-12 sm:py-16 md:py-20 lg:py-24">

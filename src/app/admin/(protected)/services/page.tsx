@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function ServicesPage() {
   await connection();
   const [servicesRes, categoriesRes] = await Promise.all([
@@ -23,7 +25,7 @@ export default async function ServicesPage() {
   const categories = categoriesRes.success ? categoriesRes.data : [];
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       <PageHeader
         title="Services & Packages"
         description="Manage beauty parlour and bridal services, category organization, inclusions, and pricing."

@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function SettingsPage() {
   await connection();
   const settings = await getSiteSettings();
@@ -30,7 +32,7 @@ export default async function SettingsPage() {
   const mediaMap = mediaRes.success ? mediaRes.data : {};
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       <PageHeader
         title="Site Settings"
         description="Manage business details, social links, UPI payment info, shipping charges, branding, and analytics."

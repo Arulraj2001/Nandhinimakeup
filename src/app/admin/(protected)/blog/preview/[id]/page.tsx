@@ -20,6 +20,8 @@ interface PreviewPageProps {
   params: Promise<{ id: string }>;
 }
 
+export const instant = false;
+
 export default async function BlogPostPreviewPage({
   params,
 }: PreviewPageProps) {
@@ -49,7 +51,7 @@ export default async function BlogPostPreviewPage({
     : null;
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       {/* Draft Preview Indicator Banner */}
       <div className="flex items-center justify-between rounded-lg border border-amber-300 bg-amber-50 p-3.5 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
         <div className="flex items-center gap-2">

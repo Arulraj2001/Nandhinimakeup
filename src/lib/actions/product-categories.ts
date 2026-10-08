@@ -29,7 +29,7 @@ export async function getProductCategories(): Promise<
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("product_categories")
-    .select("*, image:media(*)")
+    .select("*, image:image_id(*)")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
 

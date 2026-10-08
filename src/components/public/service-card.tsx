@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ServiceWithCategory } from "@/types/services";
 import { PriceDisplay } from "@/components/public/price-display";
-import { Badge } from "@/components/public/badges";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 
 export function ServiceCard({ service }: { service: ServiceWithCategory }) {

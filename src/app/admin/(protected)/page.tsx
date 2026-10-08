@@ -43,6 +43,8 @@ const STATUS_CONFIG: Record<
   },
 };
 
+export const instant = false;
+
 export default async function AdminDashboardPage() {
   await connection();
   const supabase = await createClient();

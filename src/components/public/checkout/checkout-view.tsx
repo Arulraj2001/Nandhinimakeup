@@ -158,7 +158,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
       clearCart();
 
       const targetUrl = `/order/${result.data.orderNumber}?token=${result.data.accessToken}`;
-      window.location.assign(targetUrl);
+      router.push(targetUrl);
     } catch (err) {
       console.error("Checkout submission failed", err);
       setServerError(
@@ -166,6 +166,11 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
       );
       setIsSubmitting(false);
     }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    void form.handleSubmit(onSubmit)(e);
   };
 
   if (isOrderRedirecting) {
@@ -255,7 +260,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
         {/* Checkout Form */}
         <div className="lg:col-span-7">
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={handleFormSubmit}
             className="border-border bg-surface space-y-6 rounded-lg border p-6 sm:p-8"
             noValidate
           >

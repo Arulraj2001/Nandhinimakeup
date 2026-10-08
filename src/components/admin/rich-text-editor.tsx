@@ -75,7 +75,7 @@ export function RichTextEditor({
       MediaImageExtension.configure({
         HTMLAttributes: {
           class:
-            "rounded-lg max-w-full my-4 border border-zinc-200 dark:border-zinc-800",
+            "rounded-lg max-w-full my-4 border border-zinc-200",
         },
       }),
     ],
@@ -104,7 +104,7 @@ export function RichTextEditor({
   if (!editor) {
     return (
       <div
-        className="animate-pulse rounded-lg border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900"
+        className="animate-pulse rounded-lg border border-zinc-200 bg-zinc-50"
         style={{ minHeight }}
       />
     );
@@ -163,17 +163,17 @@ export function RichTextEditor({
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-xs transition-all focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/20 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-xs transition-all focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/20">
       {/* Editor Toolbar */}
-      <div className="flex flex-wrap items-center gap-1 border-b border-zinc-200 bg-zinc-50/70 p-2 text-xs dark:border-zinc-800 dark:bg-zinc-900/60">
+      <div className="flex flex-wrap items-center gap-1 border-b border-zinc-200 bg-zinc-50 p-2 text-xs">
         {/* Paragraph */}
         <button
           type="button"
           onClick={() => editor.chain().focus().setParagraph().run()}
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("paragraph")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Paragraph"
         >
@@ -188,8 +188,8 @@ export function RichTextEditor({
           }
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("heading", { level: 2 })
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Heading 2"
         >
@@ -202,8 +202,8 @@ export function RichTextEditor({
           }
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("heading", { level: 3 })
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Heading 3"
         >
@@ -216,15 +216,15 @@ export function RichTextEditor({
           }
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("heading", { level: 4 })
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Heading 4"
         >
           H4
         </button>
 
-        <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+        <span className="mx-1 h-4 w-px bg-zinc-300" />
 
         {/* Bold */}
         <button
@@ -232,8 +232,8 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={`rounded px-2 py-1 font-bold transition-colors ${
             editor.isActive("bold")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-bold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Bold (Ctrl+B)"
         >
@@ -246,15 +246,15 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={`rounded px-2 py-1 italic transition-colors ${
             editor.isActive("italic")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Italic (Ctrl+I)"
         >
           I
         </button>
 
-        <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+        <span className="mx-1 h-4 w-px bg-zinc-300" />
 
         {/* Bullet List */}
         <button
@@ -262,8 +262,8 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("bulletList")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Bullet List"
         >
@@ -276,8 +276,8 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("orderedList")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Numbered List"
         >
@@ -290,8 +290,8 @@ export function RichTextEditor({
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={`rounded px-2 py-1 font-serif italic transition-colors ${
             editor.isActive("blockquote")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Quote"
         >
@@ -304,8 +304,8 @@ export function RichTextEditor({
           onClick={handleSetLink}
           className={`rounded px-2 py-1 font-medium transition-colors ${
             editor.isActive("link")
-              ? "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300"
-              : "text-zinc-700 hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              ? "bg-amber-100 text-amber-900 font-semibold"
+              : "text-zinc-700 hover:bg-zinc-200"
           }`}
           title="Link"
         >
@@ -316,7 +316,7 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          className="rounded px-2 py-1 font-medium text-zinc-700 transition-colors hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="rounded px-2 py-1 font-medium text-zinc-700 transition-colors hover:bg-zinc-200"
           title="Horizontal Rule"
         >
           ― Divider
@@ -326,20 +326,20 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => setMediaPickerOpen(true)}
-          className="flex items-center gap-1 rounded px-2 py-1 font-medium text-zinc-700 transition-colors hover:bg-zinc-200 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="flex items-center gap-1 rounded px-2 py-1 font-medium text-zinc-700 transition-colors hover:bg-zinc-200"
           title="Insert Media Image"
         >
           🖼 Image
         </button>
 
-        <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+        <span className="mx-1 h-4 w-px bg-zinc-300" />
 
         {/* Undo / Redo */}
         <button
           type="button"
           disabled={!editor.can().undo()}
           onClick={() => editor.chain().focus().undo().run()}
-          className="rounded px-2 py-1 text-zinc-700 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-30 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="rounded px-2 py-1 text-zinc-700 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-30"
           title="Undo"
         >
           ↩
@@ -348,7 +348,7 @@ export function RichTextEditor({
           type="button"
           disabled={!editor.can().redo()}
           onClick={() => editor.chain().focus().redo().run()}
-          className="rounded px-2 py-1 text-zinc-700 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-30 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          className="rounded px-2 py-1 text-zinc-700 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-30"
           title="Redo"
         >
           ↪
@@ -357,13 +357,13 @@ export function RichTextEditor({
 
       {/* Editor Content Area */}
       <div
-        className="cursor-text p-4 focus-within:outline-none"
+        className="cursor-text bg-white p-4 text-zinc-900 focus-within:outline-none"
         style={{ minHeight }}
         onClick={() => editor.commands.focus()}
       >
         <EditorContent
           editor={editor}
-          className="prose-editor focus:outline-none [&_.tiptap]:min-h-[220px] [&_.tiptap]:focus:outline-none"
+          className="prose-editor text-zinc-900 focus:outline-none [&_.tiptap]:min-h-[220px] [&_.tiptap]:text-zinc-900 [&_.tiptap]:focus:outline-none [&_.tiptap_p]:mb-3 [&_.tiptap_p]:leading-relaxed [&_.tiptap_p]:text-zinc-900 [&_.tiptap_h2]:mb-2 [&_.tiptap_h2]:mt-4 [&_.tiptap_h2]:font-heading [&_.tiptap_h2]:text-2xl [&_.tiptap_h2]:font-bold [&_.tiptap_h2]:text-zinc-900 [&_.tiptap_h3]:mb-2 [&_.tiptap_h3]:mt-3 [&_.tiptap_h3]:font-heading [&_.tiptap_h3]:text-xl [&_.tiptap_h3]:font-semibold [&_.tiptap_h3]:text-zinc-900 [&_.tiptap_h4]:mb-1 [&_.tiptap_h4]:mt-2 [&_.tiptap_h4]:font-heading [&_.tiptap_h4]:text-lg [&_.tiptap_h4]:font-semibold [&_.tiptap_h4]:text-zinc-900 [&_.tiptap_ul]:my-2 [&_.tiptap_ul]:ml-5 [&_.tiptap_ul]:list-disc [&_.tiptap_ul]:text-zinc-900 [&_.tiptap_ol]:my-2 [&_.tiptap_ol]:ml-5 [&_.tiptap_ol]:list-decimal [&_.tiptap_ol]:text-zinc-900 [&_.tiptap_blockquote]:my-3 [&_.tiptap_blockquote]:border-l-4 [&_.tiptap_blockquote]:border-amber-600 [&_.tiptap_blockquote]:pl-4 [&_.tiptap_blockquote]:italic [&_.tiptap_blockquote]:text-zinc-700 [&_.tiptap_a]:text-amber-700 [&_.tiptap_a]:underline"
         />
       </div>
 

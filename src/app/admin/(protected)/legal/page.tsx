@@ -12,13 +12,15 @@ export const metadata: Metadata = {
   },
 };
 
+export const instant = false;
+
 export default async function LegalAdminPage() {
   await connection();
   const res = await getAdminLegalPages();
   const pages = res.success ? res.data : [];
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6 p-6 md:p-8">
       <PageHeader
         title="Legal Pages"
         description="Manage the Privacy Policy, Terms & Conditions, and Shipping & Returns pages."
