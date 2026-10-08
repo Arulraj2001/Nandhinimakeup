@@ -15,7 +15,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
   if (!items || items.length === 0) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className={cn("py-3 text-sm", className)}>
+    <nav aria-label="Breadcrumb" className={cn("pt-1 pb-3 text-sm sm:pt-1.5 sm:pb-3.5", className)}>
       <ol className="text-foreground/70 flex flex-wrap items-center gap-1.5 text-xs sm:text-sm">
         <li>
           <Link href="/" className="hover:text-foreground transition-colors">

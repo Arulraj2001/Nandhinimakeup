@@ -81,10 +81,10 @@ async function BlogCategoryContent({
   const { posts, totalPages, currentPage } = postsData;
 
   return (
-    <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 md:py-16 lg:px-8">
+    <div className="mx-auto max-w-7xl space-y-6 px-4 pt-3 pb-12 sm:px-6 sm:pt-5 sm:pb-16 md:pb-20 lg:px-8">
       {/* Category Header */}
-      <div className="mx-auto max-w-2xl space-y-3 text-center">
-        <div className="text-foreground/60 flex items-center justify-center gap-1.5 text-xs">
+      <div className="mx-auto max-w-2xl text-center">
+        <div className="text-foreground/60 mb-1.5 flex items-center justify-center gap-1.5 text-xs">
           <Link href="/blog" className="hover:text-foreground">
             Blog
           </Link>
@@ -92,12 +92,12 @@ async function BlogCategoryContent({
           <span className="text-foreground font-medium">Category</span>
         </div>
 
-        <h1 className="font-heading text-foreground text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+        <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
           {category.name}
         </h1>
 
         {category.description && (
-          <p className="text-foreground/70 text-sm sm:text-base">
+          <p className="text-foreground/80 mt-2 text-sm leading-relaxed sm:mt-3 sm:text-base">
             {category.description}
           </p>
         )}

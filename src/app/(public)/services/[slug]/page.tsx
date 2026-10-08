@@ -119,7 +119,7 @@ async function ServiceDetailContent({
   );
 
   return (
-    <div className="py-8 sm:py-12 md:py-16">
+    <div className="pt-3 pb-12 sm:pt-5 sm:pb-16 md:pb-20">
       <JsonLdScript
         data={[
           ...(serviceSchema ? [serviceSchema] : []),
@@ -134,7 +134,7 @@ async function ServiceDetailContent({
           ]}
         />
 
-        <article className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+        <article className="mt-4 grid grid-cols-1 gap-10 sm:mt-6 lg:grid-cols-2 lg:gap-16">
           {/* Service Image (Single LCP Image of page) */}
           <div className="bg-surface border-border relative aspect-4/3 w-full overflow-hidden rounded-xl border shadow-xs">
             {imageUrl ? (

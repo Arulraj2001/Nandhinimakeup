@@ -52,20 +52,20 @@ export default async function AboutPage() {
   const hasContent = hasStory || portraitUrl || hasHighlights || hasCounters;
 
   return (
-    <div className="py-8 sm:py-12 md:py-16">
+    <div className="pt-3 pb-12 sm:pt-5 sm:pb-16 md:pb-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumb items={[{ label: "About Us" }]} />
 
         {/* Page Header */}
-        <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-          <p className="text-foreground/70 mb-2 text-xs font-semibold tracking-widest uppercase">
+        <div className="mx-auto mb-6 max-w-2xl text-center sm:mb-8">
+          <p className="text-foreground/70 mb-1.5 text-xs font-semibold tracking-widest uppercase">
             Our Journey & Passion
           </p>
-          <h1 className="font-heading text-foreground text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
             About {settings.business.business_name}
           </h1>
           {settings.business.tagline && (
-            <p className="text-foreground/80 mt-4 text-base leading-relaxed sm:text-lg">
+            <p className="text-foreground/80 mt-2 text-sm leading-relaxed sm:mt-3 sm:text-base">
               {settings.business.tagline}
             </p>
           )}
