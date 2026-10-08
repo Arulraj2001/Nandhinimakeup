@@ -42,7 +42,7 @@ export function BeforeAfterSlider({
     <div className={`flex flex-col ${className}`}>
       {/* Slider Viewport Container */}
       <div
-        className={`group border-border bg-surface focus-within:ring-foreground relative w-full overflow-hidden rounded-xl border select-none focus-within:ring-2 ${aspectRatio}`}
+        className={`group relative w-full overflow-hidden rounded-lg border border-[#E5DFD7] bg-white select-none focus-within:ring-2 focus-within:ring-[#8C2524] ${aspectRatio}`}
       >
         {/* Layer 1: AFTER Image (Base Layer) */}
         <div className="absolute inset-0 h-full w-full">
@@ -73,28 +73,28 @@ export function BeforeAfterSlider({
           />
         </div>
 
-        {/* Labels */}
-        <div className="bg-page-background/80 text-foreground pointer-events-none absolute top-3 left-3 z-10 rounded-md px-2 py-0.5 text-[11px] font-semibold tracking-wider uppercase shadow-xs backdrop-blur-xs">
+        {/* Editorial Labels */}
+        <div className="pointer-events-none absolute top-3 left-3 z-10 rounded-md border border-[#E5DFD7] bg-[#FAF8F5]/90 px-2.5 py-1 text-[10px] font-semibold tracking-widest text-[#1C1917] uppercase shadow-xs backdrop-blur-md">
           Before
         </div>
-        <div className="bg-page-background/80 text-foreground pointer-events-none absolute top-3 right-3 z-10 rounded-md px-2 py-0.5 text-[11px] font-semibold tracking-wider uppercase shadow-xs backdrop-blur-xs">
-          After
+        <div className="pointer-events-none absolute top-3 right-3 z-10 rounded-md border border-[#C5A059]/60 bg-[#FAF8F5]/90 px-2.5 py-1 text-[10px] font-semibold tracking-widest text-[#8C2524] uppercase shadow-xs backdrop-blur-md">
+          After (Muhurtham Glow)
         </div>
 
-        {/* Visual Divider Line */}
+        {/* Visual Divider Line in Antique Gold */}
         <div
-          className="bg-background pointer-events-none absolute top-0 bottom-0 z-10 w-0.5 -translate-x-1/2 shadow-xs"
+          className="pointer-events-none absolute top-0 bottom-0 z-10 w-[2px] -translate-x-1/2 bg-[#C5A059] shadow-sm"
           style={{ left: `${sliderPosition}%` }}
         />
 
-        {/* Visual Divider Center Handle */}
+        {/* Visual Divider Center Handle in Warm Ivory & Gold */}
         <div
           aria-hidden="true"
-          className="border-border bg-page-background text-foreground pointer-events-none absolute top-1/2 z-10 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-md transition-transform duration-100 group-hover:scale-110"
+          className="pointer-events-none absolute top-1/2 z-10 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#C5A059] bg-[#FAF8F5] text-[#8C2524] shadow-md transition-transform duration-100 group-hover:scale-110"
           style={{ left: `${sliderPosition}%` }}
         >
           <svg
-            className="h-4 w-4"
+            className="h-3.5 w-3.5"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -102,10 +102,6 @@ export function BeforeAfterSlider({
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <polyline points="15 18 9 12 15 6" />
-            <polyline points="9 18 3 12 9 6" className="hidden" />
-            <polyline points="9 18 15 12 9 6" className="hidden" />
-            {/* Left and right double arrows */}
             <path d="M8 7l-5 5 5 5" />
             <path d="M16 7l5 5-5 5" />
           </svg>

@@ -116,7 +116,7 @@ export function AddToCart({
         <button
           type="button"
           onClick={handleAddToCart}
-          className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground h-11 flex-1 rounded-md text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:text-sm"
+          className="bg-[#8C2524] text-white hover:bg-[#731E1D] focus-visible:ring-[#8C2524] shadow-sm h-11 flex-1 rounded-md text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:text-sm"
         >
           Add to Cart
         </button>

@@ -67,7 +67,7 @@ export function HomeCounters({ counters }: HomeCountersProps) {
   return (
     <section
       ref={containerRef}
-      className="border-border bg-surface border-y py-12 sm:py-16"
+      className="border-y border-[#E5DFD7] bg-[#F4ECE4]/50 py-12 sm:py-16"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -76,10 +76,11 @@ export function HomeCounters({ counters }: HomeCountersProps) {
               key={idx}
               className="flex flex-col items-center justify-center p-4 text-center"
             >
-              <p className="font-heading text-foreground text-4xl font-bold sm:text-5xl md:text-6xl">
-                {displayValues[idx] ?? counter.number}+
+              <p className="font-heading text-4xl font-semibold text-[#1C1917] sm:text-5xl md:text-6xl">
+                {displayValues[idx] ?? counter.number}
+                <span className="text-[#C5A059] font-normal">+</span>
               </p>
-              <p className="text-foreground/75 mt-2 text-xs font-semibold tracking-wider uppercase sm:text-sm">
+              <p className="mt-2 text-xs font-semibold tracking-widest text-[#78716C] uppercase sm:text-sm">
                 {counter.label}
               </p>
             </div>

@@ -122,8 +122,8 @@ export default async function AboutPage() {
                             key={idx}
                             className="text-foreground/85 flex items-start gap-2.5 text-sm"
                           >
-                            <span className="text-foreground mt-0.5 flex-none font-bold">
-                              ✓
+                            <span className="text-[#C5A059] mt-0.5 flex-none font-bold">
+                              ✦
                             </span>
                             <span>{highlight}</span>
                           </li>
@@ -137,9 +137,12 @@ export default async function AboutPage() {
 
             {/* Counters Section */}
             {hasCounters && (
-              <section className="border-border bg-surface rounded-2xl border p-8 sm:p-12">
+              <section className="border-[#E5DFD7] bg-[#F4ECE4]/50 rounded-2xl border p-8 sm:p-12">
                 <div className="mx-auto mb-8 max-w-4xl text-center">
-                  <h2 className="font-heading text-foreground text-2xl font-semibold">
+                  <p className="text-[#C5A059] text-xs font-semibold tracking-widest uppercase mb-2">
+                    ✦ Heritage of Trust ✦
+                  </p>
+                  <h2 className="font-serif text-[#1C1917] text-2xl font-normal tracking-wide sm:text-3xl">
                     Milestones & Celebrations
                   </h2>
                 </div>
@@ -149,10 +152,11 @@ export default async function AboutPage() {
                       key={idx}
                       className="flex flex-col items-center justify-center p-4 text-center"
                     >
-                      <p className="font-heading text-foreground text-4xl font-bold sm:text-5xl">
-                        {counter.number}+
+                      <p className="font-serif text-[#1C1917] text-4xl font-normal tracking-tight sm:text-5xl">
+                        {counter.number}
+                        <span className="text-[#C5A059] font-light">+</span>
                       </p>
-                      <p className="text-foreground/70 mt-2 text-sm font-medium tracking-wider uppercase">
+                      <p className="text-[#1C1917]/70 mt-2 text-xs font-medium tracking-wider uppercase">
                         {counter.label}
                       </p>
                     </div>

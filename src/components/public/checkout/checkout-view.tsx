@@ -570,7 +570,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <button
                 type="submit"
                 disabled={isSubmitting || items.length === 0}
-                className="bg-foreground text-background hover:bg-foreground/90 flex h-12 w-full items-center justify-center rounded-md text-xs font-semibold tracking-wider uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+                className="bg-[#8C2524] text-white hover:bg-[#731E1D] shadow-md flex h-12 w-full items-center justify-center rounded-md text-xs font-semibold tracking-wider uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isSubmitting
                   ? "Placing Order..."

@@ -3,6 +3,13 @@
  */
 export function getPublicMediaUrl(storagePath: string): string {
   if (!storagePath) return "";
+  if (
+    storagePath.startsWith("http://") ||
+    storagePath.startsWith("https://") ||
+    storagePath.startsWith("/")
+  ) {
+    return storagePath;
+  }
   const baseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(
     /\/+$/,
     ""

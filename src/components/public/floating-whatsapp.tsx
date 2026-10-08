@@ -29,7 +29,7 @@ export function FloatingWhatsApp({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
-        className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground group flex h-13 w-13 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95"
+        className="bg-[#15803D] text-white hover:bg-[#166534] shadow-xl ring-2 ring-[#C5A059]/30 group flex h-13 w-13 items-center justify-center rounded-full transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-95"
       >
         {/* Native inline SVG WhatsApp icon */}
         <svg

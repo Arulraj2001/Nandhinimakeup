@@ -31,20 +31,19 @@ export function TestimonialsCarousel({
   };
 
   return (
-    <section className="bg-surface py-16 sm:py-20 md:py-24">
+    <section className="border-t border-[#E5DFD7] bg-[#F4ECE4]/40 py-16 sm:py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header with Carousel Controls */}
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-foreground/70 mb-2 text-xs font-semibold tracking-widest uppercase">
-              Client Testimonials
+            <p className="mb-2 text-xs font-semibold tracking-widest text-[#8C2524] uppercase">
+              ✦ Salem Bride Experiences ✦
             </p>
-            <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
               Words of Love from Our Brides
             </h2>
-            <p className="text-foreground/80 mt-2 max-w-xl text-sm sm:text-base">
-              Heartfelt experiences shared by clients on their most special
-              days.
+            <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
+              Authentic reviews from Muhurtham and Reception ceremonies styled by Nandhini.
             </p>
           </div>
 
@@ -55,10 +54,10 @@ export function TestimonialsCarousel({
                 type="button"
                 onClick={handlePrev}
                 aria-label="Previous testimonial"
-                className="border-border bg-page-background text-foreground hover:bg-foreground hover:text-background focus-visible:ring-foreground flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#E5DFD7] bg-white text-[#1C1917] shadow-2xs transition-colors hover:border-[#8C2524] hover:bg-[#8C2524] hover:text-white focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
               >
                 <svg
-                  className="h-5 w-5"
+                  className="h-4 w-4"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -74,10 +73,10 @@ export function TestimonialsCarousel({
                 type="button"
                 onClick={handleNext}
                 aria-label="Next testimonial"
-                className="border-border bg-page-background text-foreground hover:bg-foreground hover:text-background focus-visible:ring-foreground flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#E5DFD7] bg-white text-[#1C1917] shadow-2xs transition-colors hover:border-[#8C2524] hover:bg-[#8C2524] hover:text-white focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
               >
                 <svg
-                  className="h-5 w-5"
+                  className="h-4 w-4"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -97,7 +96,7 @@ export function TestimonialsCarousel({
           ref={scrollContainerRef}
           tabIndex={0}
           aria-label="Testimonials slider area"
-          className="focus-visible:ring-foreground flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth rounded-xl pb-4 focus-visible:ring-2 focus-visible:outline-none"
+          className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth rounded-xl pb-4 focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
           style={{ scrollbarWidth: "none" }}
         >
           {testimonials.map((t) => (
@@ -105,11 +104,11 @@ export function TestimonialsCarousel({
               key={t.id}
               className="w-[85vw] flex-none snap-center sm:w-[380px] md:w-[420px]"
             >
-              <article className="border-border bg-page-background flex h-full flex-col justify-between rounded-xl border p-6 shadow-xs">
+              <article className="flex h-full flex-col justify-between rounded-lg border border-[#E5DFD7] bg-white p-6 shadow-xs transition-shadow hover:shadow-md">
                 <div>
-                  {/* Star Rating */}
+                  {/* Gold Star Rating */}
                   <div
-                    className="text-foreground flex items-center gap-1"
+                    className="flex items-center gap-1 text-[#C5A059]"
                     aria-label={`Rated ${t.rating} out of 5 stars`}
                   >
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -117,8 +116,8 @@ export function TestimonialsCarousel({
                         key={i}
                         className={`h-4 w-4 ${
                           i < t.rating
-                            ? "fill-current"
-                            : "text-foreground/20 fill-none stroke-current stroke-2"
+                            ? "fill-[#C5A059] text-[#C5A059]"
+                            : "fill-none text-[#E5DFD7] stroke-current stroke-2"
                         }`}
                         viewBox="0 0 24 24"
                       >
@@ -128,26 +127,26 @@ export function TestimonialsCarousel({
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="text-foreground/90 mt-4 text-sm leading-relaxed italic">
+                  <blockquote className="mt-4 text-sm leading-relaxed text-[#57534E] italic">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                 </div>
 
                 {/* Author Info */}
-                <div className="border-border mt-6 flex items-center justify-between border-t pt-4">
+                <div className="mt-6 flex items-center justify-between border-t border-[#E5DFD7] pt-4">
                   <div>
-                    <p className="font-heading text-foreground text-sm font-semibold">
+                    <p className="font-heading text-sm font-semibold text-[#1C1917]">
                       {t.customer_name}
                     </p>
                     {t.occasion && (
-                      <p className="text-foreground/60 mt-0.5 text-xs">
+                      <p className="mt-0.5 text-xs text-[#78716C]">
                         {t.occasion}
                       </p>
                     )}
                   </div>
 
                   {t.source && (
-                    <span className="bg-surface text-foreground/75 border-border rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase">
+                    <span className="rounded-full border border-[#E5DFD7] bg-[#FAF8F5] px-2.5 py-0.5 text-[10px] font-medium tracking-wider text-[#78716C] uppercase">
                       {t.source}
                     </span>
                   )}

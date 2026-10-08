@@ -34,12 +34,12 @@ export function CategoryMarquee({ categories }: CategoryMarqueeProps) {
             <Link
               key={`${cat.id}-${idx}`}
               href={`/services`}
-              className="group border-border bg-surface hover:bg-accent focus-visible:ring-foreground flex items-center gap-2 rounded-full border px-5 py-2 whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              className="group flex items-center gap-2 rounded-full border border-[#E5DFD7] bg-white px-5 py-2 whitespace-nowrap shadow-2xs transition-colors hover:border-[#C5A059] hover:bg-[#F4ECE4] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
             >
-              <span className="text-foreground text-xs font-semibold tracking-wider uppercase">
+              <span className="text-xs font-semibold tracking-wider text-[#1C1917] uppercase">
                 {cat.name}
               </span>
-              <span className="text-foreground/60 group-hover:text-foreground text-xs transition-colors">
+              <span className="text-xs text-[#C5A059] transition-transform duration-200 group-hover:scale-125">
                 ✦
               </span>
             </Link>

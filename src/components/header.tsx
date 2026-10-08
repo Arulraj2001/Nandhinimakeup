@@ -60,15 +60,15 @@ export function Header({
   }, [hasBlog]);
 
   return (
-    <header className="border-border bg-page-background sticky top-0 z-30 border-b">
+    <header className="sticky top-0 z-30 border-b border-[#E5DFD7] bg-[#FAF8F5]/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
         {/* Brand Logo & Business Name */}
         <Link
           href="/"
-          className="font-heading text-foreground flex items-center gap-3 text-lg font-semibold tracking-wide sm:text-2xl"
+          className="font-heading flex items-center gap-3 text-lg font-semibold tracking-wide text-[#1C1917] sm:text-2xl"
         >
           {logoUrl && (
-            <div className="border-border/80 relative h-10 w-10 flex-none overflow-hidden rounded-full border bg-white shadow-xs sm:h-11 sm:w-11">
+            <div className="relative h-10 w-10 flex-none overflow-hidden rounded-full border border-[#C5A059]/40 bg-white shadow-xs sm:h-11 sm:w-11">
               <Image
                 src={logoUrl}
                 alt={logoAlt || businessName}
@@ -83,15 +83,16 @@ export function Header({
         </Link>
 
         {/* Desktop Navigation & Actions */}
-        <div className="hidden md:flex md:items-center md:gap-6">
+        <div className="hidden md:flex md:items-center md:gap-7">
           <nav className="flex items-center gap-6" aria-label="Main Navigation">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-foreground hover:text-foreground/75 text-sm font-medium transition-colors"
+                className="group relative text-sm font-medium text-[#1C1917]/85 transition-colors hover:text-[#8C2524]"
               >
-                {item.title}
+                <span>{item.title}</span>
+                <span className="absolute -bottom-1 left-0 h-[1.5px] w-0 bg-[#8C2524] transition-all duration-200 group-hover:w-full" />
               </Link>
             ))}
           </nav>
@@ -105,7 +106,7 @@ export function Header({
                 href={whatsAppLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground inline-flex items-center justify-center rounded-md px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                className="inline-flex items-center justify-center rounded-md bg-[#8C2524] px-4 py-2 text-xs font-semibold tracking-wider text-white uppercase shadow-xs transition-colors hover:bg-[#731E1D] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
               >
                 WhatsApp
               </Link>
@@ -122,7 +123,7 @@ export function Header({
               href={whatsAppLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center justify-center rounded-md px-3 py-1.5 text-xs font-semibold tracking-wider uppercase"
+              className="inline-flex items-center justify-center rounded-md bg-[#8C2524] px-3 py-1.5 text-xs font-semibold tracking-wider text-white uppercase transition-colors hover:bg-[#731E1D]"
               aria-label="Chat on WhatsApp"
             >
               WhatsApp
@@ -133,7 +134,7 @@ export function Header({
             ref={toggleBtnRef}
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="border-border text-foreground hover:bg-surface focus-visible:ring-foreground inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm font-medium focus-visible:ring-2 focus-visible:outline-none"
+            className="inline-flex items-center justify-center rounded-md border border-[#E5DFD7] bg-white px-3 py-1.5 text-sm font-medium text-[#1C1917] hover:bg-[#F4ECE4] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
             aria-expanded={isOpen}
             aria-label="Toggle navigation menu"
           >
@@ -145,16 +146,16 @@ export function Header({
       {/* Mobile Navigation Dropdown */}
       {isOpen && (
         <nav
-          className="border-border bg-surface border-t px-4 py-3 md:hidden"
+          className="border-t border-[#E5DFD7] bg-[#FAF8F5] px-4 py-3 shadow-md md:hidden"
           aria-label="Mobile Navigation"
         >
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col gap-1.5">
             {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-foreground hover:bg-card-surface block rounded px-3 py-2 text-sm font-medium"
+                  className="block rounded-md px-3 py-2 text-sm font-medium text-[#1C1917] transition-colors hover:bg-[#F4ECE4] hover:text-[#8C2524]"
                 >
                   {item.title}
                 </Link>

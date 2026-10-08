@@ -62,8 +62,8 @@ export default async function ReviewsPage() {
                         key={i}
                         className={`h-4 w-4 ${
                           i < t.rating
-                            ? "text-foreground fill-current"
-                            : "text-foreground/20 fill-none stroke-current stroke-2"
+                            ? "text-[#C5A059] fill-[#C5A059]"
+                            : "text-[#E5DFD7] fill-none stroke-current stroke-2"
                         }`}
                         viewBox="0 0 24 24"
                       >

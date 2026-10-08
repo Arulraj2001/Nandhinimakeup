@@ -226,7 +226,7 @@ async function ServiceDetailContent({
                   href={bookWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground inline-flex w-full items-center justify-center rounded-md px-6 py-3.5 text-sm font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
+                  className="bg-[#15803D] text-white hover:bg-[#166534] shadow-sm inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
                 >
                   Book on WhatsApp
                 </Link>

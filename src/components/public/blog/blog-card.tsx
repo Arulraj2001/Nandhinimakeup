@@ -43,20 +43,20 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
         <div className="flex flex-col justify-between space-y-4 p-6 sm:p-8 md:col-span-5">
           <div className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-amber-900 uppercase dark:bg-amber-950/60 dark:text-amber-300">
-                Featured Article
+              <span className="rounded-md border border-[#C5A059]/40 bg-[#F4ECE4] px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-[#8C2524] uppercase">
+                ✦ Featured Editorial
               </span>
               {post.category && (
                 <Link
                   href={`/blog/category/${post.category.slug}`}
-                  className="text-foreground/60 hover:text-foreground text-xs font-medium transition-colors"
+                  className="text-foreground/70 hover:text-[#8C2524] text-xs font-medium transition-colors"
                 >
                   {post.category.name}
                 </Link>
               )}
             </div>
 
-            <h2 className="font-heading text-foreground text-xl font-bold tracking-tight transition-colors group-hover:text-amber-700 sm:text-2xl dark:group-hover:text-amber-400">
+            <h2 className="font-heading text-foreground text-xl font-bold tracking-tight transition-colors group-hover:text-[#8C2524] sm:text-2xl">
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>
             </h2>
 
@@ -112,13 +112,13 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
           {post.category && (
             <Link
               href={`/blog/category/${post.category.slug}`}
-              className="text-[11px] font-semibold tracking-wider text-amber-700 uppercase hover:underline dark:text-amber-400"
+              className="text-[11px] font-semibold tracking-wider text-[#8C2524] uppercase hover:underline"
             >
               {post.category.name}
             </Link>
           )}
 
-          <h3 className="font-heading text-foreground line-clamp-2 text-base font-semibold tracking-tight transition-colors group-hover:text-amber-700 sm:text-lg dark:group-hover:text-amber-400">
+          <h3 className="font-heading text-foreground line-clamp-2 text-base font-semibold tracking-tight transition-colors group-hover:text-[#8C2524] sm:text-lg">
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </h3>
 

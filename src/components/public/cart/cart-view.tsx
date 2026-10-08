@@ -400,7 +400,7 @@ export function CartView({ settings }: CartViewProps) {
                   className={`inline-flex w-full items-center justify-center rounded-md px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors ${
                     hasErrors || items.length === 0
                       ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
-                      : "bg-foreground text-background hover:bg-foreground/90"
+                      : "bg-[#8C2524] text-white hover:bg-[#731E1D] shadow-sm"
                   }`}
                 >
                   Proceed to Checkout

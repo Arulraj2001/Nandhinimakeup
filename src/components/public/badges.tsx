@@ -18,31 +18,32 @@ export function Badge({ variant, className, children }: BadgeProps) {
     case "new":
       label = label || "New";
       variantStyles =
-        "bg-foreground text-background font-medium tracking-wide uppercase text-[10px]";
+        "bg-[#1C1917] text-[#FAF8F5] border border-[#C5A059]/50 font-medium tracking-widest uppercase text-[10px]";
       break;
     case "sale":
       label = label || "Sale";
       variantStyles =
-        "bg-accent text-foreground font-semibold border border-foreground/20 text-[10px]";
+        "bg-[#8C2524] text-white font-semibold text-[10px]";
       break;
     case "out_of_stock":
       label = label || "Out of Stock";
       variantStyles =
-        "bg-surface text-foreground/70 border border-border text-[10px]";
+        "bg-[#F4ECE4] text-[#78716C] border border-[#E5DFD7] text-[10px]";
       break;
     case "made_to_order":
       label = label || "Made to Order";
       variantStyles =
-        "bg-surface text-foreground border border-border font-medium text-[10px]";
+        "bg-white text-[#1C1917] border border-[#E5DFD7] font-medium text-[10px]";
       break;
     case "featured":
       label = label || "Featured";
-      variantStyles = "bg-accent text-foreground font-semibold text-[10px]";
+      variantStyles =
+        "bg-[#FAF8F5] text-[#8C2524] border border-[#C5A059] font-semibold text-[10px]";
       break;
     case "in_stock":
       label = label || "In Stock";
       variantStyles =
-        "bg-surface text-foreground border border-foreground/30 font-medium text-[10px]";
+        "bg-white text-[#15803D] border border-emerald-200 font-medium text-[10px]";
       break;
   }
 

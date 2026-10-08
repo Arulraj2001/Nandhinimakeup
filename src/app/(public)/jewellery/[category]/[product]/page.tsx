@@ -250,7 +250,7 @@ async function ProductDetailContent({
                   href={enquireWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground inline-flex w-full items-center justify-center rounded-md px-6 py-3.5 text-sm font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
+                  className="bg-[#15803D] text-white hover:bg-[#166534] shadow-sm inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none sm:w-auto"
                 >
                   {whatsappButtonText}
                 </Link>
@@ -272,7 +272,7 @@ async function ProductDetailContent({
                 More in {product.category?.name || "This Category"}
               </h2>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
               {relatedProducts.map((rel) => (
                 <ProductCard key={rel.id} product={rel} />
               ))}

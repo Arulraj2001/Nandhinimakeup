@@ -113,7 +113,7 @@ export default async function ContactPage() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center justify-center rounded-md px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors"
+                      className="bg-[#15803D] text-white hover:bg-[#166534] shadow-sm inline-flex items-center justify-center rounded-md px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors"
                     >
                       Chat on WhatsApp
                     </Link>

@@ -108,7 +108,7 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
                 href={instagramPrimary}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-border bg-surface hover:bg-page-background text-foreground hover:text-pink-600 dark:hover:text-pink-400 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                className="border-border bg-surface hover:bg-[#FAF8F5] text-foreground hover:text-[#8C2524] hover:border-[#C5A059]/60 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
                 title="Follow Nandhini Makeup Artist on Instagram"
               >
                 <InstagramIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />
@@ -120,7 +120,7 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
                 href={instagramSecondary}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-border bg-surface hover:bg-page-background text-foreground hover:text-pink-600 dark:hover:text-pink-400 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                className="border-border bg-surface hover:bg-[#FAF8F5] text-foreground hover:text-[#8C2524] hover:border-[#C5A059]/60 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
                 title="Follow Nandhu Jewellery & Accessories on Instagram"
               >
                 <InstagramIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />
@@ -133,7 +133,7 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
                   href={whatsAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-border bg-surface hover:bg-page-background text-foreground hover:text-emerald-600 dark:hover:text-emerald-400 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                  className="border-border bg-surface hover:bg-[#FAF8F5] text-foreground hover:text-[#15803D] hover:border-[#C5A059]/60 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
                   title="Chat directly on WhatsApp"
                 >
                   <WhatsAppIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />

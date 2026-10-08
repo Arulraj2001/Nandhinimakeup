@@ -43,7 +43,7 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
   return (
     <aside
       aria-label="Announcement"
-      className="bg-accent text-foreground border-foreground/10 relative z-30 border-b px-4 py-2 text-center text-xs font-medium sm:text-sm"
+      className="relative z-30 border-b border-[#C5A059]/30 bg-[#1C1917] px-4 py-2 text-center text-xs font-medium text-[#FAF8F5] sm:text-sm"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <div className="flex-1 text-center">
@@ -51,7 +51,7 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
           {announcement.link_url && (
             <Link
               href={announcement.link_url}
-              className="ml-2 font-semibold underline underline-offset-2 hover:opacity-80"
+              className="ml-2 font-semibold text-[#C5A059] underline underline-offset-4 transition-colors hover:text-white"
             >
               {announcement.link_label || "Learn more"} →
             </Link>
@@ -60,7 +60,7 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
         <button
           type="button"
           onClick={handleDismiss}
-          className="text-foreground/70 hover:text-foreground cursor-pointer p-1 text-sm font-bold"
+          className="cursor-pointer p-1 text-sm font-medium text-[#FAF8F5]/60 hover:text-[#FAF8F5]"
           aria-label="Dismiss announcement"
         >
           ✕

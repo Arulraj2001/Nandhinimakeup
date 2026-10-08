@@ -1,16 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #fff5f5;
-  --color-surface: #f7d6d0;
-  --color-accent: #e2b4bd;
-  --color-foreground: #4a4a4a;
+  /* Contemporary South Indian Bridal Editorial Tokens */
+  --color-background: #FAF8F5;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F4ECE4;
+  --color-accent: #8C2524;
+  --color-accent-hover: #731E1D;
+  --color-gold: #C5A059;
+  --color-gold-subtle: #E8DCC4;
+  --color-foreground: #1C1917;
+  --color-muted: #78716C;
 
   /* Semantic aliases */
-  --color-page-background: #fff5f5;
-  --color-card-surface: #f7d6d0;
-  --color-text: #4a4a4a;
-  --color-border: #e2b4bd;
+  --color-page-background: #FAF8F5;
+  --color-card-surface: #FFFFFF;
+  --color-text: #1C1917;
+  --color-border: #E5DFD7;
 
   /* Typography */
   --font-heading: var(--font-cormorant), Georgia, serif;
@@ -18,14 +24,19 @@
 }
 
 :root {
-  --background: #fff5f5;
-  --surface: #f7d6d0;
-  --accent: #e2b4bd;
-  --foreground: #4a4a4a;
-  --page-background: #fff5f5;
-  --card-surface: #f7d6d0;
-  --text: #4a4a4a;
-  --border: #e2b4bd;
+  --background: #FAF8F5;
+  --surface: #FFFFFF;
+  --surface-subtle: #F4ECE4;
+  --accent: #8C2524;
+  --accent-hover: #731E1D;
+  --gold: #C5A059;
+  --gold-subtle: #E8DCC4;
+  --foreground: #1C1917;
+  --muted: #78716C;
+  --page-background: #FAF8F5;
+  --card-surface: #FFFFFF;
+  --text: #1C1917;
+  --border: #E5DFD7;
 }
 
 /* Smooth scrolling that respects prefers-reduced-motion */
@@ -35,18 +46,18 @@
   }
 }
 
-/* Selection colour using the accent */
+/* Selection colour in deep kumkum red with ivory text */
 ::selection {
-  background-color: #e2b4bd;
-  color: #4a4a4a;
+  background-color: #8C2524;
+  color: #FAF8F5;
 }
 
 /* Base typography scale */
 body {
-  background-color: #fff5f5;
-  color: #4a4a4a;
+  background-color: #FAF8F5;
+  color: #1C1917;
   font-family: var(--font-poppins), system-ui, sans-serif;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -58,28 +69,29 @@ h4,
 h5,
 h6 {
   font-family: var(--font-cormorant), Georgia, serif;
-  color: #4a4a4a;
+  color: #1C1917;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
 }
 
 @media (min-width: 768px) {
   h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
   }
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
 }
 
 @media (min-width: 768px) {
   h2 {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
   }
 }
 
@@ -87,16 +99,17 @@ h3 {
   font-size: 1.35rem;
 }
 
-/* Focus-visible styles */
+/* Focus-visible styles with refined Kumkum red ring */
 :focus-visible {
-  outline: 2px solid #4a4a4a;
+  outline: 2px solid #8C2524;
   outline-offset: 2px;
 }
 
+/* Editorial micro-animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translate3d(0, 14px, 0);
+    transform: translate3d(0, 16px, 0);
   }
   to {
     opacity: 1;
@@ -104,7 +117,36 @@ h3 {
   }
 }
 
-/* Service Category Marquee (CSS only, pauses on hover/focus, disabled on reduced motion) */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Restrained hairline craft lines */
+.border-gold-hairline {
+  border-color: #C5A059;
+}
+
+.text-gold {
+  color: #C5A059;
+}
+
+.bg-gold {
+  background-color: #C5A059;
+}
+
+.bg-kumkum {
+  background-color: #8C2524;
+}
+
+.hover\:bg-kumkum-dark:hover {
+  background-color: #731E1D;
+}
+
+.text-kumkum {
+  color: #8C2524;
+}
+
+/* Service Category Marquee */
 @keyframes marquee {
   0% {
     transform: translateX(0%);
@@ -117,7 +159,7 @@ h3 {
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 25s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
 .animate-marquee:hover,
@@ -132,5 +174,9 @@ h3 {
     width: auto;
     flex-wrap: wrap;
     justify-content: center;
+  }
+  .animate-fade-in-up {
+    animation: none;
+    transform: none;
   }
 }

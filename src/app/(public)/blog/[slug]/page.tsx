@@ -197,7 +197,7 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
 
       {/* Excerpt Lead */}
       {post.excerpt && (
-        <div className="text-foreground/80 bg-surface mb-8 rounded-r border-l-4 border-amber-600 py-2 pl-4 font-serif text-base italic sm:text-lg">
+        <div className="text-foreground/90 bg-[#F4ECE4]/40 mb-8 rounded-r-lg border-l-4 border-[#C5A059] py-3 pl-5 font-serif text-base italic sm:text-lg">
           {post.excerpt}
         </div>
       )}

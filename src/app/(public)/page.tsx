@@ -111,21 +111,21 @@ export default async function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-foreground/70 mb-2 text-xs font-semibold tracking-widest uppercase">
-                  Signature Artistry
+                <p className="mb-2 text-xs font-semibold tracking-widest text-[#8C2524] uppercase">
+                  ✦ Signature Artistry ✦
                 </p>
-                <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
-                  Featured Services
+                <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
+                  Featured Bridal Packages
                 </h2>
-                <p className="text-foreground/80 mt-2 max-w-xl text-sm sm:text-base">
-                  Bespoke bridal makeovers, reception looks, and salon
-                  treatments designed for your special occasions.
+                <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
+                  Bespoke Muhurtham HD makeovers, reception glass-skin glows, and
+                  saree pleating crafted for South Indian ceremonies.
                 </p>
               </div>
 
               <Link
                 href="/services"
-                className="text-foreground flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase hover:underline"
+                className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-[#8C2524] uppercase transition-colors hover:text-[#731E1D]"
               >
                 View All Services <span>→</span>
               </Link>
@@ -142,25 +142,25 @@ export default async function HomePage() {
 
       {/* 3. Featured Jewellery (Up to eight, skipped if empty) */}
       {featuredProducts.length > 0 && (
-        <section className="border-border bg-surface/30 border-t py-16 sm:py-20 md:py-24">
+        <section className="border-t border-[#E5DFD7] bg-[#F4ECE4]/60 py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-foreground/70 mb-2 text-xs font-semibold tracking-widest uppercase">
-                  Curated Collection
+                <p className="mb-2 text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
+                  ✦ Curated Heirloom Collection ✦
                 </p>
-                <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
+                <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
                   Featured Jewellery
                 </h2>
-                <p className="text-foreground/80 mt-2 max-w-xl text-sm sm:text-base">
-                  Handcrafted bridal necklaces, bangles, and temple ornaments
-                  that complement your bridal attire.
+                <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
+                  Handcrafted antique Nagas temple sets, AD diamond chokers, and
+                  Victorian emerald ornaments available for rent from ₹999/day.
                 </p>
               </div>
 
               <Link
                 href="/jewellery"
-                className="text-foreground flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase hover:underline"
+                className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-[#8C2524] uppercase transition-colors hover:text-[#731E1D]"
               >
                 Explore Collection <span>→</span>
               </Link>
@@ -177,18 +177,18 @@ export default async function HomePage() {
 
       {/* 4. Before and After Showcase (Up to three items, skipped if empty) */}
       {beforeAfterGallery.length > 0 && (
-        <section className="border-border border-t py-16 sm:py-20 md:py-24">
+        <section className="border-t border-[#E5DFD7] bg-[#FAF8F5] py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-12 max-w-2xl text-center">
-              <p className="text-foreground/70 mb-2 text-xs font-semibold tracking-widest uppercase">
-                Real Transformations
+              <p className="mb-2 text-xs font-semibold tracking-widest text-[#8C2524] uppercase">
+                ✦ Real Bridal Transformations ✦
               </p>
-              <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
-                Before & After Transformations
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
+                Before &amp; After Artistry
               </h2>
-              <p className="text-foreground/80 mt-3 text-sm sm:text-base">
-                Interact with our comparison slider to see the meticulous
-                artistry and radiant transformations.
+              <p className="mt-3 text-sm text-[#57534E] sm:text-base">
+                Slide horizontally to see the meticulous base preparation, HD skin
+                match, and ceremonial bridal glow.
               </p>
             </div>
 
@@ -235,25 +235,25 @@ export default async function HomePage() {
 
       {/* 8. Gallery Teaser (Up to six items linking to /gallery, skipped if empty) */}
       {galleryTeaser.length > 0 && (
-        <section className="border-border border-t py-16 sm:py-20 md:py-24">
+        <section className="border-t border-[#E5DFD7] bg-[#F4ECE4]/40 py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-foreground/70 mb-2 text-xs font-semibold tracking-widest uppercase">
-                  Portfolio Highlights
+                <p className="mb-2 text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
+                  ✦ Real Moments ✦
                 </p>
-                <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
+                <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
                   Artistry in Detail
                 </h2>
-                <p className="text-foreground/80 mt-2 max-w-xl text-sm sm:text-base">
+                <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
                   A glimpse into our makeup craft, hair design, and bridal
-                  elegance.
+                  elegance across Salem &amp; Tamil Nadu.
                 </p>
               </div>
 
               <Link
                 href="/gallery"
-                className="text-foreground flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase hover:underline"
+                className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-[#8C2524] uppercase transition-colors hover:text-[#731E1D]"
               >
                 View Full Gallery <span>→</span>
               </Link>
@@ -267,7 +267,7 @@ export default async function HomePage() {
                   <Link
                     key={item.id}
                     href="/gallery"
-                    className="border-border bg-surface group focus-visible:ring-foreground relative aspect-[3/4] overflow-hidden rounded-lg border focus-visible:ring-2 focus-visible:outline-none"
+                    className="group relative aspect-[3/4] overflow-hidden rounded-lg border border-[#E5DFD7] bg-white transition-all hover:border-[#C5A059]/80 hover:shadow-xs focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                   >
                     <Image
                       src={getPublicMediaUrl(img.storage_path)}
@@ -276,9 +276,9 @@ export default async function HomePage() {
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                       className="object-cover transition-transform duration-300 will-change-transform group-hover:scale-105"
                     />
-                    <div className="bg-foreground/20 absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                      <span className="text-background text-xs font-medium">
-                        View →
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#1C1917]/30 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                      <span className="rounded bg-[#FAF8F5]/90 px-2 py-1 text-[11px] font-semibold text-[#8C2524] uppercase tracking-wider backdrop-blur-xs">
+                        View Look →
                       </span>
                     </div>
                   </Link>
@@ -291,16 +291,16 @@ export default async function HomePage() {
 
       {/* 9. Closing Call-to-Action (Skipped if no CTA text/headline) */}
       {hasClosingCta && (
-        <section className="border-border bg-surface border-t py-16 text-center sm:py-20 md:py-24">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <section className="border-t border-[#C5A059]/40 bg-[#FAF8F5] py-16 text-center sm:py-20 md:py-24">
+          <div className="mx-auto max-w-3xl rounded-xl border border-[#E5DFD7] bg-white p-8 shadow-sm sm:p-12">
             {closingHeadline && (
-              <h2 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl md:text-5xl">
                 {closingHeadline}
               </h2>
             )}
 
             {closingText && (
-              <p className="text-foreground/85 mt-4 text-base leading-relaxed whitespace-pre-line sm:text-lg">
+              <p className="mt-4 text-base leading-relaxed whitespace-pre-line text-[#57534E] sm:text-lg">
                 {closingText}
               </p>
             )}
@@ -311,16 +311,16 @@ export default async function HomePage() {
                   href={closingWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-foreground inline-flex items-center justify-center rounded-md px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  className="inline-flex items-center justify-center rounded-md bg-[#8C2524] px-6 py-3.5 text-xs font-semibold tracking-wider text-white uppercase shadow-sm transition-all hover:bg-[#731E1D] hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                 >
-                  Book on WhatsApp
+                  Book Consultation on WhatsApp
                 </Link>
               )}
 
               {hasPhone && (
                 <a
                   href={`tel:${settings.business.phone}`}
-                  className="border-foreground/30 text-foreground hover:bg-page-background focus-visible:ring-foreground inline-flex items-center justify-center rounded-md border px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                  className="inline-flex items-center justify-center rounded-md border border-[#1C1917] bg-white px-6 py-3.5 text-xs font-semibold tracking-wider text-[#1C1917] uppercase transition-colors hover:bg-[#F4ECE4] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                 >
                   Call {settings.business.phone}
                 </a>
