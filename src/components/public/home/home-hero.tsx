@@ -14,6 +14,39 @@ interface HomeHeroProps {
   primaryButtonChoice: "services" | "jewellery";
 }
 
+function renderColoredHeadline(text: string) {
+  if (text.includes("South Indian Brides") && text.includes("Handcrafted Adornments")) {
+    return (
+      <>
+        <span>Crafting Timeless </span>
+        <span className="text-[#8C2524]">South Indian Brides</span>{" "}
+        <span className="font-serif font-normal italic text-[#C5A059]">&amp;</span>{" "}
+        <span>Handcrafted Adornments</span>
+      </>
+    );
+  }
+
+  if (text.includes("&")) {
+    const parts = text.split("&");
+    return (
+      <>
+        {parts.map((part, idx) => (
+          <React.Fragment key={idx}>
+            {idx > 0 && (
+              <span className="font-serif font-normal italic text-[#C5A059]">
+                {" "}&amp;{" "}
+              </span>
+            )}
+            <span>{part.trim()}</span>
+          </React.Fragment>
+        ))}
+      </>
+    );
+  }
+
+  return text;
+}
+
 export function HomeHero({
   headline,
   supportingText,
@@ -129,7 +162,7 @@ export function HomeHero({
                   animate={{ y: "0%", opacity: 1 }}
                   transition={{ duration: 0.7, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {headline}
+                  {renderColoredHeadline(headline)}
                 </m.span>
               </span>
             </h1>
