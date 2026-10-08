@@ -48,7 +48,7 @@ export function Header({
 
   const navItems = React.useMemo(() => {
     const items = [...siteConfig.nav];
-    if (hasBlog) {
+    if (hasBlog && !items.some((i) => i.href === "/blog")) {
       const aboutIdx = items.findIndex((i) => i.href === "/about");
       if (aboutIdx !== -1) {
         items.splice(aboutIdx, 0, { title: "Blog", href: "/blog" });

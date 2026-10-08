@@ -73,7 +73,7 @@ export default async function ServicesPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
                   {cat.services.map((service) => (
                     <ServiceCard key={service.id} service={service} />
                   ))}

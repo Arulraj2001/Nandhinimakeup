@@ -12,11 +12,11 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: "[BUSINESS NAME]",
+  name: "Nandhini Makeup & Jewellery",
   shortDescription:
-    "Professional beauty parlour, bridal makeup artistry, and curated jewellery accessories.",
+    "Salem's premier bridal makeup artistry, HD wedding makeover parlour, and curated antique jewellery rental.",
   defaultLanguage: "en",
-  primaryWhatsAppNumber: "",
+  primaryWhatsAppNumber: "+917010847631",
   nav: [
     {
       title: "Home",
@@ -33,6 +33,10 @@ export const siteConfig: SiteConfig = {
     {
       title: "Gallery",
       href: "/gallery",
+    },
+    {
+      title: "Blog",
+      href: "/blog",
     },
     {
       title: "About",

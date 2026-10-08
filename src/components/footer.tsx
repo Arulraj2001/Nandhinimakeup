@@ -108,39 +108,49 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
                 href={instagramPrimary}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:underline inline-flex items-center gap-1.5"
+                className="border-border bg-surface hover:bg-page-background text-foreground hover:text-pink-600 dark:hover:text-pink-400 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                title="Follow Nandhini Makeup Artist on Instagram"
               >
-                <span className="font-semibold text-foreground/80">Instagram (Makeup):</span>
-                <span>@nandhini__makeupartist</span>
+                <InstagramIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />
+                <span className="truncate">@nandhini__makeupartist</span>
+                <span className="text-foreground/50 ml-auto text-[10px] uppercase">Makeup</span>
               </a>
+
               <a
                 href={instagramSecondary}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:underline inline-flex items-center gap-1.5"
+                className="border-border bg-surface hover:bg-page-background text-foreground hover:text-pink-600 dark:hover:text-pink-400 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                title="Follow Nandhu Jewellery & Accessories on Instagram"
               >
-                <span className="font-semibold text-foreground/80">Instagram (Jewellery):</span>
-                <span>@nandhu_accessorie</span>
+                <InstagramIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />
+                <span className="truncate">@nandhu_accessorie</span>
+                <span className="text-foreground/50 ml-auto text-[10px] uppercase">Jewellery</span>
               </a>
+
               {whatsAppLink && (
                 <a
                   href={whatsAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-foreground hover:underline inline-flex items-center gap-1.5"
+                  className="border-border bg-surface hover:bg-page-background text-foreground hover:text-emerald-600 dark:hover:text-emerald-400 group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                  title="Chat directly on WhatsApp"
                 >
-                  <span className="font-semibold text-foreground/80">WhatsApp:</span>
-                  <span>{business?.whatsapp_number || "+91 7010847631"}</span>
+                  <WhatsAppIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />
+                  <span className="truncate">WhatsApp: +91 7010847631</span>
                 </a>
               )}
+
               <Link
                 href="/contact"
-                className="text-foreground hover:underline inline-flex items-center gap-1.5"
+                className="border-border bg-surface hover:bg-page-background text-foreground group flex items-center gap-2.5 rounded-lg border px-3 py-2 transition-all hover:shadow-xs"
+                title="Salem Studio & Contact Details"
               >
-                <span className="font-semibold text-foreground/80">Studio & Contact:</span>
-                <span>Salem, Tamil Nadu</span>
+                <LocationIcon className="h-4 w-4 flex-none transition-transform group-hover:scale-110" />
+                <span className="truncate">Salem Studio &amp; Contact</span>
               </Link>
             </div>
+
             {/* Quick Links for completed public pages */}
             <div className="space-y-1.5 pt-2">
               <h5 className="text-foreground/80 text-[11px] font-semibold tracking-wider uppercase">
@@ -164,6 +174,12 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
                   className="text-foreground/70 hover:text-foreground transition-colors"
                 >
                   Gallery
+                </Link>
+                <Link
+                  href="/blog"
+                  className="text-foreground/70 hover:text-foreground font-medium transition-colors"
+                >
+                  Blog
                 </Link>
                 <Link
                   href="/about"
@@ -220,5 +236,59 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
         </div>
       </div>
     </footer>
+  );
+}
+
+function InstagramIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" strokeWidth="2.5" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+  );
+}
+
+function LocationIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
   );
 }

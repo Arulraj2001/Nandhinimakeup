@@ -32,6 +32,8 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
   const [loadingProducts, setLoadingProducts] = React.useState(true);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isOrderRedirecting, setIsOrderRedirecting] = React.useState(false);
+  const isOrderSuccessRef = React.useRef(false);
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutFormSchema),
@@ -49,8 +51,9 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
     },
   });
 
-  // Redirect to /cart if cart is empty after hydration
+  // Redirect to /cart if cart is empty after hydration (only when not placing an order)
   React.useEffect(() => {
+    if (isOrderSuccessRef.current) return;
     if (!loadingProducts && items.length === 0) {
       router.replace("/cart");
     }
@@ -116,7 +119,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
   const total = subtotal + deliveryCharge;
 
   const onSubmit = async (data: CheckoutFormData) => {
-    if (isSubmitting) return; // Prevent double submission
+    if (isSubmitting || isOrderSuccessRef.current) return; // Prevent double submission
     setIsSubmitting(true);
     setServerError(null);
 
@@ -149,11 +152,13 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
         return;
       }
 
-      // Success: clear cart and redirect to order status page
+      // Success: lock ref immediately to block the empty-cart useEffect redirect to /cart
+      isOrderSuccessRef.current = true;
+      setIsOrderRedirecting(true);
       clearCart();
-      router.replace(
-        `/order/${result.data.orderNumber}?token=${result.data.accessToken}`
-      );
+
+      const targetUrl = `/order/${result.data.orderNumber}?token=${result.data.accessToken}`;
+      window.location.assign(targetUrl);
     } catch (err) {
       console.error("Checkout submission failed", err);
       setServerError(
@@ -162,6 +167,20 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
       setIsSubmitting(false);
     }
   };
+
+  if (isOrderRedirecting) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-24 text-center">
+        <div className="border-border bg-surface inline-flex h-12 w-12 animate-spin items-center justify-center rounded-full border-2 border-t-foreground" />
+        <h2 className="font-heading text-foreground mt-4 text-xl font-semibold">
+          Order Created Successfully!
+        </h2>
+        <p className="text-foreground/70 mt-2 text-sm">
+          Redirecting to your order confirmation and payment screen...
+        </p>
+      </div>
+    );
+  }
 
   if (!acceptOrders) {
     return (

@@ -37,24 +37,24 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-4">
         {service.category && (
-          <p className="text-foreground/60 mb-1 text-[11px] font-medium tracking-wider uppercase">
+          <p className="text-foreground/60 mb-1 text-[10px] font-semibold tracking-wider uppercase">
             {service.category.name}
           </p>
         )}
 
-        <h3 className="font-heading text-foreground text-lg font-semibold tracking-wide group-hover:underline sm:text-xl">
+        <h3 className="font-heading text-foreground text-sm font-semibold tracking-wide group-hover:underline sm:text-base line-clamp-1">
           {service.name}
         </h3>
 
         {service.short_description && (
-          <p className="text-foreground/80 mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">
+          <p className="text-foreground/75 mt-1.5 line-clamp-2 flex-1 text-xs leading-relaxed">
             {service.short_description}
           </p>
         )}
 
-        <div className="border-border/60 mt-4 flex items-center justify-between border-t pt-3 text-sm">
+        <div className="border-border/60 mt-3 flex items-center justify-between border-t pt-2.5 text-xs">
           <PriceDisplay
             price={service.price}
             priceType={service.price_type}
@@ -62,11 +62,11 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
           />
 
           {service.duration_minutes ? (
-            <span className="text-foreground/70 text-xs font-medium">
-              ⏱ {service.duration_minutes} mins
+            <span className="text-foreground/70 text-[11px] font-medium">
+              ⏱ {service.duration_minutes}m
             </span>
           ) : (
-            <span className="text-foreground/60 group-hover:text-foreground text-xs transition-colors">
+            <span className="text-foreground/60 group-hover:text-foreground text-[11px] transition-colors">
               View →
             </span>
           )}

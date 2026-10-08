@@ -217,8 +217,8 @@ export const DEFAULT_SOCIAL_SETTINGS: SocialSettings = {
 };
 
 export const DEFAULT_PAYMENTS_SETTINGS: PaymentsSettings = {
-  upi_id: "",
-  payee_name: "Nandhini Makeup",
+  upi_id: "7010847631@upi",
+  payee_name: "Nandhini Makeup & Jewellery",
   upi_qr_media_id: null,
 };
 

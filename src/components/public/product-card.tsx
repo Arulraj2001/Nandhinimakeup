@@ -57,32 +57,32 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      {/* Product Info with matching medium p-5 padding */}
-      <div className="flex flex-1 flex-col p-5">
+      {/* Product Info with matching medium-mini padding */}
+      <div className="flex flex-1 flex-col p-3.5 sm:p-4">
         {product.category && (
-          <p className="text-foreground/60 mb-1 text-[11px] font-medium tracking-wider uppercase">
+          <p className="text-foreground/60 mb-1 text-[10px] font-semibold tracking-wider uppercase">
             {product.category.name}
           </p>
         )}
 
-        <h3 className="font-heading text-foreground text-lg font-semibold tracking-wide group-hover:underline sm:text-xl">
+        <h3 className="font-heading text-foreground text-sm font-semibold tracking-wide group-hover:underline sm:text-base line-clamp-1">
           {product.name}
         </h3>
 
         {product.description && (
-          <p className="text-foreground/80 mt-2 line-clamp-2 flex-1 text-sm leading-relaxed">
+          <p className="text-foreground/75 mt-1.5 line-clamp-2 flex-1 text-xs leading-relaxed">
             {product.description}
           </p>
         )}
 
-        <div className="border-border/60 mt-4 flex items-center justify-between border-t pt-3 text-sm">
+        <div className="border-border/60 mt-3 flex items-center justify-between border-t pt-2.5 text-xs">
           <PriceDisplay
             price={product.price}
             salePrice={product.sale_price}
             size="sm"
           />
 
-          <span className="text-foreground/60 group-hover:text-foreground text-xs transition-colors">
+          <span className="text-foreground/60 group-hover:text-foreground text-[11px] transition-colors">
             View →
           </span>
         </div>
