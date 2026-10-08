@@ -400,7 +400,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                     autoComplete="address-level2"
                     {...form.register("city")}
                     className="border-input bg-page-background text-foreground focus-visible:ring-foreground w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-1 focus-visible:outline-none"
-                    placeholder="e.g. Chennai"
+                    placeholder="e.g. Salem"
                   />
                   {form.formState.errors.city && (
                     <p className="text-destructive text-xs">

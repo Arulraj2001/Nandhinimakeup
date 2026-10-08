@@ -330,7 +330,7 @@ export function SeoPanel({
             id="focus_keyword"
             value={focusKeyword}
             onChange={(e) => onFocusKeywordChange(e.target.value)}
-            placeholder="e.g. bridal makeup chennai"
+            placeholder="e.g. bridal makeup salem"
           />
           <p className="text-muted-foreground text-xs">
             Internal on-page reference. Used only for the deterministic

@@ -188,15 +188,15 @@ const DEFAULT_DAY_SCHEDULE: DaySchedule = {
 
 export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
   business_name: "Nandhini Makeup & Jewellery",
-  tagline: "Bridal Makeup & Premium Jewellery",
-  phone: "+919876543210",
-  whatsapp_number: "+919876543210",
-  email: "contact@nandhinimakeup.com",
-  full_address: "Chennai, Tamil Nadu, India",
+  tagline: "Bridal Makeup Artistry & Curated Jewellery Rental",
+  phone: "+917010847631",
+  whatsapp_number: "+917010847631",
+  email: "nandhinimakeups@gmail.com",
+  full_address: "Salem, Tamil Nadu, India",
   street_address: "",
-  address_locality: "",
-  address_region: "",
-  postal_code: "",
+  address_locality: "Salem",
+  address_region: "Tamil Nadu",
+  postal_code: "636016",
   google_maps_link: "",
   opening_hours: {
     monday: { ...DEFAULT_DAY_SCHEDULE },
@@ -210,14 +210,14 @@ export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
 };
 
 export const DEFAULT_SOCIAL_SETTINGS: SocialSettings = {
-  instagram_primary: "",
-  instagram_secondary: "",
+  instagram_primary: "https://www.instagram.com/nandhini__makeupartist/",
+  instagram_secondary: "https://www.instagram.com/nandhu_accessorie/",
   facebook: "",
   youtube: "",
 };
 
 export const DEFAULT_PAYMENTS_SETTINGS: PaymentsSettings = {
-  upi_id: "nandhini@upi",
+  upi_id: "",
   payee_name: "Nandhini Makeup",
   upi_qr_media_id: null,
 };

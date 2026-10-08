@@ -332,7 +332,7 @@ function BusinessSettingsForm({
           rows={3}
           {...form.register("full_address")}
           className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
-          placeholder="Shop 4, Gandhi Road, Chennai, Tamil Nadu - 600001"
+          placeholder="Fairlands, Salem, Tamil Nadu - 636016"
         />
       </FormField>
 
@@ -366,7 +366,7 @@ function BusinessSettingsForm({
             <Input
               id="address_locality"
               {...form.register("address_locality")}
-              placeholder="e.g. T. Nagar, Chennai"
+              placeholder="e.g. Fairlands, Salem"
             />
           </FormField>
           <FormField
@@ -497,29 +497,29 @@ function SocialSettingsForm({
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <FormField
           id="instagram_primary"
-          label="Instagram Profile 1 (Primary)"
-          hint="e.g. https://instagram.com/nandhinimakeup"
+          label="Instagram Profile 1 (Makeup)"
+          hint="e.g. https://www.instagram.com/nandhini__makeupartist/"
           error={form.formState.errors.instagram_primary?.message}
         >
           <Input
             id="instagram_primary"
             type="url"
             {...form.register("instagram_primary")}
-            placeholder="https://instagram.com/..."
+            placeholder="https://www.instagram.com/nandhini__makeupartist/"
           />
         </FormField>
 
         <FormField
           id="instagram_secondary"
-          label="Instagram Profile 2 (Secondary / Jewellery)"
-          hint="e.g. https://instagram.com/nandhinijewellery"
+          label="Instagram Profile 2 (Jewellery / Accessories)"
+          hint="e.g. https://www.instagram.com/nandhu_accessorie/"
           error={form.formState.errors.instagram_secondary?.message}
         >
           <Input
             id="instagram_secondary"
             type="url"
             {...form.register("instagram_secondary")}
-            placeholder="https://instagram.com/..."
+            placeholder="https://www.instagram.com/nandhu_accessorie/"
           />
         </FormField>
 
@@ -1772,7 +1772,7 @@ export function SeoSettingsForm({
           rows={3}
           {...form.register("default_meta_description")}
           className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
-          placeholder="Professional bridal makeup artistry and premium handcrafted jewellery in Chennai..."
+          placeholder="Professional bridal makeup artistry and premium handcrafted jewellery in Salem..."
         />
       </FormField>
 
@@ -1853,13 +1853,13 @@ export function SeoSettingsForm({
         <FormField
           id="area_served"
           label="Area Served"
-          hint="Geographical service region (e.g. Chennai, Tamil Nadu)"
+          hint="Geographical service region (e.g. Salem, Tamil Nadu)"
           error={form.formState.errors.area_served?.message}
         >
           <Input
             id="area_served"
             {...form.register("area_served")}
-            placeholder="Chennai, Tamil Nadu"
+            placeholder="Salem, Tamil Nadu"
           />
         </FormField>
       </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import type { BusinessSettings, SocialSettings } from "@/types/settings";
 
 interface FooterProps {
@@ -16,6 +17,23 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
   const weekday = business?.opening_hours?.monday;
   const sunday = business?.opening_hours?.sunday;
 
+  const instagramPrimary =
+    social?.instagram_primary ||
+    "https://www.instagram.com/nandhini__makeupartist/";
+  const instagramSecondary =
+    social?.instagram_secondary ||
+    "https://www.instagram.com/nandhu_accessorie/";
+  const fullAddress =
+    business?.full_address || "Fairlands, Salem, Tamil Nadu - 636016, India";
+
+  const whatsAppLink =
+    (business?.whatsapp_number || "+917010847631")
+      ? buildWhatsAppLink({
+          phoneNumber: business?.whatsapp_number || "+917010847631",
+          greeting: `Hello ${name}! I would like to make an enquiry regarding makeup and jewellery:`,
+        })
+      : "";
+
   return (
     <footer className="border-border bg-page-background border-t py-12 text-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -30,11 +48,9 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
                 {business.tagline}
               </p>
             )}
-            {business?.full_address && (
-              <p className="text-foreground/80 text-xs leading-relaxed">
-                {business.full_address}
-              </p>
-            )}
+            <p className="text-foreground/80 text-xs leading-relaxed">
+              {fullAddress}
+            </p>
           </div>
 
           {/* Contact Details */}
@@ -82,42 +98,48 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
             )}
           </div>
 
-          {/* Social Links */}
+          {/* Social & Direct Contact Links */}
           <div className="space-y-3">
             <h4 className="text-foreground text-xs font-semibold tracking-wider uppercase">
               Connect With Us
             </h4>
-            <div className="flex flex-wrap gap-4 text-xs font-medium">
-              {social?.instagram_primary && (
+            <div className="flex flex-col gap-2 text-xs font-medium">
+              <a
+                href={instagramPrimary}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:underline inline-flex items-center gap-1.5"
+              >
+                <span className="font-semibold text-foreground/80">Instagram (Makeup):</span>
+                <span>@nandhini__makeupartist</span>
+              </a>
+              <a
+                href={instagramSecondary}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:underline inline-flex items-center gap-1.5"
+              >
+                <span className="font-semibold text-foreground/80">Instagram (Jewellery):</span>
+                <span>@nandhu_accessorie</span>
+              </a>
+              {whatsAppLink && (
                 <a
-                  href={social.instagram_primary}
+                  href={whatsAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-foreground underline underline-offset-2 hover:opacity-80"
+                  className="text-foreground hover:underline inline-flex items-center gap-1.5"
                 >
-                  Instagram
+                  <span className="font-semibold text-foreground/80">WhatsApp:</span>
+                  <span>{business?.whatsapp_number || "+91 7010847631"}</span>
                 </a>
               )}
-              {social?.facebook && (
-                <a
-                  href={social.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground underline underline-offset-2 hover:opacity-80"
-                >
-                  Facebook
-                </a>
-              )}
-              {social?.youtube && (
-                <a
-                  href={social.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground underline underline-offset-2 hover:opacity-80"
-                >
-                  YouTube
-                </a>
-              )}
+              <Link
+                href="/contact"
+                className="text-foreground hover:underline inline-flex items-center gap-1.5"
+              >
+                <span className="font-semibold text-foreground/80">Studio & Contact:</span>
+                <span>Salem, Tamil Nadu</span>
+              </Link>
             </div>
             {/* Quick Links for completed public pages */}
             <div className="space-y-1.5 pt-2">

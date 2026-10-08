@@ -11,7 +11,10 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
     : null;
 
   return (
-    <article className="border-border bg-page-background group flex flex-col overflow-hidden rounded-lg border transition-all hover:shadow-md">
+    <Link
+      href={`/services/${service.slug}`}
+      className="border-border bg-page-background group flex h-full flex-col overflow-hidden rounded-lg border transition-all hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground"
+    >
       {/* Aspect ratio container to prevent layout shift */}
       <div className="bg-surface relative aspect-4/3 w-full overflow-hidden">
         {imageUrl ? (
@@ -35,13 +38,14 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-heading text-foreground text-xl font-semibold tracking-wide">
-          <Link
-            href={`/services/${service.slug}`}
-            className="hover:underline focus-visible:outline-none"
-          >
-            {service.name}
-          </Link>
+        {service.category && (
+          <p className="text-foreground/60 mb-1 text-[11px] font-medium tracking-wider uppercase">
+            {service.category.name}
+          </p>
+        )}
+
+        <h3 className="font-heading text-foreground text-lg font-semibold tracking-wide group-hover:underline sm:text-xl">
+          {service.name}
         </h3>
 
         {service.short_description && (
@@ -61,9 +65,13 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
             <span className="text-foreground/70 text-xs font-medium">
               ⏱ {service.duration_minutes} mins
             </span>
-          ) : null}
+          ) : (
+            <span className="text-foreground/60 group-hover:text-foreground text-xs transition-colors">
+              View →
+            </span>
+          )}
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
