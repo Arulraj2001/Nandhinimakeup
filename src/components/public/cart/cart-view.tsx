@@ -362,7 +362,7 @@ export function CartView({ settings }: CartViewProps) {
                 <span>Estimated Delivery</span>
                 <span className="text-foreground font-medium">
                   {isFreeDelivery ? (
-                    <span className="font-semibold text-emerald-700 dark:text-emerald-400">
+                    <span className="font-bold text-emerald-800">
                       FREE
                     </span>
                   ) : (

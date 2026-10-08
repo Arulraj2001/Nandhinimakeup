@@ -42,7 +42,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <p
           key={key}
-          className="text-base leading-relaxed text-[#1C1917] sm:text-lg sm:leading-relaxed"
+          className="text-base leading-relaxed text-[#622B14] sm:text-lg sm:leading-relaxed"
         >
           {children && children.length > 0 ? children : "\u00A0"}
         </p>

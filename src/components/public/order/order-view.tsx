@@ -152,14 +152,14 @@ export function OrderView({
             <span
               className={`inline-flex items-center rounded-full px-3.5 py-1 text-xs font-semibold ${
                 status === "paid" || status === "delivered"
-                  ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                  ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                   : status === "payment_submitted" ||
                       status === "packed" ||
                       status === "shipped"
-                    ? "bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-300"
+                    ? "bg-blue-100 text-blue-800 border border-blue-300"
                     : status === "cancelled"
-                      ? "bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300"
-                      : "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
+                      ? "bg-rose-100 text-rose-800 border border-rose-300"
+                      : "bg-amber-100 text-amber-800 border border-amber-300"
               }`}
             >
               {friendlyStatus}
@@ -182,7 +182,7 @@ export function OrderView({
         {/* Courier / Shipping details once shipped */}
         {courierName && (
           <div className="text-foreground mt-4 rounded-md border border-blue-500/30 bg-blue-500/10 p-3.5 text-xs">
-            <p className="font-semibold text-blue-900 dark:text-blue-200">
+            <p className="font-semibold text-blue-900">
               Courier Tracking Details
             </p>
             <p className="mt-1">
@@ -377,7 +377,7 @@ export function OrderView({
       {/* Confirmation Banner when payment_submitted */}
       {(status === "payment_submitted" || submittedSuccess) && (
         <div className="text-foreground mt-8 space-y-2 rounded-lg border border-blue-500/30 bg-blue-500/10 p-6 text-sm">
-          <p className="font-semibold text-blue-950 dark:text-blue-200">
+          <p className="font-semibold text-blue-950">
             Payment Details Received
           </p>
           <p className="text-foreground/80 text-xs leading-relaxed sm:text-sm">

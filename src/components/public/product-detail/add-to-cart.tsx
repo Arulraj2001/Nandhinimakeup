@@ -123,20 +123,20 @@ export function AddToCart({
       </div>
 
       {stockQuantity !== null && stockQuantity > 0 && stockQuantity <= 3 && (
-        <p className="text-xs font-medium text-amber-700 dark:text-amber-400">
+        <p className="text-xs font-semibold text-amber-800">
           Only {stockQuantity} left in stock!
         </p>
       )}
 
       {/* Inline confirmation */}
       {added && (
-        <div className="flex items-center justify-between rounded-md border border-emerald-600/30 bg-emerald-50 px-3.5 py-2.5 text-xs text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-300">
-          <span className="flex items-center gap-1.5 font-medium">
+        <div className="flex items-center justify-between rounded-md border border-emerald-700/30 bg-[#EAF7ED] px-3.5 py-2.5 text-xs text-[#14532D] shadow-xs">
+          <span className="flex items-center gap-2 font-semibold text-[#14532D]">
             <svg
-              className="h-4 w-4 text-emerald-600 dark:text-emerald-400"
+              className="h-4 w-4 flex-none text-[#15803D]"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth="2"
+              strokeWidth="2.5"
               stroke="currentColor"
             >
               <path
@@ -149,7 +149,7 @@ export function AddToCart({
           </span>
           <Link
             href="/cart"
-            className="font-semibold underline underline-offset-2 hover:text-emerald-950 dark:hover:text-emerald-200"
+            className="font-bold text-[#14532D] underline underline-offset-2 hover:text-[#052E16]"
           >
             View cart →
           </Link>
