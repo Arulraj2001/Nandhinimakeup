@@ -222,11 +222,27 @@ export async function getRelatedBlogPosts(
     .order("published_at", { ascending: false })
     .limit(limit);
 
-  if (error || !data) {
-    return [];
+  let list = !error && data ? (data as unknown as BlogPostWithDetails[]) : [];
+
+  // If category has fewer than limit posts, backfill with other published posts
+  if (list.length < limit) {
+    const existingIds = [excludePostId, ...list.map((p) => p.id)];
+    const needed = limit - list.length;
+    const { data: fallback } = await supabase
+      .from("blog_posts")
+      .select("*, category:category_id(*), featured_image:featured_image_id(*)")
+      .not("id", "in", `(${existingIds.join(",")})`)
+      .eq("status", "published")
+      .lte("published_at", nowIso)
+      .order("published_at", { ascending: false })
+      .limit(needed);
+
+    if (fallback && fallback.length > 0) {
+      list = [...list, ...(fallback as unknown as BlogPostWithDetails[])];
+    }
   }
 
-  return (data || []).map((p) => ({
+  return list.map((p) => ({
     ...p,
     content: (p.content as unknown as RichTextDoc) || {
       type: "doc",

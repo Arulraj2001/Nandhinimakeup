@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getPublicSiteSettings } from "@/lib/data/settings";
+import { getPublicFeaturedProducts } from "@/lib/data/products";
 import { CartView } from "@/components/public/cart/cart-view";
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
@@ -17,7 +18,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CartPage() {
-  const settings = await getPublicSiteSettings();
+  const [settings, recommendedProducts] = await Promise.all([
+    getPublicSiteSettings(),
+    getPublicFeaturedProducts(4),
+  ]);
 
-  return <CartView settings={settings} />;
+  return (
+    <CartView
+      settings={settings}
+      recommendedProducts={recommendedProducts}
+    />
+  );
 }

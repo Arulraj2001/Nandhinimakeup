@@ -80,11 +80,27 @@ export async function getPublicRelatedServices(
     .order("sort_order", { ascending: true })
     .limit(limit);
 
-  if (error || !data) {
-    return [];
+  let list = !error && data ? (data as unknown as ServiceWithCategory[]) : [];
+
+  // If category has fewer than limit services, backfill with other published services
+  if (list.length < limit) {
+    const existingIds = [excludeServiceId, ...list.map((s) => s.id)];
+    const needed = limit - list.length;
+    const { data: fallback } = await supabase
+      .from("services")
+      .select("*, category:category_id(*), image:image_id(*)")
+      .eq("is_published", true)
+      .not("id", "in", `(${existingIds.join(",")})`)
+      .order("is_featured", { ascending: false })
+      .order("sort_order", { ascending: true })
+      .limit(needed);
+
+    if (fallback && fallback.length > 0) {
+      list = [...list, ...(fallback as unknown as ServiceWithCategory[])];
+    }
   }
 
-  return data as unknown as ServiceWithCategory[];
+  return list;
 }
 
 /**

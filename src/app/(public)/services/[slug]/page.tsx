@@ -7,11 +7,13 @@ import {
   getPublicServiceBySlug,
   getPublicRelatedServices,
 } from "@/lib/data/services";
+import { getPublicFeaturedProducts } from "@/lib/data/products";
 import { getPublicSiteSettings } from "@/lib/data/settings";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import { PriceDisplay } from "@/components/public/price-display";
 import { ServiceCard } from "@/components/public/service-card";
+import { ProductCard } from "@/components/public/product-card";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
@@ -83,15 +85,16 @@ async function ServiceDetailContent({
     notFound();
   }
 
-  const relatedServices = await getPublicRelatedServices(
-    service.category_id,
-    service.id,
-    3
-  );
+  const [relatedServices, matchingJewellery] = await Promise.all([
+    getPublicRelatedServices(service.category_id, service.id, 3),
+    getPublicFeaturedProducts(4),
+  ]);
 
   const imageUrl = service.image
     ? getPublicMediaUrl(service.image.storage_path)
     : null;
+
+  const serviceUrl = `${env.NEXT_PUBLIC_SITE_URL}/services/${service.slug}`;
 
   const bookWhatsAppUrl = settings.business.whatsapp_number
     ? buildWhatsAppLink({
@@ -100,6 +103,7 @@ async function ServiceDetailContent({
         itemName: service.name,
         price:
           service.price_type === "on_request" ? "On Request" : service.price,
+        pageUrl: serviceUrl,
       })
     : "";
 
@@ -250,6 +254,33 @@ async function ServiceDetailContent({
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
               {relatedServices.map((rel) => (
                 <ServiceCard key={rel.id} service={rel} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Complementary Bridal Jewellery */}
+        {matchingJewellery.length > 0 && (
+          <section className="border-border mt-16 border-t pt-12 sm:mt-20">
+            <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-foreground/70 text-xs font-semibold tracking-wider uppercase">
+                  Complete Your Bridal Look
+                </p>
+                <h2 className="font-heading text-foreground mt-1 text-2xl font-semibold sm:text-3xl">
+                  Matching Handcrafted Jewellery
+                </h2>
+              </div>
+              <Link
+                href="/jewellery"
+                className="text-foreground/80 hover:text-foreground text-xs font-semibold tracking-wider uppercase underline underline-offset-4"
+              >
+                Explore Jewellery →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
+              {matchingJewellery.map((product) => (
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
           </section>

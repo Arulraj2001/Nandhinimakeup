@@ -34,7 +34,8 @@ export function buildWhatsAppLink(options: BuildWhatsAppLinkOptions): string {
   }
 
   if (options.itemName) {
-    lines.push(`Item: ${options.itemName}`);
+    lines.push("");
+    lines.push(`✨ *Item:* ${options.itemName}`);
   }
 
   if (options.price !== undefined && options.price !== null) {
@@ -42,14 +43,15 @@ export function buildWhatsAppLink(options: BuildWhatsAppLinkOptions): string {
       typeof options.price === "number"
         ? formatINR(options.price)
         : options.price;
-    lines.push(`Price: ${formattedPrice}`);
+    lines.push(`💰 *Price:* ${formattedPrice}`);
   }
 
   if (options.pageUrl) {
-    lines.push(`Link: ${options.pageUrl}`);
+    lines.push(`🔗 *Link:* ${options.pageUrl}`);
   }
 
   if (options.extraLines && options.extraLines.length > 0) {
+    lines.push("");
     for (const line of options.extraLines) {
       if (line.trim()) {
         lines.push(line.trim());

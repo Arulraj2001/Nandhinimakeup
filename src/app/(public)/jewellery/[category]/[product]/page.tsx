@@ -7,12 +7,14 @@ import {
   getPublicProductOnlyBySlug,
   getPublicRelatedProducts,
 } from "@/lib/data/products";
+import { getPublicFeaturedServices } from "@/lib/data/services";
 import { getPublicSiteSettings } from "@/lib/data/settings";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import { ProductGallery } from "@/components/public/product-gallery";
 import { PriceDisplay } from "@/components/public/price-display";
 import { ProductCard } from "@/components/public/product-card";
+import { ServiceCard } from "@/components/public/service-card";
 import { Breadcrumb } from "@/components/public/breadcrumb";
 import { Badge } from "@/components/public/badges";
 import { AddToCart } from "@/components/public/product-detail/add-to-cart";
@@ -105,11 +107,10 @@ async function ProductDetailContent({
     notFound();
   }
 
-  const relatedProducts = await getPublicRelatedProducts(
-    product.category_id,
-    product.id,
-    4
-  );
+  const [relatedProducts, matchingServices] = await Promise.all([
+    getPublicRelatedProducts(product.category_id, product.id, 4),
+    getPublicFeaturedServices(4),
+  ]);
 
   const isOutOfStock = product.stock_status === "out_of_stock";
   const isMadeToOrder = product.stock_status === "made_to_order";
@@ -122,6 +123,8 @@ async function ProductDetailContent({
       ? product.sale_price
       : product.price;
 
+  const productUrl = `${env.NEXT_PUBLIC_SITE_URL}/jewellery/${categorySlug}/${product.slug}`;
+
   const enquireWhatsAppUrl = settings.business.whatsapp_number
     ? buildWhatsAppLink({
         phoneNumber: settings.business.whatsapp_number,
@@ -130,6 +133,7 @@ async function ProductDetailContent({
           : `Hello ${settings.business.business_name}! I would like to enquire about purchasing:`,
         itemName: product.name,
         price: effectivePrice,
+        pageUrl: productUrl,
       })
     : "";
 
@@ -269,12 +273,39 @@ async function ProductDetailContent({
           <section className="border-border mt-20 border-t pt-12 sm:mt-24">
             <div className="mb-8">
               <h2 className="font-heading text-foreground text-2xl font-semibold sm:text-3xl">
-                More in {product.category?.name || "This Category"}
+                More in {product.category?.name || "This Collection"}
               </h2>
             </div>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
               {relatedProducts.map((rel) => (
                 <ProductCard key={rel.id} product={rel} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Matching Bridal Services */}
+        {matchingServices.length > 0 && (
+          <section className="border-border mt-16 border-t pt-12 sm:mt-20">
+            <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-foreground/70 text-xs font-semibold tracking-wider uppercase">
+                  Complete Your Bridal Look
+                </p>
+                <h2 className="font-heading text-foreground mt-1 text-2xl font-semibold sm:text-3xl">
+                  Signature Bridal Makeover Services
+                </h2>
+              </div>
+              <Link
+                href="/services"
+                className="text-foreground/80 hover:text-foreground text-xs font-semibold tracking-wider uppercase underline underline-offset-4"
+              >
+                Explore All Services →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
+              {matchingServices.map((relService) => (
+                <ServiceCard key={relService.id} service={relService} />
               ))}
             </div>
           </section>

@@ -9,12 +9,18 @@ import type { CartProductLookup } from "@/lib/data/cart";
 import type { SiteSettingsData } from "@/types/settings";
 import { formatINR } from "@/lib/utils/currency";
 import { buildCartWhatsAppLink } from "@/lib/utils/whatsapp";
+import { ProductCard } from "@/components/public/product-card";
+import type { ProductWithDetails } from "@/types/products";
 
 interface CartViewProps {
   settings: SiteSettingsData;
+  recommendedProducts?: ProductWithDetails[];
 }
 
-export function CartView({ settings }: CartViewProps) {
+export function CartView({
+  settings,
+  recommendedProducts = [],
+}: CartViewProps) {
   const { items, updateQuantity, removeItem } = useCart();
   const [productsMap, setProductsMap] = React.useState<
     Record<string, CartProductLookup>
@@ -140,37 +146,65 @@ export function CartView({ settings }: CartViewProps) {
   // Empty state
   if (!loading && items.length === 0) {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <div className="border-border bg-surface mx-auto flex h-16 w-16 items-center justify-center rounded-full border">
-          <svg
-            className="text-foreground/50 h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"
-            />
-          </svg>
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <div className="border-border bg-surface mx-auto flex h-16 w-16 items-center justify-center rounded-full border">
+            <svg
+              className="text-foreground/50 h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25c-.669 0-1.189-.578-1.119-1.243l1.263-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"
+              />
+            </svg>
+          </div>
+          <h1 className="font-heading text-foreground mt-6 text-2xl font-semibold sm:text-3xl">
+            Your Cart is Empty
+          </h1>
+          <p className="text-foreground/70 mx-auto mt-2 max-w-md text-sm">
+            Explore our handcrafted bridal jewellery collection and add pieces to
+            your cart.
+          </p>
+          <div className="mt-8">
+            <Link
+              href="/jewellery"
+              className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center justify-center rounded-md px-6 py-3 text-xs font-semibold tracking-wider uppercase transition-colors"
+            >
+              Explore Jewellery
+            </Link>
+          </div>
         </div>
-        <h1 className="font-heading text-foreground mt-6 text-2xl font-semibold sm:text-3xl">
-          Your Cart is Empty
-        </h1>
-        <p className="text-foreground/70 mx-auto mt-2 max-w-md text-sm">
-          Explore our handcrafted bridal jewellery collection and add pieces to
-          your cart.
-        </p>
-        <div className="mt-8">
-          <Link
-            href="/jewellery"
-            className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center justify-center rounded-md px-6 py-3 text-xs font-semibold tracking-wider uppercase transition-colors"
-          >
-            Explore Jewellery
-          </Link>
-        </div>
+
+        {recommendedProducts.length > 0 && (
+          <div className="border-border mt-16 border-t pt-12">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="font-heading text-foreground text-xl font-semibold sm:text-2xl">
+                  Featured Bridal Jewellery
+                </h2>
+                <p className="text-foreground/70 mt-1 text-xs sm:text-sm">
+                  Handcrafted adornments from our signature collections.
+                </p>
+              </div>
+              <Link
+                href="/jewellery"
+                className="text-foreground/80 hover:text-foreground text-xs font-semibold tracking-wider uppercase underline underline-offset-4"
+              >
+                View All →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4 sm:gap-5">
+              {recommendedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -436,6 +470,33 @@ export function CartView({ settings }: CartViewProps) {
           </div>
         </div>
       </div>
+
+      {/* Recommended Products */}
+      {recommendedProducts.length > 0 && (
+        <section className="border-border mt-16 border-t pt-12 sm:mt-20">
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h2 className="font-heading text-foreground text-xl font-semibold sm:text-2xl">
+                You May Also Like
+              </h2>
+              <p className="text-foreground/70 mt-1 text-xs sm:text-sm">
+                Curated pieces to complete your bridal ensemble.
+              </p>
+            </div>
+            <Link
+              href="/jewellery"
+              className="text-foreground/80 hover:text-foreground text-xs font-semibold tracking-wider uppercase underline underline-offset-4"
+            >
+              Browse All Jewellery →
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-4 sm:gap-5">
+            {recommendedProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

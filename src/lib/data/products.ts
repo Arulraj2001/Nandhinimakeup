@@ -202,11 +202,30 @@ export async function getPublicRelatedProducts(
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  if (error || !data) {
-    return [];
+  let list = !error && data ? (data as unknown as ProductWithDetails[]) : [];
+
+  // If category has fewer than limit products, backfill with other published products
+  if (list.length < limit) {
+    const existingIds = [excludeProductId, ...list.map((p) => p.id)];
+    const needed = limit - list.length;
+    const { data: fallback } = await supabase
+      .from("products")
+      .select(
+        "*, category:category_id(*), images:product_images(*, media:media_id(*))"
+      )
+      .eq("is_published", true)
+      .not("id", "in", `(${existingIds.join(",")})`)
+      .order("is_featured", { ascending: false })
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false })
+      .limit(needed);
+
+    if (fallback && fallback.length > 0) {
+      list = [...list, ...(fallback as unknown as ProductWithDetails[])];
+    }
   }
 
-  return (data as unknown as ProductWithDetails[]).map((p) => ({
+  return list.map((p) => ({
     ...p,
     images: Array.isArray(p.images)
       ? [...p.images].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
