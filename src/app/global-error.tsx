@@ -16,12 +16,12 @@ export default function GlobalError({
 
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col items-center justify-center bg-[#FFF5F5] px-4 py-16 text-center text-[#4A4A4A]">
-        <div className="mx-auto max-w-md rounded-xl border border-[#E2B4BD] bg-[#F7D6D0] p-8 shadow-sm">
-          <h1 className="text-3xl font-semibold text-[#4A4A4A]">
+      <body className="bg-page-background text-foreground flex min-h-screen flex-col items-center justify-center px-4 py-16 text-center">
+        <div className="border-border bg-card-surface mx-auto max-w-md rounded-xl border p-8 shadow-sm">
+          <h1 className="text-foreground text-3xl font-semibold">
             Critical Error
           </h1>
-          <p className="mt-4 text-sm text-[#4A4A4A]">
+          <p className="text-foreground mt-4 text-sm">
             A critical error occurred. Please try reloading the page.
           </p>
           <div className="mt-6">

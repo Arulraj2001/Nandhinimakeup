@@ -58,5 +58,27 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
+  // Check redirects for public routes
+  if (
+    !pathname.startsWith("/admin") &&
+    !pathname.startsWith("/_next") &&
+    !pathname.startsWith("/api")
+  ) {
+    const cleanPath =
+      pathname.length > 1 && pathname.endsWith("/")
+        ? pathname.slice(0, -1)
+        : pathname;
+    const { data: redirectItem } = await supabase
+      .from("redirects")
+      .select("to_path, status_code")
+      .eq("from_path", cleanPath)
+      .maybeSingle();
+
+    if (redirectItem) {
+      const redirectUrl = new URL(redirectItem.to_path, request.url);
+      return NextResponse.redirect(redirectUrl, redirectItem.status_code);
+    }
+  }
+
   return supabaseResponse;
 }
