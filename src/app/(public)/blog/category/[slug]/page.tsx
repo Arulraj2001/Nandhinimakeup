@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -8,14 +9,13 @@ import {
 } from "@/lib/data/blog";
 import { BlogCard } from "@/components/public/blog/blog-card";
 import { Pagination } from "@/components/public/pagination";
+import { buildMetadata } from "@/lib/seo/metadata-builder";
+import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
   searchParams?: Promise<{ page?: string }>;
 }
-
-import { buildMetadata } from "@/lib/seo/metadata-builder";
-import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 export async function generateMetadata({
   params,
@@ -57,7 +57,7 @@ export async function generateMetadata({
   });
 }
 
-export default async function BlogCategoryPage({
+async function BlogCategoryContent({
   params,
   searchParams,
 }: CategoryPageProps) {
@@ -160,5 +160,22 @@ export default async function BlogCategoryPage({
         </div>
       )}
     </div>
+  );
+}
+
+export default function BlogCategoryPage({
+  params,
+  searchParams,
+}: CategoryPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center text-sm text-foreground/40">
+          Loading category articles...
+        </div>
+      }
+    >
+      <BlogCategoryContent params={params} searchParams={searchParams} />
+    </Suspense>
   );
 }

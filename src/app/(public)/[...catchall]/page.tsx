@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
 
 interface CatchAllProps {
@@ -6,8 +7,17 @@ interface CatchAllProps {
   }>;
 }
 
-export default async function CatchAllPublicPage({ params }: CatchAllProps) {
+async function CatchAllInner({ params }: CatchAllProps) {
   const { catchall } = await params;
   const path = "/" + (catchall || []).join("/");
   await handleRedirectOrNotFound(path);
+  return null;
+}
+
+export default function CatchAllPublicPage({ params }: CatchAllProps) {
+  return (
+    <Suspense fallback={null}>
+      <CatchAllInner params={params} />
+    </Suspense>
+  );
 }

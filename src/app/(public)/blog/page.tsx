@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -6,7 +7,6 @@ import {
 } from "@/lib/data/blog";
 import { BlogCard } from "@/components/public/blog/blog-card";
 import { Pagination } from "@/components/public/pagination";
-
 import { buildMetadata } from "@/lib/seo/metadata-builder";
 
 interface BlogIndexPageProps {
@@ -31,7 +31,7 @@ export async function generateMetadata({
   });
 }
 
-export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps) {
+async function BlogIndexContent({ searchParams }: BlogIndexPageProps) {
   const resolvedSearchParams = await searchParams;
   const pageNum = Math.max(1, parseInt(resolvedSearchParams?.page || "1", 10) || 1);
 
@@ -40,7 +40,7 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
     getPublicBlogCategories(),
   ]);
 
-  const { posts, total, totalPages, currentPage } = postsData;
+  const { posts, totalPages, currentPage } = postsData;
 
   // On page 1, check if the first post is featured
   const featuredPost =
@@ -117,5 +117,19 @@ export default async function BlogIndexPage({ searchParams }: BlogIndexPageProps
         </div>
       )}
     </div>
+  );
+}
+
+export default function BlogIndexPage({ searchParams }: BlogIndexPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center text-sm text-foreground/40">
+          Loading articles...
+        </div>
+      }
+    >
+      <BlogIndexContent searchParams={searchParams} />
+    </Suspense>
   );
 }

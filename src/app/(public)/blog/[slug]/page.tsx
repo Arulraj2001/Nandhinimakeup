@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -61,7 +62,7 @@ export async function generateMetadata({
   });
 }
 
-export default async function BlogPostDetailPage({ params }: BlogPostPageProps) {
+async function BlogPostDetailContent({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const [post, settings] = await Promise.all([
     getPublicBlogPost(slug),
@@ -246,5 +247,19 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
         </section>
       )}
     </article>
+  );
+}
+
+export default function BlogPostDetailPage({ params }: BlogPostPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-4xl px-4 py-16 text-center text-sm text-foreground/40">
+          Loading article...
+        </div>
+      }
+    >
+      <BlogPostDetailContent params={params} />
+    </Suspense>
   );
 }
