@@ -187,16 +187,105 @@ h3 {
   animation-play-state: paused;
 }
 
+/* Editorial Ken Burns Subtle Ambient Drift (Hero Portrait) */
+@keyframes kenBurnsSubtle {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.04);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurnsSubtle 18s ease-in-out infinite alternate;
+}
+
+/* Editorial Gold Shimmer for Announcement Bar */
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    #faf8f5 0%,
+    #faf8f5 35%,
+    #c5a059 50%,
+    #faf8f5 65%,
+    #faf8f5 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 6s ease-in-out infinite;
+}
+
+/* Before/After Handle Gentle Breathing Pulse */
+@keyframes handlePulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.animate-handle-pulse {
+  animation: handlePulse 2.4s ease-in-out infinite;
+}
+
+/* Primary Button Kumkum Hover Inner Glow */
+.btn-kumkum-glow {
+  transition:
+    background-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 150ms ease;
+}
+
+.btn-kumkum-glow:hover {
+  box-shadow: inset 0 0 14px rgba(197, 160, 89, 0.3), 0 4px 12px rgba(140, 37, 36, 0.25);
+}
+
+.btn-kumkum-glow:active {
+  transform: translateY(1px);
+}
+
+/* Universal Reduced Motion Accessibility */
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-marquee,
+  .animate-fade-in-up,
+  .animate-ken-burns,
+  .animate-gold-shimmer,
+  .animate-handle-pulse {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .animate-gold-shimmer {
+    background: none !important;
+    -webkit-text-fill-color: #faf8f5 !important;
+    color: #faf8f5 !important;
+  }
+
   .animate-marquee {
-    animation: none;
-    transform: none;
     width: auto;
     flex-wrap: wrap;
     justify-content: center;
-  }
-  .animate-fade-in-up {
-    animation: none;
-    transform: none;
   }
 }

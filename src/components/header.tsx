@@ -6,6 +6,9 @@ import Image from "next/image";
 import { siteConfig } from "@/lib/config/site";
 import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
 import { HeaderCartIcon } from "@/components/header-cart-icon";
+import { m } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { ScrollProgressBar } from "@/components/public/scroll-progress";
 
 interface HeaderProps {
   businessName?: string;
@@ -25,7 +28,18 @@ export function Header({
   hasBlog = false,
 }: HeaderProps) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
   const toggleBtnRef = React.useRef<HTMLButtonElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -60,7 +74,24 @@ export function Header({
   }, [hasBlog]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[#E5DFD7] bg-[#FAF8F5]/95 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-30 border-b transition-all duration-300 ${
+        isScrolled
+          ? "border-[#E5DFD7] bg-[#FAF8F5]/98 shadow-xs backdrop-blur-lg"
+          : "border-[#E5DFD7]/60 bg-[#FAF8F5]/90 backdrop-blur-md"
+      }`}
+    >
+      {/* Editorial animated gold hairline drawing left-to-right on mount */}
+      {!reducedMotion && (
+        <m.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-[1px] origin-left bg-[#C5A059]/40"
+        />
+      )}
+      {/* 2px antique gold scroll progress indicator */}
+      <ScrollProgressBar className="absolute -bottom-[2px] left-0 right-0" />
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
         {/* Brand Logo & Business Name */}
         <Link

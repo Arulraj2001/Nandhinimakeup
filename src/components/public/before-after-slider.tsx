@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface BeforeAfterSliderProps {
   beforeImage: {
@@ -29,9 +30,16 @@ export function BeforeAfterSlider({
   className = "",
 }: BeforeAfterSliderProps) {
   const [sliderPosition, setSliderPosition] = React.useState(50);
+  const [hasInteracted, setHasInteracted] = React.useState(false);
+  const reducedMotion = useReducedMotion();
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHasInteracted(true);
     setSliderPosition(Number(e.target.value));
+  };
+
+  const handleInteractionStart = () => {
+    setHasInteracted(true);
   };
 
   const accessibleLabel = title
@@ -81,16 +89,18 @@ export function BeforeAfterSlider({
           After (Muhurtham Glow)
         </div>
 
-        {/* Visual Divider Line in Antique Gold */}
+        {/* Visual Divider Line in Antique Gold with Soft Glow */}
         <div
-          className="pointer-events-none absolute top-0 bottom-0 z-10 w-[2px] -translate-x-1/2 bg-[#C5A059] shadow-sm"
+          className="pointer-events-none absolute top-0 bottom-0 z-10 w-[2px] -translate-x-1/2 bg-[#C5A059] shadow-[0_0_10px_rgba(197,160,89,0.45)]"
           style={{ left: `${sliderPosition}%` }}
         />
 
-        {/* Visual Divider Center Handle in Warm Ivory & Gold */}
+        {/* Visual Divider Center Handle in Warm Ivory & Gold with gentle pulse */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 z-10 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#C5A059] bg-[#FAF8F5] text-[#8C2524] shadow-md transition-transform duration-100 group-hover:scale-110"
+          className={`pointer-events-none absolute top-1/2 z-10 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#C5A059] bg-[#FAF8F5] text-[#8C2524] shadow-md transition-transform duration-100 group-hover:scale-110 ${
+            !hasInteracted && !reducedMotion ? "animate-handle-pulse" : ""
+          }`}
           style={{ left: `${sliderPosition}%` }}
         >
           <svg
@@ -114,6 +124,9 @@ export function BeforeAfterSlider({
           max="100"
           value={sliderPosition}
           onChange={handleSliderChange}
+          onPointerDown={handleInteractionStart}
+          onTouchStart={handleInteractionStart}
+          onKeyDown={handleInteractionStart}
           aria-label={accessibleLabel}
           aria-valuemin={0}
           aria-valuemax={100}

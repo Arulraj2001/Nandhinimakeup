@@ -16,6 +16,11 @@ import { TestimonialsCarousel } from "@/components/public/home/testimonials-caro
 import { ServiceCard } from "@/components/public/service-card";
 import { ProductCard } from "@/components/public/product-card";
 import { BeforeAfterSlider } from "@/components/public/before-after-slider";
+import {
+  EditorialSection,
+  EditorialEyebrow,
+  EditorialStaggerGrid,
+} from "@/components/public/editorial-reveal";
 import { buildMetadata } from "@/lib/seo/metadata-builder";
 import {
   JsonLdScript,
@@ -107,13 +112,14 @@ export default async function HomePage() {
 
       {/* 2. Featured Services (Up to six, skipped if empty) */}
       {featuredServices.length > 0 && (
-        <section className="py-16 sm:py-20 md:py-24">
+        <EditorialSection className="py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="mb-2 text-xs font-semibold tracking-widest text-[#8C2524] uppercase">
-                  ✦ Signature Artistry ✦
-                </p>
+                <EditorialEyebrow
+                  eyebrow="✦ Signature Artistry ✦"
+                  colorClass="text-[#8C2524]"
+                />
                 <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
                   Featured Bridal Packages
                 </h2>
@@ -131,24 +137,25 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
+            <EditorialStaggerGrid className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
               {featuredServices.map((service) => (
                 <ServiceCard key={service.id} service={service} />
               ))}
-            </div>
+            </EditorialStaggerGrid>
           </div>
-        </section>
+        </EditorialSection>
       )}
 
       {/* 3. Featured Jewellery (Up to eight, skipped if empty) */}
       {featuredProducts.length > 0 && (
-        <section className="border-t border-[#E5DFD7] bg-[#F4ECE4]/60 py-16 sm:py-20 md:py-24">
+        <EditorialSection className="border-t border-[#E5DFD7] bg-[#F4ECE4]/60 py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="mb-2 text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
-                  ✦ Curated Heirloom Collection ✦
-                </p>
+                <EditorialEyebrow
+                  eyebrow="✦ Curated Heirloom Collection ✦"
+                  colorClass="text-[#C5A059]"
+                />
                 <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
                   Featured Jewellery
                 </h2>
@@ -166,23 +173,25 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
+            <EditorialStaggerGrid className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-5">
               {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
-            </div>
+            </EditorialStaggerGrid>
           </div>
-        </section>
+        </EditorialSection>
       )}
 
       {/* 4. Before and After Showcase (Up to three items, skipped if empty) */}
       {beforeAfterGallery.length > 0 && (
-        <section className="border-t border-[#E5DFD7] bg-[#FAF8F5] py-16 sm:py-20 md:py-24">
+        <EditorialSection className="border-t border-[#E5DFD7] bg-[#FAF8F5] py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto mb-12 max-w-2xl text-center">
-              <p className="mb-2 text-xs font-semibold tracking-widest text-[#8C2524] uppercase">
-                ✦ Real Bridal Transformations ✦
-              </p>
+              <EditorialEyebrow
+                eyebrow="✦ Real Bridal Transformations ✦"
+                colorClass="text-[#8C2524]"
+                className="justify-center"
+              />
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
                 Before &amp; After Artistry
               </h2>
@@ -192,7 +201,7 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <EditorialStaggerGrid className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {beforeAfterGallery.map((item) => {
                 if (!item.before_media || !item.media) return null;
                 return (
@@ -215,9 +224,9 @@ export default async function HomePage() {
                   />
                 );
               })}
-            </div>
+            </EditorialStaggerGrid>
           </div>
-        </section>
+        </EditorialSection>
       )}
 
       {/* 5. Counters (Skipped if no valid counters) */}
@@ -235,13 +244,14 @@ export default async function HomePage() {
 
       {/* 8. Gallery Teaser (Up to six items linking to /gallery, skipped if empty) */}
       {galleryTeaser.length > 0 && (
-        <section className="border-t border-[#E5DFD7] bg-[#F4ECE4]/40 py-16 sm:py-20 md:py-24">
+        <EditorialSection className="border-t border-[#E5DFD7] bg-[#F4ECE4]/40 py-16 sm:py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="mb-2 text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
-                  ✦ Real Moments ✦
-                </p>
+                <EditorialEyebrow
+                  eyebrow="✦ Real Moments ✦"
+                  colorClass="text-[#C5A059]"
+                />
                 <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
                   Artistry in Detail
                 </h2>
@@ -259,7 +269,7 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            <EditorialStaggerGrid className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {galleryTeaser.map((item) => {
                 const img = item.media;
                 if (!img) return null;
@@ -274,7 +284,7 @@ export default async function HomePage() {
                       alt={img.alt_text || item.title || "Gallery thumbnail"}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                      className="object-cover transition-transform duration-300 will-change-transform group-hover:scale-105"
+                      className="object-cover transition-transform duration-300 ease-out will-change-transform group-hover:scale-105"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-[#1C1917]/30 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                       <span className="rounded bg-[#FAF8F5]/90 px-2 py-1 text-[11px] font-semibold text-[#8C2524] uppercase tracking-wider backdrop-blur-xs">
@@ -284,14 +294,14 @@ export default async function HomePage() {
                   </Link>
                 );
               })}
-            </div>
+            </EditorialStaggerGrid>
           </div>
-        </section>
+        </EditorialSection>
       )}
 
       {/* 9. Closing Call-to-Action (Skipped if no CTA text/headline) */}
       {hasClosingCta && (
-        <section className="border-t border-[#C5A059]/40 bg-[#FAF8F5] py-16 text-center sm:py-20 md:py-24">
+        <EditorialSection className="border-t border-[#C5A059]/40 bg-[#FAF8F5] py-16 text-center sm:py-20 md:py-24">
           <div className="mx-auto max-w-3xl rounded-xl border border-[#E5DFD7] bg-white p-8 shadow-sm sm:p-12">
             {closingHeadline && (
               <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl md:text-5xl">
@@ -311,7 +321,7 @@ export default async function HomePage() {
                   href={closingWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-md bg-[#8C2524] px-6 py-3.5 text-xs font-semibold tracking-wider text-white uppercase shadow-sm transition-all hover:bg-[#731E1D] hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
+                  className="btn-kumkum-glow inline-flex items-center justify-center rounded-md bg-[#8C2524] px-6 py-3.5 text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#731E1D] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                 >
                   Book Consultation on WhatsApp
                 </Link>
@@ -320,14 +330,14 @@ export default async function HomePage() {
               {hasPhone && (
                 <a
                   href={`tel:${settings.business.phone}`}
-                  className="inline-flex items-center justify-center rounded-md border border-[#1C1917] bg-white px-6 py-3.5 text-xs font-semibold tracking-wider text-[#1C1917] uppercase transition-colors hover:bg-[#F4ECE4] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
+                  className="inline-flex items-center justify-center rounded-md border border-[#1C1917] bg-white px-6 py-3.5 text-xs font-semibold tracking-wider text-[#1C1917] uppercase transition-all hover:bg-[#F4ECE4] active:translate-y-[1px] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                 >
                   Call {settings.business.phone}
                 </a>
               )}
             </div>
           </div>
-        </section>
+        </EditorialSection>
       )}
     </div>
   );

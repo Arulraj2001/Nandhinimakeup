@@ -2,6 +2,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AnnouncementBar } from "@/components/public/announcement-bar";
 import { FloatingWhatsApp } from "@/components/public/floating-whatsapp";
+import { MotionProvider } from "@/components/public/motion-provider";
 import { getPublicSiteSettings, getPublicMedia } from "@/lib/data/settings";
 import { getPublicActiveAnnouncement } from "@/lib/data/announcements";
 import { getPublishedLegalPages } from "@/lib/data/legal-pages";
@@ -24,26 +25,28 @@ export default async function PublicLayout({
   const logoUrl = logoMedia ? getPublicMediaUrl(logoMedia.storage_path) : null;
 
   return (
-    <div className="bg-page-background text-foreground flex min-h-screen flex-col">
-      <AnnouncementBar announcement={announcement} />
-      <Header
-        businessName={settings.business.business_name}
-        logoUrl={logoUrl}
-        logoAlt={logoMedia?.alt_text}
-        whatsappNumber={settings.business.whatsapp_number}
-        acceptOrders={settings.shipping.accept_orders}
-        hasBlog={hasBlog}
-      />
-      <main className="flex-1">{children}</main>
-      <Footer
-        business={settings.business}
-        social={settings.social}
-        legalPages={legalPages}
-      />
-      <FloatingWhatsApp
-        phoneNumber={settings.business.whatsapp_number}
-        businessName={settings.business.business_name}
-      />
-    </div>
+    <MotionProvider>
+      <div className="bg-page-background text-foreground flex min-h-screen flex-col">
+        <AnnouncementBar announcement={announcement} />
+        <Header
+          businessName={settings.business.business_name}
+          logoUrl={logoUrl}
+          logoAlt={logoMedia?.alt_text}
+          whatsappNumber={settings.business.whatsapp_number}
+          acceptOrders={settings.shipping.accept_orders}
+          hasBlog={hasBlog}
+        />
+        <main className="flex-1">{children}</main>
+        <Footer
+          business={settings.business}
+          social={settings.social}
+          legalPages={legalPages}
+        />
+        <FloatingWhatsApp
+          phoneNumber={settings.business.whatsapp_number}
+          businessName={settings.business.business_name}
+        />
+      </div>
+    </MotionProvider>
   );
 }

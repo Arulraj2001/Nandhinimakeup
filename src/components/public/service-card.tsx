@@ -12,7 +12,7 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
   return (
     <Link
       href={`/services/${service.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-lg border border-[#E5DFD7] bg-white transition-all duration-300 hover:border-[#C5A059] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8C2524]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-[#E5DFD7] bg-white transition-all duration-300 hover:border-[#C5A059] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8C2524]"
     >
       {/* Aspect ratio container to prevent layout shift */}
       <div className="relative aspect-4/3 w-full overflow-hidden bg-[#F4ECE4]">
@@ -22,7 +22,7 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
             alt={service.image?.alt_text || service.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-104"
+            className="object-cover transition-transform duration-300 ease-out will-change-transform group-hover:scale-[1.025]"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-[#78716C]">
@@ -56,11 +56,13 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
         )}
 
         <div className="mt-3 flex items-center justify-between border-t border-[#E5DFD7] pt-2.5 text-xs">
-          <PriceDisplay
-            price={service.price}
-            priceType={service.price_type}
-            size="sm"
-          />
+          <div className="transition-colors duration-200 group-hover:text-[#8C2524] [&_span]:transition-colors [&_span]:duration-200 group-hover:[&_span]:text-[#8C2524]">
+            <PriceDisplay
+              price={service.price}
+              priceType={service.price_type}
+              size="sm"
+            />
+          </div>
 
           {service.duration_minutes ? (
             <span className="text-[11px] font-medium text-[#78716C]">
@@ -73,6 +75,12 @@ export function ServiceCard({ service }: { service: ServiceWithCategory }) {
           )}
         </div>
       </div>
+
+      {/* Editorial Sweeping Gold Hairline on Card Bottom Edge */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-0 bg-[#C5A059] transition-all duration-300 ease-out group-hover:w-full"
+      />
     </Link>
   );
 }

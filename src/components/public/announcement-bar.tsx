@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { m } from "motion/react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import type { Announcement } from "@/types/content";
 
 interface AnnouncementBarProps {
@@ -12,6 +14,7 @@ const emptySubscribe = () => () => {};
 
 export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
   const [localDismissed, setLocalDismissed] = React.useState(false);
+  const reducedMotion = useReducedMotion();
 
   const isStorageDismissed = React.useSyncExternalStore(
     emptySubscribe,
@@ -40,14 +43,25 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
     }
   };
 
+  const motionProps = reducedMotion
+    ? {}
+    : {
+        initial: { y: "-100%", opacity: 0 },
+        animate: { y: 0, opacity: 1 },
+        transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const },
+      };
+
   return (
-    <aside
+    <m.aside
+      {...motionProps}
       aria-label="Announcement"
       className="relative z-30 border-b border-[#C5A059]/30 bg-[#1C1917] px-4 py-2 text-center text-xs font-medium text-[#FAF8F5] sm:text-sm"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <div className="flex-1 text-center">
-          <span>{announcement.message}</span>
+          <span className="animate-gold-shimmer inline-block font-medium">
+            {announcement.message}
+          </span>
           {announcement.link_url && (
             <Link
               href={announcement.link_url}
@@ -66,6 +80,6 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
           ✕
         </button>
       </div>
-    </aside>
+    </m.aside>
   );
 }

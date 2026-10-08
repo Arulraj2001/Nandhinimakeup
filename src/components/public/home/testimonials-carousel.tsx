@@ -104,8 +104,16 @@ export function TestimonialsCarousel({
               key={t.id}
               className="w-[85vw] flex-none snap-center sm:w-[380px] md:w-[420px]"
             >
-              <article className="flex h-full flex-col justify-between rounded-lg border border-[#E5DFD7] bg-white p-6 shadow-xs transition-shadow hover:shadow-md">
+              <article className="flex h-full flex-col justify-between rounded-lg border border-[#E5DFD7] bg-white p-6 shadow-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md">
                 <div>
+                  {/* Decorative Antique Gold Serif Quotation Flourish */}
+                  <div
+                    aria-hidden="true"
+                    className="font-heading -mt-2 -mb-2 select-none text-4xl font-serif text-[#C5A059]/70"
+                  >
+                    “
+                  </div>
+
                   {/* Gold Star Rating */}
                   <div
                     className="flex items-center gap-1 text-[#C5A059]"
@@ -127,7 +135,7 @@ export function TestimonialsCarousel({
                   </div>
 
                   {/* Quote */}
-                  <blockquote className="mt-4 text-sm leading-relaxed text-[#57534E] italic">
+                  <blockquote className="mt-3 text-sm leading-relaxed text-[#57534E] italic">
                     &ldquo;{t.quote}&rdquo;
                   </blockquote>
                 </div>
