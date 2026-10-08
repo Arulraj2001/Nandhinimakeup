@@ -207,6 +207,13 @@ export function MediaUploadDialog({
         );
         uploadedMedia.push(recordResult.data);
       } catch (err) {
+        // Cleanup orphan file in storage if metadata save failed
+        try {
+          await supabase.storage.from("media").remove([path]);
+        } catch {
+          // Non-blocking cleanup
+        }
+
         setItems((prev) =>
           prev.map((it) =>
             it.id === item.id
