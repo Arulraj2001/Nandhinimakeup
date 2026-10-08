@@ -3,23 +3,53 @@ import { z } from "zod";
 const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z
     .string()
-    .min(1, "SUPABASE_SERVICE_ROLE_KEY is required and must not be empty"),
+    .transform((val) => val.trim().replace(/^["']|["']$/g, ""))
+    .pipe(
+      z
+        .string()
+        .min(1, "SUPABASE_SERVICE_ROLE_KEY is required and must not be empty")
+    ),
   ALLOW_INDEXING: z
-    .enum(["true", "false"])
-    .default("false")
-    .transform((val) => val === "true"),
+    .union([z.boolean(), z.string()])
+    .optional()
+    .default(false)
+    .transform((val) => {
+      if (typeof val === "boolean") return val;
+      const clean = (val || "").trim().toLowerCase().replace(/^["']|["']$/g, "");
+      return clean === "true" || clean === "1" || clean === "yes";
+    }),
 });
 
 const clientSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z
     .string()
-    .url("NEXT_PUBLIC_SUPABASE_URL must be a valid URL"),
+    .transform((val) => val.trim().replace(/^["']|["']$/g, ""))
+    .pipe(z.string().url("NEXT_PUBLIC_SUPABASE_URL must be a valid URL")),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z
     .string()
-    .min(1, "NEXT_PUBLIC_SUPABASE_ANON_KEY is required and must not be empty"),
+    .transform((val) => val.trim().replace(/^["']|["']$/g, ""))
+    .pipe(
+      z
+        .string()
+        .min(
+          1,
+          "NEXT_PUBLIC_SUPABASE_ANON_KEY is required and must not be empty"
+        )
+    ),
   NEXT_PUBLIC_SITE_URL: z
     .string()
-    .url("NEXT_PUBLIC_SITE_URL must be a valid URL"),
+    .transform((val) => {
+      let trimmed = val.trim().replace(/^["']|["']$/g, "");
+      if (
+        trimmed &&
+        !trimmed.startsWith("http://") &&
+        !trimmed.startsWith("https://")
+      ) {
+        trimmed = `https://${trimmed}`;
+      }
+      return trimmed;
+    })
+    .pipe(z.string().url("NEXT_PUBLIC_SITE_URL must be a valid URL")),
 });
 
 const isServer = typeof window === "undefined";
