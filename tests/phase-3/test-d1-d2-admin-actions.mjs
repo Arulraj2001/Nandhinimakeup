@@ -1,8 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import {
-  saveGalleryItemSchema,
-} from "../../src/types/gallery.ts";
+import { saveGalleryItemSchema } from "../../src/types/gallery.ts";
 import {
   saveTestimonialSchema,
   saveFAQSchema,
@@ -13,7 +11,9 @@ import {
   aboutSettingsSchema,
 } from "../../src/types/settings.ts";
 
-console.log("=== RUNNING D1 & D2: PHASE 3 ADMIN ACTIONS & VALIDATION AUDIT ===\n");
+console.log(
+  "=== RUNNING D1 & D2: PHASE 3 ADMIN ACTIONS & VALIDATION AUDIT ===\n"
+);
 
 let passCount = 0;
 let failCount = 0;
@@ -33,11 +33,16 @@ function report(id, description, passed, actual, expected) {
 // -------------------------------------------------------------
 // 1. Phase 3 Server Action Inventory & Code Order Checks
 // -------------------------------------------------------------
-console.log("--- 1. Phase 3 Server Actions Authorization & Revalidation Matrix ---");
+console.log(
+  "--- 1. Phase 3 Server Actions Authorization & Revalidation Matrix ---"
+);
 
 const actionFiles = [
   { file: "gallery.ts", expectedTag: "gallery" },
-  { file: "content.ts", expectedTags: ["testimonials", "faqs", "announcements"] },
+  {
+    file: "content.ts",
+    expectedTags: ["testimonials", "faqs", "announcements"],
+  },
   { file: "settings.ts", expectedTag: "settings" },
 ];
 
@@ -51,13 +56,17 @@ for (const { file } of actionFiles) {
   if (!fs.existsSync(filePath)) continue;
   const content = fs.readFileSync(filePath, "utf8");
 
-  const fnRegex = /export\s+async\s+function\s+([a-zA-Z0-9_]+)\s*\(([^)]*)\)(?:\s*:\s*Promise<([^>]+)>)?/g;
+  const fnRegex =
+    /export\s+async\s+function\s+([a-zA-Z0-9_]+)\s*\(([^)]*)\)(?:\s*:\s*Promise<([^>]+)>)?/g;
   let match;
   while ((match = fnRegex.exec(content)) !== null) {
     const fnName = match[1];
     const startIndex = match.index;
     const nextExport = content.indexOf("export async function", startIndex + 1);
-    const body = content.slice(startIndex, nextExport === -1 ? undefined : nextExport);
+    const body = content.slice(
+      startIndex,
+      nextExport === -1 ? undefined : nextExport
+    );
 
     const isMutation =
       body.includes(".insert(") ||
@@ -144,7 +153,10 @@ const validSingleItem = {
 };
 
 const singleParsed = saveGalleryItemSchema.safeParse(validSingleItem);
-const singleNoMedia = saveGalleryItemSchema.safeParse({ ...validSingleItem, media_id: "not-a-uuid" });
+const singleNoMedia = saveGalleryItemSchema.safeParse({
+  ...validSingleItem,
+  media_id: "not-a-uuid",
+});
 
 // Before/After item requirements
 const validBeforeAfter = {
@@ -163,7 +175,10 @@ const beforeAfterMissingBefore = saveGalleryItemSchema.safeParse({
 report(
   "D2-GALLERY-BEFORE-AFTER",
   "Gallery validation: single items require media_id; before_after items require BOTH media_id and before_media_id",
-  singleParsed.success && !singleNoMedia.success && beforeAfterValid.success && !beforeAfterMissingBefore.success,
+  singleParsed.success &&
+    !singleNoMedia.success &&
+    beforeAfterValid.success &&
+    !beforeAfterMissingBefore.success,
   `Single valid: ${singleParsed.success}; Single no-media: ${singleNoMedia.success}; Before/After valid: ${beforeAfterValid.success}; Missing before: ${beforeAfterMissingBefore.success}`,
   "Strict media requirements for gallery items"
 );
@@ -185,10 +200,22 @@ const validTestimonial = {
 };
 
 const testimonialValid = saveTestimonialSchema.safeParse(validTestimonial);
-const testimonialRating0 = saveTestimonialSchema.safeParse({ ...validTestimonial, rating: 0 });
-const testimonialRating6 = saveTestimonialSchema.safeParse({ ...validTestimonial, rating: 6 });
-const testimonialDecimalRating = saveTestimonialSchema.safeParse({ ...validTestimonial, rating: 4.5 });
-const testimonialBadSource = saveTestimonialSchema.safeParse({ ...validTestimonial, source: "twitter" });
+const testimonialRating0 = saveTestimonialSchema.safeParse({
+  ...validTestimonial,
+  rating: 0,
+});
+const testimonialRating6 = saveTestimonialSchema.safeParse({
+  ...validTestimonial,
+  rating: 6,
+});
+const testimonialDecimalRating = saveTestimonialSchema.safeParse({
+  ...validTestimonial,
+  rating: 4.5,
+});
+const testimonialBadSource = saveTestimonialSchema.safeParse({
+  ...validTestimonial,
+  source: "twitter",
+});
 
 report(
   "D2-TESTIMONIAL-RATING-BOUNDS",
@@ -218,12 +245,18 @@ const validFAQ = {
 const faqValid = saveFAQSchema.safeParse(validFAQ);
 const faqEmptyQ = saveFAQSchema.safeParse({ ...validFAQ, question: "" });
 const faqEmptyA = saveFAQSchema.safeParse({ ...validFAQ, answer: "" });
-const faqBadGroup = saveFAQSchema.safeParse({ ...validFAQ, group: "unknown_group" });
+const faqBadGroup = saveFAQSchema.safeParse({
+  ...validFAQ,
+  group: "unknown_group",
+});
 
 report(
   "D2-FAQ-VALIDATION",
   "FAQ schema requires non-empty question, non-empty answer, and valid group enum",
-  faqValid.success && !faqEmptyQ.success && !faqEmptyA.success && !faqBadGroup.success,
+  faqValid.success &&
+    !faqEmptyQ.success &&
+    !faqEmptyA.success &&
+    !faqBadGroup.success,
   "Valid FAQ passes; empty question, empty answer, and unknown group rejected",
   "Strict FAQ schema enforcement"
 );
@@ -243,14 +276,32 @@ const validAnnouncement = {
 };
 
 const annValid = saveAnnouncementSchema.safeParse(validAnnouncement);
-const annRelativeValid = saveAnnouncementSchema.safeParse({ ...validAnnouncement, link_url: "/jewellery" });
-const annHttpsValid = saveAnnouncementSchema.safeParse({ ...validAnnouncement, link_url: "https://instagram.com/nandhini" });
+const annRelativeValid = saveAnnouncementSchema.safeParse({
+  ...validAnnouncement,
+  link_url: "/jewellery",
+});
+const annHttpsValid = saveAnnouncementSchema.safeParse({
+  ...validAnnouncement,
+  link_url: "https://instagram.com/nandhini",
+});
 
 // Hostile link schemes that MUST be rejected
-const annJavascript = saveAnnouncementSchema.safeParse({ ...validAnnouncement, link_url: "javascript:alert(1)" });
-const annData = saveAnnouncementSchema.safeParse({ ...validAnnouncement, link_url: "data:text/html,bad" });
-const annHttp = saveAnnouncementSchema.safeParse({ ...validAnnouncement, link_url: "http://insecure.com" });
-const annProtocolRelative = saveAnnouncementSchema.safeParse({ ...validAnnouncement, link_url: "//evil.com" });
+const annJavascript = saveAnnouncementSchema.safeParse({
+  ...validAnnouncement,
+  link_url: "javascript:alert(1)",
+});
+const annData = saveAnnouncementSchema.safeParse({
+  ...validAnnouncement,
+  link_url: "data:text/html,bad",
+});
+const annHttp = saveAnnouncementSchema.safeParse({
+  ...validAnnouncement,
+  link_url: "http://insecure.com",
+});
+const annProtocolRelative = saveAnnouncementSchema.safeParse({
+  ...validAnnouncement,
+  link_url: "//evil.com",
+});
 
 // Date ordering check: end_date before start_date must be rejected
 const annEndBeforeStart = saveAnnouncementSchema.safeParse({
@@ -315,7 +366,10 @@ const homeCounters4 = homeSettingsSchema.safeParse({
     { label: "C4", number: 4 }, // max 3
   ],
 });
-const homeBadButton = homeSettingsSchema.safeParse({ ...validHome, hero_primary_button: "contact" });
+const homeBadButton = homeSettingsSchema.safeParse({
+  ...validHome,
+  hero_primary_button: "contact",
+});
 
 report(
   "D2-HOME-SETTINGS-LIMITS",
@@ -326,7 +380,8 @@ report(
 );
 
 const validAbout = {
-  story_text: "Nandhini is an acclaimed bridal makeup artist with over 8 years of excellence.",
+  story_text:
+    "Nandhini is an acclaimed bridal makeup artist with over 8 years of excellence.",
   portrait_image_id: null,
   highlights: [
     "Certified Professional Bridal Artist",

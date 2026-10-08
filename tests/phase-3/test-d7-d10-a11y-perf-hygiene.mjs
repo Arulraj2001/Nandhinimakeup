@@ -3,7 +3,9 @@ import path from "node:path";
 import zlib from "node:zlib";
 import { parse } from "node-html-parser";
 
-console.log("=== RUNNING D7 & D10: ACCESSIBILITY, PERFORMANCE INDICATORS & HYGIENE ===\n");
+console.log(
+  "=== RUNNING D7 & D10: ACCESSIBILITY, PERFORMANCE INDICATORS & HYGIENE ===\n"
+);
 
 let passCount = 0;
 let failCount = 0;
@@ -50,7 +52,10 @@ for (const pagePath of corePages) {
   const html = await res.text();
   const root = parse(html);
 
-  if (!html.includes("lang=") && !root.querySelector("html")?.getAttribute("lang")) {
+  if (
+    !html.includes("lang=") &&
+    !root.querySelector("html")?.getAttribute("lang")
+  ) {
     allLangsPresent = false;
   }
 
@@ -105,7 +110,9 @@ report(
   "D7-A11Y-IMAGE-ALTS",
   "All rendered images possess explicit alt attributes",
   allImgsHaveAlt,
-  allImgsHaveAlt ? "All images have alt attributes" : "Missing alt attribute detected",
+  allImgsHaveAlt
+    ? "All images have alt attributes"
+    : "Missing alt attribute detected",
   "Alt attribute on every <img> tag"
 );
 
@@ -113,7 +120,9 @@ report(
   "D7-A11Y-FAQ-DETAILS",
   "FAQ page implements native <details> and <summary> elements for disclosure",
   faqUsesDetailsSummary,
-  faqUsesDetailsSummary ? "Native details/summary utilized" : "Non-native disclosure",
+  faqUsesDetailsSummary
+    ? "Native details/summary utilized"
+    : "Non-native disclosure",
   "Native details and summary markup"
 );
 
@@ -189,7 +198,9 @@ for (const pagePath of corePages) {
   const priorityImgs = root.querySelectorAll("img[fetchpriority='high']");
   if (priorityImgs.length > 1) {
     priorityRulesCompliant = false;
-    console.warn(`More than 1 priority image on ${pagePath}: ${priorityImgs.length}`);
+    console.warn(
+      `More than 1 priority image on ${pagePath}: ${priorityImgs.length}`
+    );
   }
 }
 
@@ -197,38 +208,55 @@ report(
   "D7-PERF-LCP-PRIORITY",
   "At most one priority/high fetchpriority image per public page",
   priorityRulesCompliant,
-  priorityRulesCompliant ? "At most 1 priority image per page verified" : "Multiple priority images found",
+  priorityRulesCompliant
+    ? "At most 1 priority image per page verified"
+    : "Multiple priority images found",
   "Single LCP priority candidate per page"
 );
 
 // -------------------------------------------------------------
 // 3. Hygiene (D10)
 // -------------------------------------------------------------
-console.log("\n--- 4. Hygiene: Bundle Secrets, Animation Lazy Loading, Scratch Files ---");
+console.log(
+  "\n--- 4. Hygiene: Bundle Secrets, Animation Lazy Loading, Scratch Files ---"
+);
 
 // Check animation library imports
-const motionProvider = fs.readFileSync("src/components/public/motion-provider.tsx", "utf8");
-const motionLazy = motionProvider.includes("LazyMotion") && motionProvider.includes("domAnimation");
+const motionProvider = fs.readFileSync(
+  "src/components/public/motion-provider.tsx",
+  "utf8"
+);
+const motionLazy =
+  motionProvider.includes("LazyMotion") &&
+  motionProvider.includes("domAnimation");
 
 report(
   "D10-MOTION-LAZY",
   "Animation library (motion/react) uses LazyMotion and domAnimation feature loader",
   motionLazy,
-  motionLazy ? "LazyMotion & domAnimation configured" : "Motion imported eagerly",
+  motionLazy
+    ? "LazyMotion & domAnimation configured"
+    : "Motion imported eagerly",
   "Lazy feature loader pattern"
 );
 
 // Check root for scratch files
 const rootEntries = fs.readdirSync(".", { withFileTypes: true });
 const strayFiles = rootEntries
-  .filter((e) => e.isFile() && /^(test|temp|scratch|debug).*\.(js|ts|json|txt|md)$/i.test(e.name))
+  .filter(
+    (e) =>
+      e.isFile() &&
+      /^(test|temp|scratch|debug).*\.(js|ts|json|txt|md)$/i.test(e.name)
+  )
   .map((e) => e.name);
 
 report(
   "D10-SCRATCH-FILES",
   "Zero temporary or scratch test files left in project root",
   strayFiles.length === 0,
-  strayFiles.length === 0 ? "Clean project root" : `Stray files: ${strayFiles.join(", ")}`,
+  strayFiles.length === 0
+    ? "Clean project root"
+    : `Stray files: ${strayFiles.join(", ")}`,
   "Clean repository root"
 );
 

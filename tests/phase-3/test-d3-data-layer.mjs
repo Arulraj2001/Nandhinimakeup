@@ -17,7 +17,9 @@ const CACHE_TAGS = {
   redirects: "redirects",
 };
 
-console.log("=== RUNNING D3: PUBLIC DATA LAYER, CACHING & STATIC RENDER AUDIT ===\n");
+console.log(
+  "=== RUNNING D3: PUBLIC DATA LAYER, CACHING & STATIC RENDER AUDIT ===\n"
+);
 
 let passCount = 0;
 let failCount = 0;
@@ -74,7 +76,11 @@ function scanDirectory(dir) {
           const lines = content.split("\n");
           for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
-            if (line.includes(forbidden) && !line.startsWith("//") && !line.startsWith("/*")) {
+            if (
+              line.includes(forbidden) &&
+              !line.startsWith("//") &&
+              !line.startsWith("/*")
+            ) {
               leakDetected = true;
               leakDetails.push(`${fullPath}:${i + 1} uses "${forbidden}"`);
             }
@@ -93,7 +99,9 @@ report(
   "D3-STATELESS-ISOLATION",
   "Public data layer and public routes contain zero cookie, header, or admin client dependencies",
   !leakDetected,
-  leakDetected ? leakDetails.join("; ") : "Zero imports of cookies, headers, or admin client found across public data layer",
+  leakDetected
+    ? leakDetails.join("; ")
+    : "Zero imports of cookies, headers, or admin client found across public data layer",
   "Clean stateless isolation in public layer"
 );
 
@@ -118,18 +126,65 @@ report(
 // -------------------------------------------------------------
 // 3. Public Data Queries Cache Tagging & Inventory (A5)
 // -------------------------------------------------------------
-console.log("\n--- 3. Public Data Layer Cache Tags & Admin Revalidation Pairing ---");
+console.log(
+  "\n--- 3. Public Data Layer Cache Tags & Admin Revalidation Pairing ---"
+);
 
 const dataLayerFiles = [
-  { file: "gallery.ts", key: "gallery", tag: CACHE_TAGS.gallery, adminFiles: ["gallery.ts"] },
-  { file: "testimonials.ts", key: "testimonials", tag: CACHE_TAGS.testimonials, adminFiles: ["content.ts"] },
-  { file: "faqs.ts", key: "faqs", tag: CACHE_TAGS.faqs, adminFiles: ["content.ts"] },
-  { file: "announcements.ts", key: "announcements", tag: CACHE_TAGS.announcements, adminFiles: ["content.ts"] },
-  { file: "settings.ts", key: "settings", tag: CACHE_TAGS.settings, adminFiles: ["settings.ts"] },
-  { file: "services.ts", key: "services", tag: CACHE_TAGS.services, adminFiles: ["services.ts"] },
-  { file: "service-categories.ts", key: "serviceCategories", tag: CACHE_TAGS.serviceCategories, adminFiles: ["services.ts"] },
-  { file: "products.ts", key: "products", tag: CACHE_TAGS.products, adminFiles: ["products.ts"] },
-  { file: "product-categories.ts", key: "productCategories", tag: CACHE_TAGS.productCategories, adminFiles: ["product-categories.ts"] },
+  {
+    file: "gallery.ts",
+    key: "gallery",
+    tag: CACHE_TAGS.gallery,
+    adminFiles: ["gallery.ts"],
+  },
+  {
+    file: "testimonials.ts",
+    key: "testimonials",
+    tag: CACHE_TAGS.testimonials,
+    adminFiles: ["content.ts"],
+  },
+  {
+    file: "faqs.ts",
+    key: "faqs",
+    tag: CACHE_TAGS.faqs,
+    adminFiles: ["content.ts"],
+  },
+  {
+    file: "announcements.ts",
+    key: "announcements",
+    tag: CACHE_TAGS.announcements,
+    adminFiles: ["content.ts"],
+  },
+  {
+    file: "settings.ts",
+    key: "settings",
+    tag: CACHE_TAGS.settings,
+    adminFiles: ["settings.ts"],
+  },
+  {
+    file: "services.ts",
+    key: "services",
+    tag: CACHE_TAGS.services,
+    adminFiles: ["services.ts"],
+  },
+  {
+    file: "service-categories.ts",
+    key: "serviceCategories",
+    tag: CACHE_TAGS.serviceCategories,
+    adminFiles: ["services.ts"],
+  },
+  {
+    file: "products.ts",
+    key: "products",
+    tag: CACHE_TAGS.products,
+    adminFiles: ["products.ts"],
+  },
+  {
+    file: "product-categories.ts",
+    key: "productCategories",
+    tag: CACHE_TAGS.productCategories,
+    adminFiles: ["product-categories.ts"],
+  },
 ];
 
 let allQueriesTagged = true;
@@ -138,8 +193,11 @@ const pairingInventory = [];
 
 for (const dl of dataLayerFiles) {
   const dlContent = fs.readFileSync(path.join("src/lib/data", dl.file), "utf8");
-  const hasUseCache = dlContent.includes('"use cache"') || dlContent.includes("'use cache'");
-  const hasCacheTag = dlContent.includes(`cacheTag(`) || dlContent.includes(`cacheTag(CACHE_TAGS.`);
+  const hasUseCache =
+    dlContent.includes('"use cache"') || dlContent.includes("'use cache'");
+  const hasCacheTag =
+    dlContent.includes(`cacheTag(`) ||
+    dlContent.includes(`cacheTag(CACHE_TAGS.`);
 
   if (!hasUseCache || !hasCacheTag) {
     allQueriesTagged = false;
@@ -148,7 +206,10 @@ for (const dl of dataLayerFiles) {
   // Check admin files for corresponding revalidateCacheTag
   let revalidatedInAdmin = false;
   for (const af of dl.adminFiles) {
-    const adminContent = fs.readFileSync(path.join("src/lib/actions", af), "utf8");
+    const adminContent = fs.readFileSync(
+      path.join("src/lib/actions", af),
+      "utf8"
+    );
     if (
       adminContent.includes(`revalidateCacheTag("${dl.key}"`) ||
       adminContent.includes(`revalidateCacheTag("${dl.tag}"`) ||

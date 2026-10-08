@@ -11,7 +11,10 @@ function buildWhatsAppLink(options) {
   else lines.push("Hello! I would like to enquire about:");
   if (options.itemName) lines.push(`Item: ${options.itemName}`);
   if (options.price !== undefined && options.price !== null) {
-    const formattedPrice = typeof options.price === "number" ? formatINR(options.price) : options.price;
+    const formattedPrice =
+      typeof options.price === "number"
+        ? formatINR(options.price)
+        : options.price;
     lines.push(`Price: ${formattedPrice}`);
   }
   if (options.pageUrl) lines.push(`Link: ${options.pageUrl}`);
@@ -25,7 +28,9 @@ function buildWhatsAppLink(options) {
   return `https://wa.me/${cleanNumber}?text=${encodedText}`;
 }
 
-console.log("=== RUNNING D4 & D5: PUBLIC CONTENT RENDERING & EMPTY-DATA AUDIT ===\n");
+console.log(
+  "=== RUNNING D4 & D5: PUBLIC CONTENT RENDERING & EMPTY-DATA AUDIT ===\n"
+);
 
 let passCount = 0;
 let failCount = 0;
@@ -50,7 +55,10 @@ const BASE_URL = "http://localhost:3009";
 console.log("--- 1. WhatsApp Message Builder Unit Tests ---");
 
 const waEmpty = buildWhatsAppLink({ phoneNumber: "" });
-const waCleanDigits = buildWhatsAppLink({ phoneNumber: "+91 98765-43210", itemName: "Bridal Makeup" });
+const waCleanDigits = buildWhatsAppLink({
+  phoneNumber: "+91 98765-43210",
+  itemName: "Bridal Makeup",
+});
 const waTamil = buildWhatsAppLink({
   phoneNumber: "919876543210",
   itemName: "மணப்பெண் அலங்காரம் (Bridal Look)",
@@ -66,13 +74,19 @@ const waPassed =
   waCleanDigits.startsWith("https://wa.me/919876543210?text=") &&
   waTamil.includes(encodeURIComponent("மணப்பெண் அலங்காரம்")) &&
   waTamil.includes(encodeURIComponent("₹15,000")) &&
-  waSpecialChars.includes(encodeURIComponent('Special "Airbrush" & HD & Glitter Look #1 (100% Guaranteed)'));
+  waSpecialChars.includes(
+    encodeURIComponent(
+      'Special "Airbrush" & HD & Glitter Look #1 (100% Guaranteed)'
+    )
+  );
 
 report(
   "D6-WHATSAPP-BUILDER",
   "WhatsApp link builder formats phone digits, encodes unicode/Tamil/symbols, formats INR, and returns empty for missing number",
   waPassed,
-  waPassed ? "All WhatsApp link encoding edge cases passed" : "WhatsApp link builder mismatch",
+  waPassed
+    ? "All WhatsApp link encoding edge cases passed"
+    : "WhatsApp link builder mismatch",
   "Safe encoded wa.me URLs with proper INR formatting"
 );
 
@@ -103,12 +117,16 @@ for (const p of corePages) {
 
     const hasHeader = Boolean(root.querySelector("header"));
     const hasFooter = Boolean(root.querySelector("footer"));
-    const hasMain = Boolean(root.querySelector("main") || root.querySelector("div"));
+    const hasMain = Boolean(
+      root.querySelector("main") || root.querySelector("div")
+    );
     const h1Count = root.querySelectorAll("h1").length;
 
     if (res.status !== 200 || h1Count !== 1 || !hasHeader || !hasFooter) {
       crawlSuccess = false;
-      crawlResults.push(`${p.path} (status: ${res.status}, h1s: ${h1Count}, header: ${hasHeader}, footer: ${hasFooter})`);
+      crawlResults.push(
+        `${p.path} (status: ${res.status}, h1s: ${h1Count}, header: ${hasHeader}, footer: ${hasFooter})`
+      );
     }
   } catch (err) {
     crawlSuccess = false;
@@ -120,7 +138,9 @@ report(
   "D4-CORE-PAGES-CRAWL",
   "All 8 public core routes return HTTP 200 with header, footer, and exactly one <h1>",
   crawlSuccess,
-  crawlSuccess ? "All 8 core routes successfully rendered with 1 H1 and landmarks" : crawlResults.join("; "),
+  crawlSuccess
+    ? "All 8 core routes successfully rendered with 1 H1 and landmarks"
+    : crawlResults.join("; "),
   "HTTP 200 and valid semantic landmarks"
 );
 
@@ -148,15 +168,21 @@ try {
 
   if (hasForm) {
     contactOk = false;
-    contactDetails.push("Forbidden <form> element found on /contact (Requirement 3.8: no form)");
+    contactDetails.push(
+      "Forbidden <form> element found on /contact (Requirement 3.8: no form)"
+    );
   }
   if (hasIframe) {
     contactOk = false;
-    contactDetails.push("Forbidden <iframe> element found on /contact (Requirement 3.8: no embedded map)");
+    contactDetails.push(
+      "Forbidden <iframe> element found on /contact (Requirement 3.8: no embedded map)"
+    );
   }
   if (!hasTel || !hasMailto) {
     contactOk = false;
-    contactDetails.push(`Missing tel: (${hasTel}) or mailto: (${hasMailto}) links`);
+    contactDetails.push(
+      `Missing tel: (${hasTel}) or mailto: (${hasMailto}) links`
+    );
   }
 } catch (e) {
   contactOk = false;
@@ -167,7 +193,9 @@ report(
   "D5-CONTACT-SPEC",
   "Contact page renders tap-to-call, mailto, weekly hours, and contains no form and no embedded map",
   contactOk,
-  contactOk ? "Contact page conforms strictly to Requirement 3.8" : contactDetails.join("; "),
+  contactOk
+    ? "Contact page conforms strictly to Requirement 3.8"
+    : contactDetails.join("; "),
   "Conforms to Requirement 3.8"
 );
 
@@ -184,8 +212,11 @@ try {
 
   // In empty state, renders EmptyState; in source code, uses <details> and <summary>
   const faqSource = fs.readFileSync("src/app/(public)/faq/page.tsx", "utf8");
-  const usesDetails = faqSource.includes("<details") && faqSource.includes("<summary");
-  const hasEmptyOrFaqs = root.querySelectorAll("details").length > 0 || html.includes("frequently asked questions");
+  const usesDetails =
+    faqSource.includes("<details") && faqSource.includes("<summary");
+  const hasEmptyOrFaqs =
+    root.querySelectorAll("details").length > 0 ||
+    html.includes("frequently asked questions");
 
   faqOk = usesDetails && hasEmptyOrFaqs;
 } catch (e) {
@@ -196,7 +227,9 @@ report(
   "D5-FAQ-DETAILS-SUMMARY",
   "FAQ page renders accessible native <details> and <summary> accordion markup (with empty state fallback)",
   faqOk,
-  faqOk ? "FAQ component implements native <details> and <summary> with empty state handling" : "FAQ markup verification failed",
+  faqOk
+    ? "FAQ component implements native <details> and <summary> with empty state handling"
+    : "FAQ markup verification failed",
   "Native details and summary markup with empty state fallback"
 );
 
@@ -206,15 +239,20 @@ report(
 console.log("\n--- 5. Not-Found & Streaming Status Codes (Requirement D5) ---");
 
 const missingServiceRes = await fetch(`${BASE_URL}/services/missing-slug-xyz`);
-const missingProductRes = await fetch(`${BASE_URL}/jewellery/missing-cat/missing-prod`);
-const missingPageRouteRes = await fetch(`${BASE_URL}/non-existent-page-xyz-12345`);
+const missingProductRes = await fetch(
+  `${BASE_URL}/jewellery/missing-cat/missing-prod`
+);
+const missingPageRouteRes = await fetch(
+  `${BASE_URL}/non-existent-page-xyz-12345`
+);
 
 const missingPageStatus = missingPageRouteRes.status;
 const streamedServiceStatus = missingServiceRes.status;
 const streamedProductStatus = missingProductRes.status;
 
 // In Next.js PPR / Suspense streaming, detail pages wrapped in Suspense send HTTP 200 header before calling notFound()
-const streams200OnDetail = streamedServiceStatus === 200 || streamedProductStatus === 200;
+const streams200OnDetail =
+  streamedServiceStatus === 200 || streamedProductStatus === 200;
 
 report(
   "D5-STREAMED-NOT-FOUND-STATUS",

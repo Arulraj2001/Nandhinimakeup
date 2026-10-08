@@ -27,7 +27,9 @@ console.log("\n========================================================");
 if (totalFailed === 0) {
   console.log("ALL PHASE 3 SUITE TESTS COMPLETED SUCCESSFULLY");
 } else {
-  console.log(`PHASE 3 SUITE FINISHED WITH ${totalFailed} SCRIPT ERROR(S) / TEST FAILURE(S)`);
+  console.log(
+    `PHASE 3 SUITE FINISHED WITH ${totalFailed} SCRIPT ERROR(S) / TEST FAILURE(S)`
+  );
 }
 console.log("========================================================\n");
 

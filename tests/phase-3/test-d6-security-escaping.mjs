@@ -34,7 +34,10 @@ function buildWhatsAppLink(options) {
   else lines.push("Hello! I would like to enquire about:");
   if (options.itemName) lines.push(`Item: ${options.itemName}`);
   if (options.price !== undefined && options.price !== null) {
-    const formattedPrice = typeof options.price === "number" ? formatINR(options.price) : options.price;
+    const formattedPrice =
+      typeof options.price === "number"
+        ? formatINR(options.price)
+        : options.price;
     lines.push(`Price: ${formattedPrice}`);
   }
   if (options.pageUrl) lines.push(`Link: ${options.pageUrl}`);
@@ -74,18 +77,27 @@ const testCases = [
       itemName: "✨ Bridal Glow & Sparkle! #1 (100% Guaranteed) - ₹25,000",
     },
     verify: (url) =>
-      url.includes(encodeURIComponent("✨ Bridal Glow & Sparkle! #1 (100% Guaranteed) - ₹25,000")),
+      url.includes(
+        encodeURIComponent(
+          "✨ Bridal Glow & Sparkle! #1 (100% Guaranteed) - ₹25,000"
+        )
+      ),
   },
   {
     name: "Hostile HTML in item name does not inject parameters or tags",
     opts: {
       phoneNumber: "919876543210",
-      itemName: '<script>alert(1)</script>&redirect_url=evil.com#"onload="alert(2)',
+      itemName:
+        '<script>alert(1)</script>&redirect_url=evil.com#"onload="alert(2)',
     },
     verify: (url) => {
       // Must not contain unencoded & or ? or #
       const queryPart = url.split("?text=")[1];
-      return queryPart && !queryPart.includes("&redirect_url=") && !queryPart.includes("<script>");
+      return (
+        queryPart &&
+        !queryPart.includes("&redirect_url=") &&
+        !queryPart.includes("<script>")
+      );
     },
   },
   {
@@ -111,7 +123,9 @@ report(
   "D6-WHATSAPP-MATRIX",
   "WhatsApp link builder handles digits-only, missing numbers, unicode/Tamil/emoji, hostile HTML and long strings",
   allWaPassed,
-  allWaPassed ? "All edge cases cleanly handled and URL encoded" : "Encoding or sanitization failure",
+  allWaPassed
+    ? "All edge cases cleanly handled and URL encoded"
+    : "Encoding or sanitization failure",
   "100% compliant URL-safe wa.me output"
 );
 
@@ -120,7 +134,16 @@ report(
 // -------------------------------------------------------------
 console.log("\n--- 2. Security Headers & External Links Safety ---");
 
-const samplePages = ["/", "/services", "/jewellery", "/gallery", "/reviews", "/faq", "/about", "/contact"];
+const samplePages = [
+  "/",
+  "/services",
+  "/jewellery",
+  "/gallery",
+  "/reviews",
+  "/faq",
+  "/about",
+  "/contact",
+];
 
 let headersCompliant = true;
 let noHostileHrefs = true;
@@ -161,7 +184,9 @@ for (const path of samplePages) {
       const rel = a.getAttribute("rel") || "";
       if (!rel.includes("noopener")) {
         externalRelCompliant = false;
-        console.error(`External link missing rel="noopener" on ${path}: ${href}`);
+        console.error(
+          `External link missing rel="noopener" on ${path}: ${href}`
+        );
       }
     }
   }
@@ -194,7 +219,9 @@ report(
   "D6-SECURITY-HEADERS",
   "Security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy) present on public responses",
   headersCompliant,
-  headersCompliant ? "All required headers present" : "Missing security headers",
+  headersCompliant
+    ? "All required headers present"
+    : "Missing security headers",
   "Standard security headers on all public responses"
 );
 
@@ -202,7 +229,9 @@ report(
   "D6-HREF-SCHEMES",
   "Zero hostile protocols (javascript:, data:, vbscript:) in rendered anchor href attributes",
   noHostileHrefs,
-  noHostileHrefs ? "All href attributes use safe protocols" : "Hostile protocol found in href",
+  noHostileHrefs
+    ? "All href attributes use safe protocols"
+    : "Hostile protocol found in href",
   "Safe protocols only"
 );
 
@@ -210,7 +239,9 @@ report(
   "D6-EXTERNAL-REL",
   "All external links include rel='noopener' or rel='noreferrer'",
   externalRelCompliant,
-  externalRelCompliant ? "All external links protected" : "Missing noopener on external link",
+  externalRelCompliant
+    ? "All external links protected"
+    : "Missing noopener on external link",
   "rel='noopener' on external links"
 );
 
@@ -218,7 +249,9 @@ report(
   "D6-NO-THIRD-PARTY-SCRIPTS",
   "Zero third-party script tags loaded on public website",
   noThirdPartyScripts,
-  noThirdPartyScripts ? "Zero external script tags found" : "External script tags present",
+  noThirdPartyScripts
+    ? "Zero external script tags found"
+    : "External script tags present",
   "Self-hosted / framework scripts only"
 );
 
@@ -226,7 +259,9 @@ report(
   "D6-DATA-OVEREXPOSURE",
   "Scan HTML and RSC payloads for service role keys, secrets, or internal auth tokens",
   !dataOverexposed,
-  dataOverexposed ? exposedDetails.join("; ") : "Zero service role keys or sensitive tokens found",
+  dataOverexposed
+    ? exposedDetails.join("; ")
+    : "Zero service role keys or sensitive tokens found",
   "No confidential credentials in public payloads"
 );
 
