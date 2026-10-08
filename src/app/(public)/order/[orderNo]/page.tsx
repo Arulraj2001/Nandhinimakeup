@@ -94,7 +94,7 @@ async function OrderContent({ params, searchParams }: OrderPageProps) {
   const payeeName =
     settings.payments.payee_name || settings.business.business_name;
 
-  if (order.status === "pending_payment") {
+  if (order.status === "pending_payment" && Number(order.total) > 0) {
     if (upiId) {
       upiUrl = buildUpiPayUrl({
         upiId,
@@ -102,7 +102,9 @@ async function OrderContent({ params, searchParams }: OrderPageProps) {
         amount: Number(order.total),
         orderNumber: order.order_number,
       });
-      qrSvg = await generateUpiQrSvg(upiUrl);
+      if (upiUrl) {
+        qrSvg = await generateUpiQrSvg(upiUrl);
+      }
     } else if (settings.payments.upi_qr_media_id) {
       const media = await getPublicMedia(settings.payments.upi_qr_media_id);
       if (media) {

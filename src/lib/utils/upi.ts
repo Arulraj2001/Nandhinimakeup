@@ -12,6 +12,9 @@ export interface UpiPayParams {
  */
 export function buildUpiPayUrl(params: UpiPayParams): string {
   const { upiId, payeeName, amount, orderNumber } = params;
+  if (!amount || Number(amount) <= 0) {
+    return "";
+  }
   const formattedAmount = Number(amount).toFixed(2);
   const search = new URLSearchParams({
     pa: upiId.trim(),

@@ -20,7 +20,7 @@ export function EmptyState({
         className
       )}
     >
-      <p className="text-foreground/80 text-sm leading-relaxed">{message}</p>
+      <h2 className="text-foreground/80 text-sm font-normal leading-relaxed">{message}</h2>
     </div>
   );
 }

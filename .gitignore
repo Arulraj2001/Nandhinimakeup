@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# test evidence and backups
+tests/functional/results/
+tests/functional/*.json
+tests/phase-4/results/
+

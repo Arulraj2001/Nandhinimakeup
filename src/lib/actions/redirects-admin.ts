@@ -15,6 +15,7 @@ import {
 } from "@/types/redirects";
 import type { Database } from "@/types/database";
 import { normalizeRedirectPath } from "@/lib/data/redirects";
+import { clearRedirectCache } from "@/lib/data/redirects-cache";
 
 /**
  * Returns all redirects for admin management.
@@ -168,6 +169,7 @@ export async function saveAdminRedirect(
   }
 
   revalidateCacheTag("redirects");
+  clearRedirectCache();
 
   return actionSuccess(data as RedirectRow);
 }
@@ -193,6 +195,7 @@ export async function deleteAdminRedirect(
   }
 
   revalidateCacheTag("redirects");
+  clearRedirectCache();
 
   return actionSuccess({ id });
 }
@@ -234,4 +237,5 @@ export async function createAutomaticSlugRedirect(
 
   // 4. Invalidate redirects cache tag
   revalidateCacheTag("redirects");
+  clearRedirectCache();
 }

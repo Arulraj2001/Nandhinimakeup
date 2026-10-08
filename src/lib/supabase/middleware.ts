@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/types/database";
+import { getCachedRedirect } from "@/lib/data/redirects-cache";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -58,21 +59,18 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Check redirects for public routes
+  // Check redirects for public routes (skip assets, internal paths, and file extensions)
   if (
     !pathname.startsWith("/admin") &&
     !pathname.startsWith("/_next") &&
-    !pathname.startsWith("/api")
+    !pathname.startsWith("/api") &&
+    !pathname.includes(".")
   ) {
     const cleanPath =
       pathname.length > 1 && pathname.endsWith("/")
         ? pathname.slice(0, -1)
         : pathname;
-    const { data: redirectItem } = await supabase
-      .from("redirects")
-      .select("to_path, status_code")
-      .eq("from_path", cleanPath)
-      .maybeSingle();
+    const redirectItem = await getCachedRedirect(cleanPath, supabase);
 
     if (redirectItem) {
       const redirectUrl = new URL(redirectItem.to_path, request.url);

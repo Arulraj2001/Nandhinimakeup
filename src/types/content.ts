@@ -51,9 +51,12 @@ export const saveFAQSchema = z.object({
 
 export type SaveFAQInput = z.infer<typeof saveFAQSchema>;
 
-// Link validation helper for announcements: relative paths (/... but not //) or https://
-const isSafeAnnouncementLink = (val: string) =>
-  val.startsWith("https://") || (val.startsWith("/") && !val.startsWith("//"));
+// Link validation helper for announcements: relative paths (/... but not // or /\) or https://
+const isSafeAnnouncementLink = (val: string) => {
+  if (/[\s\t\r\n]/.test(val)) return false;
+  if (val.startsWith("//") || val.startsWith("/\\") || val.startsWith("\\")) return false;
+  return val.startsWith("https://") || val.startsWith("/");
+};
 
 export const saveAnnouncementSchema = z
   .object({

@@ -25,6 +25,19 @@ export function Header({
   hasBlog = false,
 }: HeaderProps) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const toggleBtnRef = React.useRef<HTMLButtonElement>(null);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        toggleBtnRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   const whatsAppLink = whatsappNumber
     ? buildWhatsAppLink({
@@ -117,6 +130,7 @@ export function Header({
           )}
 
           <button
+            ref={toggleBtnRef}
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             className="border-border text-foreground hover:bg-surface focus-visible:ring-foreground inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm font-medium focus-visible:ring-2 focus-visible:outline-none"
