@@ -57,13 +57,38 @@ function MediaEditForm({
   };
 
   return (
-    <div className="border-border bg-card-surface w-full max-w-md rounded-xl border p-6 shadow-xl">
-      <h2 className="font-heading text-foreground text-xl font-semibold">
-        Edit Media Details
-      </h2>
-      <p className="text-foreground/70 mt-1 text-xs">
-        Update file name and alt text. File content cannot be replaced.
-      </p>
+    <div className="border-border bg-surface w-full max-w-md rounded-xl border p-6 shadow-xl">
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="font-heading text-foreground text-xl font-semibold">
+            Edit Media Details
+          </h2>
+          <p className="text-foreground/70 mt-1 text-xs">
+            Update file name and alt text. File content cannot be replaced.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={isLoading}
+          className="text-foreground/50 hover:text-foreground -mr-2 -mt-2 p-2 transition-colors disabled:opacity-50"
+          aria-label="Close dialog"
+        >
+          <svg
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit} className="mt-5 space-y-4">
         <div className="space-y-1.5">

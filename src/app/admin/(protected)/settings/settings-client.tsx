@@ -116,7 +116,7 @@ export function SettingsClient({
       </div>
 
       {/* Tab Panels */}
-      <div className="bg-card text-card-foreground border-border rounded-lg border p-6 shadow-sm">
+      <div className="border-border bg-surface text-foreground rounded-lg border p-6 shadow-sm">
         {activeTab === "business" && (
           <BusinessSettingsForm initialValues={initialSettings.business} />
         )}

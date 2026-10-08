@@ -225,7 +225,7 @@ export function SeoPanel({
   }
 
   return (
-    <div className="border-border bg-card text-card-foreground space-y-6 rounded-xl border p-4 sm:p-6">
+    <div className="border-border bg-card-surface text-foreground space-y-6 rounded-xl border p-4 sm:p-6">
       <div className="border-border flex items-center justify-between border-b pb-3">
         <div>
           <h3 className="text-foreground text-base font-semibold">
@@ -491,39 +491,39 @@ export function SeoPanel({
 
         {/* Snippet Card */}
         <div
-          className={`rounded-lg border border-slate-200 bg-white p-4 text-left font-sans shadow-xs dark:border-slate-800 dark:bg-slate-950 ${
+          className={`rounded-lg border border-slate-200 bg-white p-4 text-left font-sans shadow-xs ${
             previewDevice === "mobile" ? "max-w-sm" : "max-w-2xl"
           }`}
         >
           {/* Header Line */}
           <div className="mb-1 flex items-center gap-2">
-            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 text-[10px] text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 text-[10px] text-slate-600">
               ●
             </div>
-            <div className="truncate text-xs text-slate-700 dark:text-slate-300">
+            <div className="truncate text-xs text-slate-700">
               <span className="font-medium">{siteName}</span>
-              <span className="mx-1 text-slate-400 dark:text-slate-500">›</span>
-              <span className="text-slate-500 dark:text-slate-400">
+              <span className="mx-1 text-slate-400">›</span>
+              <span className="text-slate-500">
                 {fullPath}
               </span>
             </div>
           </div>
 
           {/* Title */}
-          <h4 className="mb-1 line-clamp-2 cursor-pointer text-base leading-snug font-normal text-[#1a0dab] hover:underline sm:text-lg dark:text-[#8ab4f8]">
+          <h4 className="mb-1 line-clamp-2 cursor-pointer text-base leading-snug font-normal text-[#1a0dab] hover:underline sm:text-lg">
             {fullPreviewTitle}
           </h4>
 
           {/* Description & Thumbnail layout */}
           <div className="flex items-start gap-3">
-            <p className="line-clamp-2 flex-1 text-xs leading-relaxed text-[#4d5156] sm:text-sm dark:text-[#bdc1c6]">
+            <p className="line-clamp-2 flex-1 text-xs leading-relaxed text-[#4d5156] sm:text-sm">
               {effectiveDescription}
             </p>
             {effectiveImageUrl && previewDevice === "mobile" && (
               <img
                 src={effectiveImageUrl}
                 alt=""
-                className="h-14 w-14 shrink-0 rounded-md border border-slate-200 object-cover dark:border-slate-800"
+                className="h-14 w-14 shrink-0 rounded-md border border-slate-200 object-cover"
               />
             )}
           </div>
@@ -531,7 +531,7 @@ export function SeoPanel({
       </div>
 
       {/* Deterministic Checklist */}
-      <div className="border-border bg-background space-y-3 rounded-xl border p-4">
+      <div className="border-border bg-page-background space-y-3 rounded-xl border p-4">
         <div className="border-border border-b pb-2">
           <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             SEO Audit Checklist (Deterministic)

@@ -85,7 +85,7 @@ export function MediaPicker({
         aria-modal="true"
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
       >
-        <div className="border-border bg-card-surface flex max-h-[90vh] w-full max-w-4xl flex-col rounded-xl border shadow-2xl">
+        <div className="border-border bg-surface flex max-h-[90vh] w-full max-w-4xl flex-col rounded-xl border shadow-2xl">
           {/* Header */}
           <div className="border-border flex items-center justify-between border-b p-4 sm:p-6">
             <div>

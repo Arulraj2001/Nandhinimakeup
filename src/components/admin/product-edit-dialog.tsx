@@ -92,8 +92,8 @@ function SortableImageItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`group bg-card relative rounded-md border p-1 ${
-        isPrimary ? "ring-primary border-primary ring-2" : "border-border"
+      className={`group bg-page-background relative rounded-md border p-1 ${
+        isPrimary ? "ring-accent border-accent ring-2" : "border-border"
       }`}
     >
       <div className="relative h-20 w-20">
@@ -103,7 +103,7 @@ function SortableImageItem({
           className="h-full w-full rounded bg-white object-cover"
         />
         {isPrimary && (
-          <span className="bg-primary text-primary-foreground absolute bottom-1 left-1 rounded px-1.5 py-0.5 text-[10px] font-semibold shadow-xs">
+          <span className="bg-accent text-white absolute bottom-1 left-1 rounded px-1.5 py-0.5 text-[10px] font-semibold shadow-xs">
             Primary
           </span>
         )}
@@ -270,18 +270,27 @@ function ProductEditDialogInner({
       aria-modal="true"
       aria-labelledby="product-dialog-title"
     >
-      <div className="bg-card text-card-foreground border-border my-8 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border p-6 shadow-xl">
-        <div className="border-border border-b pb-3">
-          <h2
-            id="product-dialog-title"
-            className="text-foreground text-lg font-semibold"
+      <div className="border-border bg-surface text-foreground my-8 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
+          <div>
+            <h2
+              id="product-dialog-title"
+              className="font-heading text-foreground text-xl font-semibold"
+            >
+              {isEditing ? "Edit Product" : "New Product"}
+            </h2>
+            <p className="text-foreground/70 mt-0.5 text-xs">
+              Manage jewellery product details, pricing, stock, and gallery images.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-foreground/60 hover:text-foreground rounded p-1 text-base transition-colors"
+            aria-label="Close dialog"
           >
-            {isEditing ? "Edit Product" : "New Product"}
-          </h2>
-          <p className="text-foreground/70 text-xs">
-            Manage jewellery product details, pricing, stock, and gallery
-            images.
-          </p>
+            ✕
+          </button>
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">

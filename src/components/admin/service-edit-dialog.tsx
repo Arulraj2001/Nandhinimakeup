@@ -94,7 +94,7 @@ function SortableIncludeItem({
     <div
       ref={setNodeRef}
       style={style}
-      className="border-border bg-card flex items-center justify-between rounded border p-2 text-sm"
+      className="border-border bg-page-background flex items-center justify-between rounded border p-2 text-sm"
     >
       <div className="flex items-center gap-2">
         <button
@@ -261,17 +261,27 @@ function ServiceEditDialogInner({
       aria-modal="true"
       aria-labelledby="service-dialog-title"
     >
-      <div className="bg-card text-card-foreground border-border my-8 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border p-6 shadow-xl">
-        <div className="border-border border-b pb-3">
-          <h2
-            id="service-dialog-title"
-            className="text-foreground text-lg font-semibold"
+      <div className="border-border bg-surface text-foreground my-8 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
+          <div>
+            <h2
+              id="service-dialog-title"
+              className="font-heading text-foreground text-xl font-semibold"
+            >
+              {isEditing ? "Edit Service" : "New Service"}
+            </h2>
+            <p className="text-foreground/70 mt-0.5 text-xs">
+              Manage service specifications, pricing, media, and features.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-foreground/60 hover:text-foreground rounded p-1 text-base transition-colors"
+            aria-label="Close dialog"
           >
-            {isEditing ? "Edit Service" : "New Service"}
-          </h2>
-          <p className="text-foreground/70 text-xs">
-            Manage service specifications, pricing, media, and features.
-          </p>
+            ✕
+          </button>
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">

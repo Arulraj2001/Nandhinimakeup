@@ -114,22 +114,32 @@ function CategoryDialogInner({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="category-dialog-title"
     >
-      <div className="bg-card text-card-foreground border-border w-full max-w-md rounded-lg border p-6 shadow-xl">
-        <div className="border-border border-b pb-3">
-          <h2
-            id="category-dialog-title"
-            className="text-foreground text-lg font-semibold"
+      <div className="border-border bg-surface text-foreground my-8 max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
+          <div>
+            <h2
+              id="category-dialog-title"
+              className="font-heading text-foreground text-xl font-semibold"
+            >
+              {isEditing ? "Edit Service Category" : "New Service Category"}
+            </h2>
+            <p className="text-foreground/70 mt-0.5 text-xs">
+              Categories organize services across your catalogue.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-foreground/60 hover:text-foreground rounded p-1 text-base transition-colors"
+            aria-label="Close dialog"
           >
-            {isEditing ? "Edit Service Category" : "New Service Category"}
-          </h2>
-          <p className="text-foreground/70 text-xs">
-            Categories organize services across your catalogue.
-          </p>
+            ✕
+          </button>
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
@@ -177,7 +187,7 @@ function CategoryDialogInner({
               id="description"
               rows={3}
               {...form.register("description")}
-              className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-2 text-sm focus-visible:ring-1 focus-visible:outline-none"
+              className="border-border bg-page-background text-foreground focus-visible:ring-foreground w-full rounded-md border p-2.5 text-sm focus-visible:ring-1 focus-visible:outline-none"
               placeholder="Optional summary for this category..."
             />
           </FormField>

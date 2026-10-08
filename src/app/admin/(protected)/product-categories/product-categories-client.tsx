@@ -213,7 +213,7 @@ function SortableProductCategoryRow({
     <div
       ref={setNodeRef}
       style={style}
-      className="border-border bg-card flex items-center justify-between rounded-lg border p-4 shadow-sm"
+      className="border-border bg-surface flex items-center justify-between rounded-lg border p-4 shadow-sm"
     >
       <div className="flex items-center gap-3">
         <button

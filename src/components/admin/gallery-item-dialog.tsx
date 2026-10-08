@@ -133,17 +133,27 @@ function GalleryItemDialogInner({
       aria-modal="true"
       aria-labelledby="gallery-dialog-title"
     >
-      <div className="bg-card text-card-foreground border-border my-8 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg border p-6 shadow-xl">
-        <div className="border-border border-b pb-3">
-          <h2
-            id="gallery-dialog-title"
-            className="text-foreground text-lg font-semibold"
+      <div className="border-border bg-surface text-foreground my-8 max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
+          <div>
+            <h2
+              id="gallery-dialog-title"
+              className="font-heading text-foreground text-xl font-semibold"
+            >
+              {isEditing ? "Edit Gallery Item" : "New Gallery Item"}
+            </h2>
+            <p className="text-foreground/70 mt-0.5 text-xs">
+              Showcase bridal portfolios and transformation comparisons.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-foreground/60 hover:text-foreground rounded p-1 text-base transition-colors"
+            aria-label="Close dialog"
           >
-            {isEditing ? "Edit Gallery Item" : "New Gallery Item"}
-          </h2>
-          <p className="text-foreground/70 text-xs">
-            Showcase bridal portfolios and transformation comparisons.
-          </p>
+            ✕
+          </button>
         </div>
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
@@ -160,8 +170,8 @@ function GalleryItemDialogInner({
                 }}
                 className={`rounded-md border p-3 text-left transition-all ${
                   currentType === "single"
-                    ? "border-primary bg-primary/10 ring-primary ring-1"
-                    : "border-border hover:bg-muted"
+                    ? "border-accent bg-accent/5 ring-accent ring-1"
+                    : "border-border bg-page-background hover:bg-surface"
                 }`}
               >
                 <p className="text-foreground text-sm font-semibold">
@@ -179,8 +189,8 @@ function GalleryItemDialogInner({
                 }}
                 className={`rounded-md border p-3 text-left transition-all ${
                   currentType === "before_after"
-                    ? "border-primary bg-primary/10 ring-primary ring-1"
-                    : "border-border hover:bg-muted"
+                    ? "border-accent bg-accent/5 ring-accent ring-1"
+                    : "border-border bg-page-background hover:bg-surface"
                 }`}
               >
                 <p className="text-foreground text-sm font-semibold">
@@ -391,7 +401,7 @@ function GalleryItemDialogInner({
               {...form.register("service_category_id", {
                 setValueAs: (v) => (!v || v === "none" ? null : v),
               })}
-              className="border-input bg-background text-foreground focus-visible:ring-ring h-9 w-full rounded-md border px-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
+              className="border-border bg-page-background text-foreground focus-visible:ring-foreground h-10 w-full rounded-md border px-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
             >
               <option value="none">None (General Portfolio)</option>
               {categories.map((c) => (
@@ -411,7 +421,7 @@ function GalleryItemDialogInner({
               id="caption"
               rows={3}
               {...form.register("caption")}
-              className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-2 text-sm focus-visible:ring-1 focus-visible:outline-none"
+              className="border-border bg-page-background text-foreground focus-visible:ring-foreground w-full rounded-md border p-2.5 text-sm focus-visible:ring-1 focus-visible:outline-none"
               placeholder="Details on the look, skin tone matching, and hair style..."
             />
           </FormField>

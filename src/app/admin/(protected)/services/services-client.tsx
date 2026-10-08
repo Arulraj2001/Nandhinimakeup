@@ -647,7 +647,7 @@ function SortableCategoryRow({
     <div
       ref={setNodeRef}
       style={style}
-      className="border-border bg-card flex items-center justify-between rounded-lg border p-4 shadow-sm"
+      className="border-border bg-surface flex items-center justify-between rounded-lg border p-4 shadow-sm"
     >
       <div className="flex items-center gap-3">
         <button
@@ -726,7 +726,7 @@ function ServicesReorderList({
   };
 
   return (
-    <div className="border-border bg-card space-y-3 rounded-lg border p-4">
+    <div className="border-border bg-surface space-y-3 rounded-lg border p-4">
       <p className="text-foreground/80 text-sm font-medium">
         Drag services to change their display sequence in this category:
       </p>

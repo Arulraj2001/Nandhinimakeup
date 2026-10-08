@@ -46,7 +46,7 @@ export function ConfirmDialog({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
     >
       <div
-        className="border-border bg-card-surface w-full max-w-md rounded-xl border p-6 shadow-lg sm:p-8"
+        className="border-border bg-surface w-full max-w-md rounded-xl border p-6 shadow-2xl sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         <h2

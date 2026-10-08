@@ -78,13 +78,13 @@ export function FormField({
       {label && (
         <Label htmlFor={id} className="text-foreground text-sm font-medium">
           {label}
-          {required && <span className="text-foreground ml-1">*</span>}
+          {required && <span className="text-destructive ml-1">*</span>}
         </Label>
       )}
       {children}
       {hint && !error && <p className="text-foreground/70 text-xs">{hint}</p>}
       {error && (
-        <p className="text-foreground text-xs font-medium" role="alert">
+        <p className="text-destructive text-xs font-medium" role="alert">
           {error}
         </p>
       )}

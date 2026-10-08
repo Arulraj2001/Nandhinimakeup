@@ -15,6 +15,16 @@
   /* Semantic aliases */
   --color-page-background: #FAF8F5;
   --color-card-surface: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #1C1917;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #1C1917;
+  --color-primary: #8C2524;
+  --color-primary-foreground: #FFFFFF;
+  --color-input: #E5DFD7;
+  --color-ring: #8C2524;
+  --color-destructive: #DC2626;
+  --color-destructive-foreground: #FFFFFF;
   --color-text: #1C1917;
   --color-border: #E5DFD7;
 
@@ -35,6 +45,16 @@
   --muted: #78716C;
   --page-background: #FAF8F5;
   --card-surface: #FFFFFF;
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1917;
+  --primary: #8C2524;
+  --primary-foreground: #FFFFFF;
+  --input: #E5DFD7;
+  --ring: #8C2524;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
   --text: #1C1917;
   --border: #E5DFD7;
 }
