@@ -17,6 +17,7 @@ import { INDIAN_STATES_AND_UTS } from "@/lib/constants/indian-states";
 import type { CartProductLookup } from "@/lib/data/cart";
 import type { SiteSettingsData } from "@/types/settings";
 import { formatINR } from "@/lib/utils/currency";
+import { buildCartWhatsAppLink } from "@/lib/utils/whatsapp";
 
 interface CheckoutViewProps {
   settings: SiteSettingsData;
@@ -117,6 +118,34 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
     freeThreshold !== null && freeThreshold > 0 && subtotal >= freeThreshold;
   const deliveryCharge = isFreeDelivery ? 0 : flatDelivery;
   const total = subtotal + deliveryCharge;
+
+  const watchedName = form.watch("customer_name");
+  const watchedPhone = form.watch("phone");
+  const watchedCity = form.watch("city");
+  const watchedState = form.watch("state");
+
+  const whatsAppCartItems = lineItems
+    .filter((l) => l.product)
+    .map((l) => ({
+      name: l.product!.name,
+      quantity: l.quantity,
+      price: l.product!.effectivePrice,
+      lineTotal: l.lineTotal,
+    }));
+
+  const whatsAppLink = buildCartWhatsAppLink({
+    phoneNumber: settings.business.whatsapp_number,
+    businessName: settings.business.business_name,
+    items: whatsAppCartItems,
+    subtotal,
+    deliveryCharge,
+    isFreeDelivery,
+    total,
+    customerName: watchedName,
+    customerPhone: watchedPhone,
+    deliveryCity: watchedCity,
+    deliveryState: watchedState,
+  });
 
   const onSubmit = async (data: CheckoutFormData) => {
     if (isSubmitting || isOrderSuccessRef.current) return; // Prevent double submission
@@ -585,6 +614,42 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                 Manual UPI payment: You will be shown a UPI QR and link to pay
                 on the next screen.
               </p>
+
+              {whatsAppLink && (
+                <div className="pt-2">
+                  <div className="relative my-4 flex items-center justify-center">
+                    <div className="border-border w-full border-t" />
+                    <span className="bg-surface text-foreground/60 absolute px-3 text-[11px] font-medium tracking-wider uppercase">
+                      or order directly via
+                    </span>
+                  </div>
+
+                  <a
+                    href={whatsAppLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 text-xs font-semibold tracking-wider text-white uppercase shadow-sm transition-colors hover:bg-[#20BD5A]"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 fill-current"
+                      aria-hidden="true"
+                    >
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                    Send Cart on WhatsApp
+                  </a>
+                  <p className="text-foreground/60 mt-1.5 text-center text-[11px]">
+                    Prefer ordering via chat? Send your cart details directly to our WhatsApp.
+                  </p>
+                </div>
+              )}
             </div>
           </form>
         </div>
@@ -664,6 +729,32 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <p className="border-border text-foreground/70 border-t pt-3 text-xs leading-relaxed">
                 {deliveryNote}
               </p>
+            )}
+
+            {whatsAppLink && (
+              <div className="border-border border-t pt-3">
+                <a
+                  href={whatsAppLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-4 py-2.5 text-xs font-semibold tracking-wider text-white uppercase shadow-sm transition-colors hover:bg-[#20BD5A]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4 fill-current"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  Send Cart on WhatsApp
+                </a>
+              </div>
             )}
 
             <div className="pt-2">

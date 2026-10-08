@@ -8,7 +8,7 @@ import { lookupCartProducts } from "@/lib/actions/cart";
 import type { CartProductLookup } from "@/lib/data/cart";
 import type { SiteSettingsData } from "@/types/settings";
 import { formatINR } from "@/lib/utils/currency";
-import { buildWhatsAppLink } from "@/lib/utils/whatsapp";
+import { buildCartWhatsAppLink } from "@/lib/utils/whatsapp";
 
 interface CartViewProps {
   settings: SiteSettingsData;
@@ -117,22 +117,24 @@ export function CartView({ settings }: CartViewProps) {
   const deliveryCharge = isFreeDelivery ? 0 : flatDelivery;
   const total = subtotal + deliveryCharge;
 
-  // Construct WhatsApp Enquiry Link
-  const whatsAppLines = lineItems
+  // Construct Beautiful Dynamic WhatsApp Cart Link
+  const whatsAppCartItems = lineItems
     .filter((l) => l.product)
-    .map(
-      (l) => `- ${l.product?.name} x ${l.quantity}: ${formatINR(l.lineTotal)}`
-    );
-  whatsAppLines.push(`Subtotal: ${formatINR(subtotal)}`);
-  whatsAppLines.push(
-    `Delivery: ${isFreeDelivery ? "FREE" : formatINR(deliveryCharge)}`
-  );
-  whatsAppLines.push(`Estimated Total: ${formatINR(total)}`);
+    .map((l) => ({
+      name: l.product!.name,
+      quantity: l.quantity,
+      price: l.product!.effectivePrice,
+      lineTotal: l.lineTotal,
+    }));
 
-  const whatsAppLink = buildWhatsAppLink({
+  const whatsAppLink = buildCartWhatsAppLink({
     phoneNumber: settings.business.whatsapp_number,
-    greeting: `Hello ${settings.business.business_name}! I would like to enquire about my cart selection:`,
-    extraLines: whatsAppLines,
+    businessName: settings.business.business_name,
+    items: whatsAppCartItems,
+    subtotal,
+    deliveryCharge,
+    isFreeDelivery,
+    total,
   });
 
   // Empty state
@@ -408,14 +410,27 @@ export function CartView({ settings }: CartViewProps) {
               )}
 
               {whatsAppLink && (
-                <Link
+                <a
                   href={whatsAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border-border bg-page-background text-foreground hover:bg-surface inline-flex w-full items-center justify-center rounded-md border px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3.5 text-xs font-semibold tracking-wider text-white uppercase shadow-sm transition-colors hover:bg-[#20BD5A]"
                 >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4 fill-current"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
                   Send Cart on WhatsApp
-                </Link>
+                </a>
               )}
             </div>
           </div>
