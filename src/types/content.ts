@@ -51,8 +51,9 @@ export const saveFAQSchema = z.object({
 
 export type SaveFAQInput = z.infer<typeof saveFAQSchema>;
 
-// Link validation helper for announcements: relative paths (/...) or https://
-const safeLinkRegex = /^(https:\/\/|\/)/i;
+// Link validation helper for announcements: relative paths (/... but not //) or https://
+const isSafeAnnouncementLink = (val: string) =>
+  val.startsWith("https://") || (val.startsWith("/") && !val.startsWith("//"));
 
 export const saveAnnouncementSchema = z
   .object({
@@ -64,7 +65,7 @@ export const saveAnnouncementSchema = z
       .nullable()
       .optional()
       .refine(
-        (val) => !val || safeLinkRegex.test(val),
+        (val) => !val || isSafeAnnouncementLink(val),
         "Link must be a relative URL (starting with /) or secure external URL (https://)"
       ),
     link_label: z.string().trim().nullable().optional(),
