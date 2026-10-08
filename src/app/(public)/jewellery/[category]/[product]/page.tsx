@@ -17,6 +17,12 @@ import { Breadcrumb } from "@/components/public/breadcrumb";
 import { Badge } from "@/components/public/badges";
 import { AddToCart } from "@/components/public/product-detail/add-to-cart";
 import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
+import {
+  JsonLdScript,
+  buildProductStructuredData,
+  buildBreadcrumbStructuredData,
+} from "@/lib/seo/structured-data";
+import { env } from "@/lib/config/env";
 
 interface ProductDetailPageProps {
   params: Promise<{
@@ -127,8 +133,37 @@ async function ProductDetailContent({
       })
     : "";
 
+  const productSchema = buildProductStructuredData({
+    product,
+    categorySlug,
+    settings,
+    siteUrl: env.NEXT_PUBLIC_SITE_URL,
+  });
+
+  const breadcrumbSchema = buildBreadcrumbStructuredData(
+    [
+      { label: "Home", href: "/" },
+      { label: "Jewellery", href: "/jewellery" },
+      {
+        label: product.category?.name || "Category",
+        href: `/jewellery/${product.category?.slug}`,
+      },
+      {
+        label: product.name,
+        href: `/jewellery/${categorySlug}/${product.slug}`,
+      },
+    ],
+    env.NEXT_PUBLIC_SITE_URL
+  );
+
   return (
     <div className="py-8 sm:py-12 md:py-16">
+      <JsonLdScript
+        data={[
+          ...(productSchema ? [productSchema] : []),
+          ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+        ]}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumb
           items={[

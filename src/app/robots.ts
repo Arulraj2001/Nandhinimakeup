@@ -13,6 +13,8 @@ export default function robots(): MetadataRoute.Robots {
     };
   }
 
+  const siteUrl = env.NEXT_PUBLIC_SITE_URL.replace(/\/+$/, "");
+
   return {
     rules: {
       userAgent: "*",
@@ -26,5 +28,6 @@ export default function robots(): MetadataRoute.Robots {
         "/order/",
       ],
     },
+    sitemap: `${siteUrl}/sitemap.xml`,
   };
 }

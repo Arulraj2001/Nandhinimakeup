@@ -20,6 +20,11 @@ interface CategoryListingPageProps {
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
 import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
+import {
+  JsonLdScript,
+  buildBreadcrumbStructuredData,
+} from "@/lib/seo/structured-data";
+import { env } from "@/lib/config/env";
 
 export async function generateMetadata({
   params,
@@ -87,8 +92,18 @@ async function CategoryListingContent({
     limit: 12,
   });
 
+  const breadcrumbSchema = buildBreadcrumbStructuredData(
+    [
+      { label: "Home", href: "/" },
+      { label: "Jewellery", href: "/jewellery" },
+      { label: category.name, href: `/jewellery/${category.slug}` },
+    ],
+    env.NEXT_PUBLIC_SITE_URL
+  );
+
   return (
     <div className="py-8 sm:py-12 md:py-16">
+      <JsonLdScript data={breadcrumbSchema} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumb
           items={[

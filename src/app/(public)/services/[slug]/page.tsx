@@ -16,6 +16,12 @@ import { Breadcrumb } from "@/components/public/breadcrumb";
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
 import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
+import {
+  JsonLdScript,
+  buildServiceStructuredData,
+  buildBreadcrumbStructuredData,
+} from "@/lib/seo/structured-data";
+import { env } from "@/lib/config/env";
 
 interface ServiceDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -97,8 +103,29 @@ async function ServiceDetailContent({
       })
     : "";
 
+  const serviceSchema = buildServiceStructuredData({
+    service,
+    settings,
+    siteUrl: env.NEXT_PUBLIC_SITE_URL,
+  });
+
+  const breadcrumbSchema = buildBreadcrumbStructuredData(
+    [
+      { label: "Home", href: "/" },
+      { label: "Services", href: "/services" },
+      { label: service.name, href: `/services/${service.slug}` },
+    ],
+    env.NEXT_PUBLIC_SITE_URL
+  );
+
   return (
     <div className="py-8 sm:py-12 md:py-16">
+      <JsonLdScript
+        data={[
+          ...(serviceSchema ? [serviceSchema] : []),
+          ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+        ]}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumb
           items={[

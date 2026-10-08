@@ -15,6 +15,12 @@ interface BlogPostPageProps {
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
 import { handleRedirectOrNotFound } from "@/lib/utils/redirects";
+import {
+  JsonLdScript,
+  buildBlogPostStructuredData,
+  buildBreadcrumbStructuredData,
+} from "@/lib/seo/structured-data";
+import { env } from "@/lib/config/env";
 
 export async function generateMetadata({
   params,
@@ -83,8 +89,32 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
     ? getPublicMediaUrl(post.featured_image.storage_path)
     : null;
 
+  const blogSchema = buildBlogPostStructuredData({
+    post,
+    settings,
+    siteUrl: env.NEXT_PUBLIC_SITE_URL,
+  });
+
+  const breadcrumbSchema = buildBreadcrumbStructuredData(
+    [
+      { label: "Home", href: "/" },
+      { label: "Blog", href: "/blog" },
+      ...(post.category
+        ? [{ label: post.category.name, href: `/blog/category/${post.category.slug}` }]
+        : []),
+      { label: post.title, href: `/blog/${post.slug}` },
+    ],
+    env.NEXT_PUBLIC_SITE_URL
+  );
+
   return (
     <article className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <JsonLdScript
+        data={[
+          ...(blogSchema ? [blogSchema] : []),
+          ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+        ]}
+      />
       {/* Breadcrumb Trail */}
       <nav
         aria-label="Breadcrumb"

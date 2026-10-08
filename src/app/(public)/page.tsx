@@ -17,6 +17,11 @@ import { ServiceCard } from "@/components/public/service-card";
 import { ProductCard } from "@/components/public/product-card";
 import { BeforeAfterSlider } from "@/components/public/before-after-slider";
 import { buildMetadata } from "@/lib/seo/metadata-builder";
+import {
+  JsonLdScript,
+  buildHomeStructuredData,
+} from "@/lib/seo/structured-data";
+import { env } from "@/lib/config/env";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
@@ -85,6 +90,9 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col">
+      <JsonLdScript
+        data={buildHomeStructuredData(settings, env.NEXT_PUBLIC_SITE_URL)}
+      />
       {/* 1. Hero Section */}
       <HomeHero
         headline={
