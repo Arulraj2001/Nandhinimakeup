@@ -40,8 +40,16 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand Info */}
           <div className="space-y-3">
-            <h3 className="font-heading text-foreground text-xl font-semibold">
-              {name}
+            <h3 className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              <span className="font-heading text-xl font-bold tracking-tight text-[#8C2524] sm:text-2xl">
+                Nandhini
+              </span>
+              <span className="flex items-center gap-1.5 font-heading text-sm font-semibold text-[#1C1917] sm:text-base">
+                <span className="text-xs text-[#C5A059] select-none">✦</span>
+                <span>Makeup</span>
+                <span className="font-serif italic text-[#C5A059]">&amp;</span>
+                <span>Jewellery</span>
+              </span>
             </h3>
             {business?.tagline && (
               <p className="text-foreground/70 text-xs sm:text-sm">

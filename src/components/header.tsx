@@ -96,10 +96,10 @@ export function Header({
         {/* Brand Logo & Business Name */}
         <Link
           href="/"
-          className="font-heading flex items-center gap-3 text-lg font-semibold tracking-wide text-[#1C1917] sm:text-2xl"
+          className="flex items-center gap-2.5 sm:gap-3 transition-opacity hover:opacity-95"
         >
           {logoUrl && (
-            <div className="relative h-10 w-10 flex-none overflow-hidden rounded-full border border-[#C5A059]/40 bg-white shadow-xs sm:h-11 sm:w-11">
+            <div className="relative h-10 w-10 flex-none overflow-hidden rounded-full border border-[#C5A059]/50 bg-white shadow-xs sm:h-11 sm:w-11">
               <Image
                 src={logoUrl}
                 alt={logoAlt || businessName}
@@ -110,7 +110,17 @@ export function Header({
               />
             </div>
           )}
-          <span>{businessName}</span>
+          <span className="flex flex-col leading-tight sm:flex-row sm:items-baseline sm:gap-2">
+            <span className="font-heading text-lg font-bold tracking-tight text-[#8C2524] sm:text-2xl">
+              Nandhini
+            </span>
+            <span className="flex items-center gap-1 font-heading text-xs font-semibold text-[#1C1917] sm:gap-1.5 sm:text-base md:text-lg">
+              <span className="text-[10px] text-[#C5A059] select-none sm:text-xs">✦</span>
+              <span>Makeup</span>
+              <span className="font-serif italic text-[#C5A059]">&amp;</span>
+              <span>Jewellery</span>
+            </span>
+          </span>
         </Link>
 
         {/* Desktop Navigation & Actions */}
