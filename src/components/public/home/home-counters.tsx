@@ -67,20 +67,20 @@ export function HomeCounters({ counters }: HomeCountersProps) {
   return (
     <section
       ref={containerRef}
-      className="border-y border-[#E5DFD7] bg-[#F4ECE4]/50 py-10 sm:py-14 md:py-16"
+      className="border-y border-[#E5DFD7] bg-[#F4ECE4]/50 py-6 sm:py-10 md:py-14"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col divide-y divide-[#E5DFD7]/80 md:flex-row md:divide-y-0 md:divide-x md:divide-[#E5DFD7]/80">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-3 divide-x divide-[#E5DFD7]/80">
           {counters.map((counter, idx) => (
             <div
               key={idx}
-              className="flex flex-1 flex-col items-center justify-center py-6 px-4 text-center first:pt-0 last:pb-0 md:py-2 md:first:pt-2 md:last:pb-2"
+              className="flex flex-col items-center justify-center px-1.5 py-1 text-center sm:px-4 sm:py-2"
             >
-              <p className="font-heading text-4xl font-semibold tracking-tight text-[#1C1917] sm:text-5xl md:text-6xl">
+              <p className="font-heading text-2xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl md:text-5xl lg:text-6xl">
                 {displayValues[idx] ?? counter.number}
-                <span className="text-[#C5A059] font-normal">+</span>
+                <span className="font-normal text-[#C5A059]">+</span>
               </p>
-              <p className="mt-2 text-xs font-semibold tracking-widest text-[#78716C] uppercase sm:text-sm">
+              <p className="mt-1 text-[9px] font-semibold tracking-wider text-[#78716C] uppercase leading-tight sm:mt-2 sm:text-xs md:text-sm sm:tracking-widest">
                 {counter.label}
               </p>
             </div>
