@@ -51,7 +51,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq("noindex", false),
     supabase
       .from("products")
-      .select("slug, noindex, updated_at, category:category_id(slug, is_published)")
+      .select(
+        "slug, noindex, updated_at, category:category_id(slug, is_published)"
+      )
       .eq("is_published", true)
       .eq("noindex", false),
     supabase
@@ -84,7 +86,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // Map of static page SEO overrides
-  const staticSeoMap = new Map<string, { noindex: boolean; updated_at: string }>();
+  const staticSeoMap = new Map<
+    string,
+    { noindex: boolean; updated_at: string }
+  >();
   for (const p of seoPagesRes.data || []) {
     staticSeoMap.set(p.path, {
       noindex: Boolean(p.noindex),
@@ -140,7 +145,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     addUrl(`/jewellery/${cat.slug}`, cat.updated_at);
   }
   for (const prod of productsRes.data || []) {
-    const cat = prod.category as unknown as { slug?: string; is_published?: boolean } | null;
+    const cat = prod.category as unknown as {
+      slug?: string;
+      is_published?: boolean;
+    } | null;
     if (cat && cat.is_published && cat.slug) {
       addUrl(`/jewellery/${cat.slug}/${prod.slug}`, prod.updated_at);
     }
@@ -202,7 +210,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const lPage of legalPagesRes.data || []) {
     const publicPath = legalSlugMap[lPage.slug];
     if (publicPath) {
-      const isContentEmpty = isEmptyRichText(lPage.content as unknown as RichTextDoc);
+      const isContentEmpty = isEmptyRichText(
+        lPage.content as unknown as RichTextDoc
+      );
       if (!isContentEmpty && !staticSeoMap.get(publicPath)?.noindex) {
         addUrl(publicPath, lPage.updated_at);
       }

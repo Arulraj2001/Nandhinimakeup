@@ -40,16 +40,15 @@ interface OrderPageProps {
 function OrderSkeleton() {
   return (
     <div className="mx-auto max-w-4xl p-10 text-center">
-      <div className="border-border bg-surface inline-flex h-12 w-12 items-center justify-center rounded-full border animate-pulse" />
-      <p className="text-foreground/70 text-sm mt-4">Loading your order details...</p>
+      <div className="border-border bg-surface inline-flex h-12 w-12 animate-pulse items-center justify-center rounded-full border" />
+      <p className="text-foreground/70 mt-4 text-sm">
+        Loading your order details...
+      </p>
     </div>
   );
 }
 
-async function OrderContent({
-  params,
-  searchParams,
-}: OrderPageProps) {
+async function OrderContent({ params, searchParams }: OrderPageProps) {
   // Enforce dynamic request-time rendering
   await connection();
 
@@ -92,7 +91,8 @@ async function OrderContent({
   let staticQrUrl: string | null = null;
 
   const upiId = settings.payments.upi_id;
-  const payeeName = settings.payments.payee_name || settings.business.business_name;
+  const payeeName =
+    settings.payments.payee_name || settings.business.business_name;
 
   if (order.status === "pending_payment") {
     if (upiId) {
@@ -111,7 +111,8 @@ async function OrderContent({
     }
   }
 
-  const customerFirstName = order.customer_name.trim().split(/\s+/)[0] || "Customer";
+  const customerFirstName =
+    order.customer_name.trim().split(/\s+/)[0] || "Customer";
   const siteUrl = env.NEXT_PUBLIC_SITE_URL || "";
   const orderUrl = `${siteUrl}/order/${order.order_number}?token=${order.access_token}`;
 

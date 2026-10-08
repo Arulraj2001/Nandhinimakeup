@@ -20,7 +20,9 @@ export interface RichTextDoc {
  * Extracts all plain text from a stored rich text JSON document.
  * Block elements are separated by spaces/newlines for natural excerpts.
  */
-export function extractPlainText(doc: RichTextDoc | RichTextNode | null | undefined): string {
+export function extractPlainText(
+  doc: RichTextDoc | RichTextNode | null | undefined
+): string {
   if (!doc) return "";
 
   const chunks: string[] = [];
@@ -64,7 +66,8 @@ export function calculateReadingTime(
 ): number {
   if (!content) return 1;
 
-  const text = typeof content === "string" ? content : extractPlainText(content);
+  const text =
+    typeof content === "string" ? content : extractPlainText(content);
   if (!text) return 1;
 
   const words = text.trim().split(/\s+/).filter(Boolean);

@@ -70,7 +70,8 @@ export const saveStaticPageSeoSchema = z.object({
         if (val.startsWith("/")) return true;
         try {
           const u = new URL(val);
-          const site = process.env.NEXT_PUBLIC_SITE_URL || "https://nandhinimakeup.com";
+          const site =
+            process.env.NEXT_PUBLIC_SITE_URL || "https://nandhinimakeup.com";
           const siteHost = new URL(site).host;
           return u.host === siteHost;
         } catch {
@@ -99,17 +100,61 @@ export interface StaticPageMeta {
 
 export const STATIC_PAGES_LIST: StaticPageMeta[] = [
   { path: "/", name: "Home", description: "Main landing page" },
-  { path: "/services", name: "Services Index", description: "All bridal & salon services catalog" },
-  { path: "/jewellery", name: "Jewellery Index", description: "Bespoke jewellery collection" },
-  { path: "/gallery", name: "Gallery", description: "Bridal makeover & hairstyle portfolio" },
-  { path: "/reviews", name: "Reviews", description: "Client testimonials and bride feedback" },
-  { path: "/faq", name: "FAQ", description: "Frequently asked booking & service questions" },
-  { path: "/about", name: "About Us", description: "Brand story, artist credentials & highlights" },
-  { path: "/contact", name: "Contact", description: "Studio address, phone, WhatsApp & hours" },
-  { path: "/blog", name: "Blog Index", description: "Bridal beauty articles and beauty journal" },
-  { path: "/privacy-policy", name: "Privacy Policy", description: "Customer privacy terms" },
-  { path: "/terms-and-conditions", name: "Terms & Conditions", description: "Terms for orders and bookings" },
-  { path: "/shipping-returns", name: "Shipping & Returns", description: "Delivery timelines and returns policy" },
+  {
+    path: "/services",
+    name: "Services Index",
+    description: "All bridal & salon services catalog",
+  },
+  {
+    path: "/jewellery",
+    name: "Jewellery Index",
+    description: "Bespoke jewellery collection",
+  },
+  {
+    path: "/gallery",
+    name: "Gallery",
+    description: "Bridal makeover & hairstyle portfolio",
+  },
+  {
+    path: "/reviews",
+    name: "Reviews",
+    description: "Client testimonials and bride feedback",
+  },
+  {
+    path: "/faq",
+    name: "FAQ",
+    description: "Frequently asked booking & service questions",
+  },
+  {
+    path: "/about",
+    name: "About Us",
+    description: "Brand story, artist credentials & highlights",
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    description: "Studio address, phone, WhatsApp & hours",
+  },
+  {
+    path: "/blog",
+    name: "Blog Index",
+    description: "Bridal beauty articles and beauty journal",
+  },
+  {
+    path: "/privacy-policy",
+    name: "Privacy Policy",
+    description: "Customer privacy terms",
+  },
+  {
+    path: "/terms-and-conditions",
+    name: "Terms & Conditions",
+    description: "Terms for orders and bookings",
+  },
+  {
+    path: "/shipping-returns",
+    name: "Shipping & Returns",
+    description: "Delivery timelines and returns policy",
+  },
 ];
 
 export interface StaticPageSeoRowWithMedia extends SeoPageRow {

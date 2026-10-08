@@ -109,7 +109,7 @@ export function OrdersClient({
   };
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl space-y-6 p-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="font-heading text-foreground text-2xl font-semibold sm:text-3xl">
@@ -122,22 +122,22 @@ export function OrdersClient({
       </div>
 
       {/* Filters and Search Bar */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-surface p-4 rounded-lg border border-border">
+      <div className="bg-surface border-border flex flex-col gap-4 rounded-lg border p-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Search */}
         <form
           onSubmit={handleSearchSubmit}
-          className="flex items-center gap-2 flex-1 max-w-md"
+          className="flex max-w-md flex-1 items-center gap-2"
         >
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by order #, name or phone..."
-            className="border-input bg-page-background text-foreground focus-visible:ring-foreground w-full rounded-md border px-3 py-1.5 text-xs sm:text-sm focus-visible:ring-1 focus-visible:outline-none"
+            className="border-input bg-page-background text-foreground focus-visible:ring-foreground w-full rounded-md border px-3 py-1.5 text-xs focus-visible:ring-1 focus-visible:outline-none sm:text-sm"
           />
           <button
             type="submit"
-            className="bg-foreground text-background hover:bg-foreground/90 rounded-md px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors"
+            className="bg-foreground text-background hover:bg-foreground/90 rounded-md px-3.5 py-1.5 text-xs font-semibold tracking-wider uppercase transition-colors"
           >
             Search
           </button>
@@ -155,10 +155,12 @@ export function OrdersClient({
             id="status-filter"
             value={statusFilter}
             onChange={handleStatusChange}
-            className="border-input bg-page-background text-foreground focus-visible:ring-foreground rounded-md border px-3 py-1.5 text-xs sm:text-sm focus-visible:ring-1 focus-visible:outline-none"
+            className="border-input bg-page-background text-foreground focus-visible:ring-foreground rounded-md border px-3 py-1.5 text-xs focus-visible:ring-1 focus-visible:outline-none sm:text-sm"
           >
             <option value="all">All Statuses</option>
-            <option value="payment_submitted">Payment Submitted (To Verify)</option>
+            <option value="payment_submitted">
+              Payment Submitted (To Verify)
+            </option>
             <option value="pending_payment">Pending Payment</option>
             <option value="paid">Paid</option>
             <option value="packed">Packed</option>
@@ -170,36 +172,37 @@ export function OrdersClient({
       </div>
 
       {/* Orders Table */}
-      <div className="border border-border rounded-lg bg-surface overflow-hidden">
+      <div className="border-border bg-surface overflow-hidden rounded-lg border">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs sm:text-sm">
-            <thead className="bg-page-background border-b border-border text-foreground/70 uppercase text-[11px] font-semibold tracking-wider">
+            <thead className="bg-page-background border-border text-foreground/70 border-b text-[11px] font-semibold tracking-wider uppercase">
               <tr>
                 <th className="px-4 py-3 sm:px-6">Order #</th>
                 <th className="px-4 py-3 sm:px-6">Date</th>
                 <th className="px-4 py-3 sm:px-6">Customer</th>
                 <th className="px-4 py-3 sm:px-6">Total</th>
                 <th className="px-4 py-3 sm:px-6">Status</th>
-                <th className="px-4 py-3 sm:px-6 text-right">Actions</th>
+                <th className="px-4 py-3 text-right sm:px-6">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-border divide-y">
               {orders.length === 0 ? (
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-6 py-12 text-center text-foreground/60"
+                    className="text-foreground/60 px-6 py-12 text-center"
                   >
                     No orders found matching your filters.
                   </td>
                 </tr>
               ) : (
                 orders.map((order) => {
-                  const statusConf =
-                    STATUS_CONFIG[order.status as OrderStatus] || {
-                      label: order.status,
-                      badgeClass: "bg-muted text-muted-foreground",
-                    };
+                  const statusConf = STATUS_CONFIG[
+                    order.status as OrderStatus
+                  ] || {
+                    label: order.status,
+                    badgeClass: "bg-muted text-muted-foreground",
+                  };
                   const dateStr = new Date(order.created_at).toLocaleDateString(
                     "en-IN",
                     {
@@ -216,7 +219,7 @@ export function OrdersClient({
                       key={order.id}
                       className="hover:bg-page-background/50 transition-colors"
                     >
-                      <td className="px-4 py-3 sm:px-6 font-mono font-semibold text-foreground">
+                      <td className="text-foreground px-4 py-3 font-mono font-semibold sm:px-6">
                         <Link
                           href={`/admin/orders/${order.id}`}
                           className="hover:underline"
@@ -224,29 +227,29 @@ export function OrdersClient({
                           {order.order_number}
                         </Link>
                       </td>
-                      <td className="px-4 py-3 sm:px-6 text-foreground/80 whitespace-nowrap">
+                      <td className="text-foreground/80 px-4 py-3 whitespace-nowrap sm:px-6">
                         {dateStr}
                       </td>
-                      <td className="px-4 py-3 sm:px-6 text-foreground">
+                      <td className="text-foreground px-4 py-3 sm:px-6">
                         <div className="font-medium">{order.customer_name}</div>
-                        <div className="text-foreground/60 text-xs font-mono">
+                        <div className="text-foreground/60 font-mono text-xs">
                           {order.phone}
                         </div>
                       </td>
-                      <td className="px-4 py-3 sm:px-6 font-semibold text-foreground whitespace-nowrap">
+                      <td className="text-foreground px-4 py-3 font-semibold whitespace-nowrap sm:px-6">
                         {formatINR(Number(order.total))}
                       </td>
-                      <td className="px-4 py-3 sm:px-6 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap sm:px-6">
                         <span
                           className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${statusConf.badgeClass}`}
                         >
                           {statusConf.label}
                         </span>
                       </td>
-                      <td className="px-4 py-3 sm:px-6 text-right">
+                      <td className="px-4 py-3 text-right sm:px-6">
                         <Link
                           href={`/admin/orders/${order.id}`}
-                          className="text-foreground hover:underline font-semibold text-xs inline-flex items-center gap-1"
+                          className="text-foreground inline-flex items-center gap-1 text-xs font-semibold hover:underline"
                         >
                           View Details →
                         </Link>
@@ -261,8 +264,8 @@ export function OrdersClient({
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between border-t border-border px-4 py-3 sm:px-6">
-            <span className="text-xs text-foreground/70">
+          <div className="border-border flex items-center justify-between border-t px-4 py-3 sm:px-6">
+            <span className="text-foreground/70 text-xs">
               Page {currentPage} of {totalPages}
             </span>
             <div className="flex items-center gap-2">
@@ -270,7 +273,7 @@ export function OrdersClient({
                 type="button"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage <= 1}
-                className="border border-border bg-page-background text-foreground hover:bg-surface disabled:opacity-40 rounded px-2.5 py-1 text-xs font-medium"
+                className="border-border bg-page-background text-foreground hover:bg-surface rounded border px-2.5 py-1 text-xs font-medium disabled:opacity-40"
               >
                 Previous
               </button>
@@ -278,7 +281,7 @@ export function OrdersClient({
                 type="button"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage >= totalPages}
-                className="border border-border bg-page-background text-foreground hover:bg-surface disabled:opacity-40 rounded px-2.5 py-1 text-xs font-medium"
+                className="border-border bg-page-background text-foreground hover:bg-surface rounded border px-2.5 py-1 text-xs font-medium disabled:opacity-40"
               >
                 Next
               </button>

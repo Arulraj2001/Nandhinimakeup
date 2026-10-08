@@ -73,7 +73,8 @@ export async function submitCheckout(
     );
   }
 
-  const flatDeliveryCharge = Number(settings.shipping.flat_delivery_charge) || 0;
+  const flatDeliveryCharge =
+    Number(settings.shipping.flat_delivery_charge) || 0;
   const freeDeliveryThreshold =
     settings.shipping.free_delivery_threshold !== null
       ? Number(settings.shipping.free_delivery_threshold)

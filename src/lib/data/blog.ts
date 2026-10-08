@@ -112,10 +112,9 @@ export async function getPublicBlogPosts(params?: {
 
   let query = supabase
     .from("blog_posts")
-    .select(
-      "*, category:category_id(*), featured_image:featured_image_id(*)",
-      { count: "exact" }
-    )
+    .select("*, category:category_id(*), featured_image:featured_image_id(*)", {
+      count: "exact",
+    })
     .eq("status", "published")
     .lte("published_at", nowIso);
 
@@ -145,9 +144,13 @@ export async function getPublicBlogPosts(params?: {
 
   const formatted: BlogPostWithDetails[] = (data || []).map((p) => ({
     ...p,
-    content: (p.content as unknown as RichTextDoc) || { type: "doc", content: [] },
+    content: (p.content as unknown as RichTextDoc) || {
+      type: "doc",
+      content: [],
+    },
     category: p.category as unknown as BlogCategory | null,
-    featured_image: p.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    featured_image:
+      p.featured_image as unknown as BlogPostWithDetails["featured_image"],
   }));
 
   return {
@@ -185,9 +188,13 @@ export async function getPublicBlogPost(
 
   return {
     ...data,
-    content: (data.content as unknown as RichTextDoc) || { type: "doc", content: [] },
+    content: (data.content as unknown as RichTextDoc) || {
+      type: "doc",
+      content: [],
+    },
     category: data.category as unknown as BlogCategory | null,
-    featured_image: data.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    featured_image:
+      data.featured_image as unknown as BlogPostWithDetails["featured_image"],
   };
 }
 
@@ -221,8 +228,12 @@ export async function getRelatedBlogPosts(
 
   return (data || []).map((p) => ({
     ...p,
-    content: (p.content as unknown as RichTextDoc) || { type: "doc", content: [] },
+    content: (p.content as unknown as RichTextDoc) || {
+      type: "doc",
+      content: [],
+    },
     category: p.category as unknown as BlogCategory | null,
-    featured_image: p.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    featured_image:
+      p.featured_image as unknown as BlogPostWithDetails["featured_image"],
   }));
 }

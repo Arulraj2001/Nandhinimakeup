@@ -152,7 +152,9 @@ function ProductEditDialogInner({
   );
   const [selectedMediaItems, setSelectedMediaItems] =
     React.useState<MediaItem[]>(initialMediaItems);
-  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(
+    null
+  );
 
   const form = useForm<SaveProductInput>({
     resolver: zodResolver(saveProductSchema),

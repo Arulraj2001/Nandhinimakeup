@@ -86,7 +86,7 @@ export function AdminShell({
             >
               <span>Orders</span>
               {paymentSubmittedCount > 0 && (
-                <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-bold leading-none">
+                <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs leading-none font-bold text-white">
                   {paymentSubmittedCount}
                 </span>
               )}
@@ -230,7 +230,7 @@ export function AdminShell({
               >
                 <span>Orders</span>
                 {paymentSubmittedCount > 0 && (
-                  <span className="bg-blue-600 text-white rounded-full px-2 py-0.5 text-xs font-bold leading-none">
+                  <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs leading-none font-bold text-white">
                     {paymentSubmittedCount}
                   </span>
                 )}

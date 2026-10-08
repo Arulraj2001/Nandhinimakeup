@@ -12,12 +12,15 @@ import { getPublicMediaUrl } from "@/lib/utils/media";
 export function JsonLdScript({
   data,
 }: {
-  data: Record<string, unknown> | Array<Record<string, unknown>> | null | undefined;
+  data:
+    Record<string, unknown> | Array<Record<string, unknown>> | null | undefined;
 }) {
   if (!data) return null;
 
   if (Array.isArray(data)) {
-    const filtered = data.filter((item) => item && Object.keys(item).length > 0);
+    const filtered = data.filter(
+      (item) => item && Object.keys(item).length > 0
+    );
     if (filtered.length === 0) return null;
     const jsonString = JSON.stringify(filtered).replace(/</g, "\\u003c");
     return (
@@ -146,7 +149,12 @@ export function buildHomeStructuredData(
       const openingHoursSpecs: Array<Record<string, unknown>> = [];
       for (const day of days) {
         const schedule = business.opening_hours[day];
-        if (schedule && !schedule.isClosed && schedule.openTime && schedule.closeTime) {
+        if (
+          schedule &&
+          !schedule.isClosed &&
+          schedule.openTime &&
+          schedule.closeTime
+        ) {
           openingHoursSpecs.push({
             "@type": "OpeningHoursSpecification",
             dayOfWeek: dayMap[day],
@@ -249,7 +257,10 @@ export function buildServiceStructuredData({
       priceCurrency: "INR",
       url: serviceUrl,
     };
-  } else if (service.price_type === "starting_from" && typeof service.price === "number") {
+  } else if (
+    service.price_type === "starting_from" &&
+    typeof service.price === "number"
+  ) {
     schema.offers = {
       "@type": "Offer",
       priceSpecification: {

@@ -103,11 +103,11 @@ export function LegalClient({ initialPages }: LegalClientProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
       {/* Sidebar: Legal Pages List */}
-      <div className="lg:col-span-4 space-y-3">
-        <div className="rounded-lg border border-border bg-surface p-3 space-y-2">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground/70 px-2 py-1">
+      <div className="space-y-3 lg:col-span-4">
+        <div className="border-border bg-surface space-y-2 rounded-lg border p-3">
+          <h3 className="text-foreground/70 px-2 py-1 text-xs font-semibold tracking-wider uppercase">
             Pages
           </h3>
           <div className="space-y-1">
@@ -118,7 +118,7 @@ export function LegalClient({ initialPages }: LegalClientProps) {
                   key={p.slug}
                   type="button"
                   onClick={() => setSelectedSlug(p.slug)}
-                  className={`w-full text-left rounded-md px-3 py-2.5 transition-colors flex flex-col gap-1 ${
+                  className={`flex w-full flex-col gap-1 rounded-md px-3 py-2.5 text-left transition-colors ${
                     isActive
                       ? "bg-foreground text-background font-medium"
                       : "hover:bg-page-background text-foreground"
@@ -127,14 +127,14 @@ export function LegalClient({ initialPages }: LegalClientProps) {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">{p.title}</span>
                     <span
-                      className={`text-[10px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider ${
+                      className={`rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase ${
                         p.is_published
                           ? isActive
                             ? "bg-emerald-400 text-zinc-950"
-                            : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300"
+                            : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                           : isActive
-                          ? "bg-zinc-700 text-zinc-200"
-                          : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+                            ? "bg-zinc-700 text-zinc-200"
+                            : "bg-zinc-200 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                       }`}
                     >
                       {p.is_published ? "Published" : "Draft"}
@@ -145,7 +145,10 @@ export function LegalClient({ initialPages }: LegalClientProps) {
                       isActive ? "text-background/70" : "text-foreground/50"
                     }`}
                   >
-                    /{p.slug === "shipping-and-returns" ? "shipping-returns" : p.slug}
+                    /
+                    {p.slug === "shipping-and-returns"
+                      ? "shipping-returns"
+                      : p.slug}
                   </span>
                 </button>
               );
@@ -159,14 +162,14 @@ export function LegalClient({ initialPages }: LegalClientProps) {
         {currentPage ? (
           <form
             onSubmit={handleSave}
-            className="rounded-lg border border-border bg-surface p-6 space-y-6"
+            className="border-border bg-surface space-y-6 rounded-lg border p-6"
           >
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+            <div className="border-border flex flex-wrap items-center justify-between gap-4 border-b pb-4">
               <div>
-                <h2 className="text-lg font-heading font-semibold text-foreground">
+                <h2 className="font-heading text-foreground text-lg font-semibold">
                   Edit {currentPage.title}
                 </h2>
-                <p className="text-xs text-foreground/60 mt-0.5">
+                <p className="text-foreground/60 mt-0.5 text-xs">
                   Last updated: {formatDate(currentPage.updated_at)}
                 </p>
               </div>
@@ -191,13 +194,17 @@ export function LegalClient({ initialPages }: LegalClientProps) {
             </div>
 
             {/* Publish Toggle */}
-            <div className="flex items-center justify-between rounded-md border border-border p-3 bg-page-background">
+            <div className="border-border bg-page-background flex items-center justify-between rounded-md border p-3">
               <div className="space-y-0.5">
-                <Label htmlFor="publish-toggle" className="font-medium cursor-pointer">
+                <Label
+                  htmlFor="publish-toggle"
+                  className="cursor-pointer font-medium"
+                >
                   Publish Status
                 </Label>
-                <p className="text-xs text-foreground/60">
-                  When enabled, this legal page will be accessible publicly and linked in the footer.
+                <p className="text-foreground/60 text-xs">
+                  When enabled, this legal page will be accessible publicly and
+                  linked in the footer.
                 </p>
               </div>
               <input
@@ -205,7 +212,7 @@ export function LegalClient({ initialPages }: LegalClientProps) {
                 type="checkbox"
                 checked={isPublished}
                 onChange={(e) => setIsPublished(e.target.checked)}
-                className="h-4 w-4 rounded border-border text-foreground focus:ring-foreground cursor-pointer"
+                className="border-border text-foreground focus:ring-foreground h-4 w-4 cursor-pointer rounded"
               />
             </div>
 
@@ -226,7 +233,7 @@ export function LegalClient({ initialPages }: LegalClientProps) {
             </div>
           </form>
         ) : (
-          <div className="rounded-lg border border-border bg-surface p-12 text-center text-foreground/60 text-sm">
+          <div className="border-border bg-surface text-foreground/60 rounded-lg border p-12 text-center text-sm">
             Select a legal page from the list to edit.
           </div>
         )}

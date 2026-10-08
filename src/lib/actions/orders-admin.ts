@@ -143,7 +143,9 @@ export async function getAdminOrderDetail(
         if (!thumbnailMap[img.product_id] && img.media) {
           const mediaRecord = img.media as unknown as { storage_path: string };
           if (mediaRecord?.storage_path) {
-            thumbnailMap[img.product_id] = getPublicMediaUrl(mediaRecord.storage_path);
+            thumbnailMap[img.product_id] = getPublicMediaUrl(
+              mediaRecord.storage_path
+            );
           }
         }
       }
@@ -153,7 +155,9 @@ export async function getAdminOrderDetail(
   const itemsWithThumbnails: OrderItemWithThumbnail[] = (items || []).map(
     (item) => ({
       ...(item as OrderItem),
-      thumbnailUrl: item.product_id ? thumbnailMap[item.product_id] || null : null,
+      thumbnailUrl: item.product_id
+        ? thumbnailMap[item.product_id] || null
+        : null,
     })
   );
 
@@ -201,7 +205,9 @@ export async function updateAdminOrderStatus(
 
   // Required field checks
   if (newStatus === "shipped" && !options?.courierName?.trim()) {
-    return actionError("Courier name is required when marking an order as shipped.");
+    return actionError(
+      "Courier name is required when marking an order as shipped."
+    );
   }
 
   const now = new Date().toISOString();

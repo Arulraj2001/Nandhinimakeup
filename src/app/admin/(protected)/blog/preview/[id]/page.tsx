@@ -19,7 +19,9 @@ interface PreviewPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function BlogPostPreviewPage({ params }: PreviewPageProps) {
+export default async function BlogPostPreviewPage({
+  params,
+}: PreviewPageProps) {
   const { id } = await params;
   const [postRes, settings] = await Promise.all([
     getAdminBlogPost(id),
@@ -47,9 +49,9 @@ export default async function BlogPostPreviewPage({ params }: PreviewPageProps) 
   return (
     <div className="space-y-6">
       {/* Draft Preview Indicator Banner */}
-      <div className="rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 p-3.5 text-xs text-amber-900 dark:text-amber-200 flex items-center justify-between">
+      <div className="flex items-center justify-between rounded-lg border border-amber-300 bg-amber-50 p-3.5 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
         <div className="flex items-center gap-2">
-          <span className="font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-200 dark:bg-amber-900 text-amber-950 dark:text-amber-200">
+          <span className="rounded bg-amber-200 px-2 py-0.5 font-semibold tracking-wider text-amber-950 uppercase dark:bg-amber-900 dark:text-amber-200">
             Preview Mode
           </span>
           <span>
@@ -59,15 +61,15 @@ export default async function BlogPostPreviewPage({ params }: PreviewPageProps) 
         </div>
         <Link
           href="/admin/blog"
-          className="underline font-medium hover:text-amber-950 dark:hover:text-amber-100"
+          className="font-medium underline hover:text-amber-950 dark:hover:text-amber-100"
         >
           ← Back to Blog Admin
         </Link>
       </div>
 
-      <article className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8 rounded-lg border border-border bg-surface shadow-xs">
+      <article className="border-border bg-surface mx-auto max-w-4xl rounded-lg border px-4 py-8 shadow-xs sm:px-6 lg:px-8">
         {/* Breadcrumb Trail */}
-        <nav className="text-xs text-foreground/60 mb-6 flex items-center gap-1.5 flex-wrap">
+        <nav className="text-foreground/60 mb-6 flex flex-wrap items-center gap-1.5 text-xs">
           <Link href="/" className="hover:text-foreground">
             Home
           </Link>
@@ -78,43 +80,48 @@ export default async function BlogPostPreviewPage({ params }: PreviewPageProps) 
           {post.category && (
             <>
               <span>/</span>
-              <span className="hover:text-foreground">{post.category.name}</span>
+              <span className="hover:text-foreground">
+                {post.category.name}
+              </span>
             </>
           )}
           <span>/</span>
-          <span className="text-foreground font-medium truncate max-w-xs">
+          <span className="text-foreground max-w-xs truncate font-medium">
             {post.title}
           </span>
         </nav>
 
         {/* Post Header */}
         <header className="mb-8 space-y-4">
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex flex-wrap items-center gap-2">
             {post.category && (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-page-background border border-border text-foreground">
+              <span className="bg-page-background border-border text-foreground rounded-full border px-2.5 py-1 text-xs font-semibold">
                 {post.category.name}
               </span>
             )}
-            <span className="text-xs text-foreground/60">•</span>
-            <time className="text-xs text-foreground/60">{formattedDate}</time>
-            <span className="text-xs text-foreground/60">•</span>
-            <span className="text-xs text-foreground/60">
+            <span className="text-foreground/60 text-xs">•</span>
+            <time className="text-foreground/60 text-xs">{formattedDate}</time>
+            <span className="text-foreground/60 text-xs">•</span>
+            <span className="text-foreground/60 text-xs">
               {post.reading_time_minutes} min read
             </span>
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+          <h1 className="font-heading text-foreground text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             {post.title}
           </h1>
 
-          <p className="text-sm text-foreground/70">
-            By <span className="font-medium text-foreground">{post.author_name}</span>
+          <p className="text-foreground/70 text-sm">
+            By{" "}
+            <span className="text-foreground font-medium">
+              {post.author_name}
+            </span>
           </p>
         </header>
 
         {/* Featured Image */}
         {featuredImgUrl && (
-          <div className="relative aspect-video w-full rounded-lg overflow-hidden border border-border bg-page-background mb-8">
+          <div className="border-border bg-page-background relative mb-8 aspect-video w-full overflow-hidden rounded-lg border">
             <Image
               src={featuredImgUrl}
               alt={post.featured_image?.alt_text || post.title}
@@ -128,34 +135,35 @@ export default async function BlogPostPreviewPage({ params }: PreviewPageProps) 
 
         {/* Excerpt callout */}
         {post.excerpt && (
-          <div className="text-base sm:text-lg font-serif italic text-foreground/80 border-l-4 border-amber-600 pl-4 py-2 mb-8 bg-page-background rounded-r">
+          <div className="text-foreground/80 bg-page-background mb-8 rounded-r border-l-4 border-amber-600 py-2 pl-4 font-serif text-base italic sm:text-lg">
             {post.excerpt}
           </div>
         )}
 
         {/* Rendered Content */}
-        <div className="mt-8 border-t border-border pt-8">
+        <div className="border-border mt-8 border-t pt-8">
           <RichTextRenderer content={post.content} />
         </div>
 
         {/* CTA Block */}
-        <div className="mt-12 rounded-lg border border-border bg-page-background p-6 text-center space-y-4">
-          <h3 className="font-heading text-xl font-semibold text-foreground">
+        <div className="border-border bg-page-background mt-12 space-y-4 rounded-lg border p-6 text-center">
+          <h3 className="font-heading text-foreground text-xl font-semibold">
             Looking for Professional Bridal Makeup or Designer Jewellery?
           </h3>
-          <p className="text-xs sm:text-sm text-foreground/70 max-w-xl mx-auto">
-            Book our bridal services or explore our exclusive jewellery collection for your special occasions.
+          <p className="text-foreground/70 mx-auto max-w-xl text-xs sm:text-sm">
+            Book our bridal services or explore our exclusive jewellery
+            collection for your special occasions.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
               href="/services"
-              className="px-4 py-2 rounded-md bg-foreground text-background text-xs font-semibold hover:bg-foreground/90 transition-colors"
+              className="bg-foreground text-background hover:bg-foreground/90 rounded-md px-4 py-2 text-xs font-semibold transition-colors"
             >
               Explore Services
             </Link>
             <Link
               href="/jewellery"
-              className="px-4 py-2 rounded-md border border-border text-foreground text-xs font-semibold hover:bg-surface transition-colors"
+              className="border-border text-foreground hover:bg-surface rounded-md border px-4 py-2 text-xs font-semibold transition-colors"
             >
               Browse Jewellery
             </Link>
@@ -164,7 +172,7 @@ export default async function BlogPostPreviewPage({ params }: PreviewPageProps) 
                 href={`https://wa.me/${settings.business.whatsapp_number.replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 rounded-md bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors"
+                className="rounded-md bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-emerald-700"
               >
                 Chat on WhatsApp
               </a>

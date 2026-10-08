@@ -68,7 +68,9 @@ function ProductCategoryDialogInner({
   const [selectedMedia, setSelectedMedia] = React.useState<MediaItem | null>(
     (category?.image as MediaItem) || null
   );
-  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(
+    null
+  );
 
   const form = useForm<SaveProductCategoryInput>({
     resolver: zodResolver(saveProductCategorySchema),

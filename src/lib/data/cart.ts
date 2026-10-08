@@ -95,9 +95,7 @@ export async function getPublicCartProducts(
         : null,
       primaryImageAlt: primaryMedia?.alt_text || item.name,
       stockStatus: item.stock_status as
-        | "in_stock"
-        | "out_of_stock"
-        | "made_to_order",
+        "in_stock" | "out_of_stock" | "made_to_order",
       stockQuantity:
         item.stock_quantity !== null ? Number(item.stock_quantity) : null,
     };

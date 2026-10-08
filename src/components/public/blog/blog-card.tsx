@@ -23,51 +23,51 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
 
   if (isFeaturedHighlight) {
     return (
-      <article className="group rounded-xl border border-border bg-surface overflow-hidden shadow-xs hover:border-foreground/30 transition-all grid grid-cols-1 md:grid-cols-12 mb-8">
-        <div className="md:col-span-7 relative aspect-video md:aspect-auto min-h-[260px] bg-page-background overflow-hidden">
+      <article className="group border-border bg-surface hover:border-foreground/30 mb-8 grid grid-cols-1 overflow-hidden rounded-xl border shadow-xs transition-all md:grid-cols-12">
+        <div className="bg-page-background relative aspect-video min-h-[260px] overflow-hidden md:col-span-7 md:aspect-auto">
           {imageUrl ? (
             <Image
               src={imageUrl}
               alt={post.featured_image?.alt_text || post.title}
               fill
-              className="object-cover group-hover:scale-102 transition-transform duration-300"
+              className="object-cover transition-transform duration-300 group-hover:scale-102"
               sizes="(max-width: 768px) 100vw, 60vw"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-foreground/40 text-xs">
+            <div className="text-foreground/40 flex h-full w-full items-center justify-center text-xs">
               No image
             </div>
           )}
         </div>
 
-        <div className="md:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-4">
+        <div className="flex flex-col justify-between space-y-4 p-6 sm:p-8 md:col-span-5">
           <div className="space-y-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-bold tracking-wider text-amber-900 uppercase dark:bg-amber-950/60 dark:text-amber-300">
                 Featured Article
               </span>
               {post.category && (
                 <Link
                   href={`/blog/category/${post.category.slug}`}
-                  className="text-xs font-medium text-foreground/60 hover:text-foreground transition-colors"
+                  className="text-foreground/60 hover:text-foreground text-xs font-medium transition-colors"
                 >
                   {post.category.name}
                 </Link>
               )}
             </div>
 
-            <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+            <h2 className="font-heading text-foreground text-xl font-bold tracking-tight transition-colors group-hover:text-amber-700 sm:text-2xl dark:group-hover:text-amber-400">
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>
             </h2>
 
             {post.excerpt && (
-              <p className="text-foreground/70 text-xs sm:text-sm line-clamp-3 leading-relaxed">
+              <p className="text-foreground/70 line-clamp-3 text-xs leading-relaxed sm:text-sm">
                 {post.excerpt}
               </p>
             )}
           </div>
 
-          <div className="pt-2 border-t border-border flex items-center justify-between text-xs text-foreground/60">
+          <div className="border-border text-foreground/60 flex items-center justify-between border-t pt-2 text-xs">
             <div className="flex items-center gap-2">
               <time>{formattedDate}</time>
               <span>•</span>
@@ -76,7 +76,7 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
 
             <Link
               href={`/blog/${post.slug}`}
-              className="font-semibold text-foreground hover:underline underline-offset-2 flex items-center gap-1"
+              className="text-foreground flex items-center gap-1 font-semibold underline-offset-2 hover:underline"
             >
               Read Article →
             </Link>
@@ -87,49 +87,49 @@ export function BlogCard({ post, isFeaturedHighlight = false }: BlogCardProps) {
   }
 
   return (
-    <article className="group rounded-xl border border-border bg-surface overflow-hidden shadow-xs hover:border-foreground/30 transition-all flex flex-col h-full">
+    <article className="group border-border bg-surface hover:border-foreground/30 flex h-full flex-col overflow-hidden rounded-xl border shadow-xs transition-all">
       <Link
         href={`/blog/${post.slug}`}
-        className="relative aspect-video w-full bg-page-background overflow-hidden block flex-none"
+        className="bg-page-background relative block aspect-video w-full flex-none overflow-hidden"
       >
         {imageUrl ? (
           <Image
             src={imageUrl}
             alt={post.featured_image?.alt_text || post.title}
             fill
-            className="object-cover group-hover:scale-103 transition-transform duration-300"
+            className="object-cover transition-transform duration-300 group-hover:scale-103"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-foreground/40 text-xs">
+          <div className="text-foreground/40 flex h-full w-full items-center justify-center text-xs">
             No image
           </div>
         )}
       </Link>
 
-      <div className="p-5 flex flex-col flex-1 justify-between space-y-3">
+      <div className="flex flex-1 flex-col justify-between space-y-3 p-5">
         <div className="space-y-2">
           {post.category && (
             <Link
               href={`/blog/category/${post.category.slug}`}
-              className="text-[11px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400 hover:underline"
+              className="text-[11px] font-semibold tracking-wider text-amber-700 uppercase hover:underline dark:text-amber-400"
             >
               {post.category.name}
             </Link>
           )}
 
-          <h3 className="font-heading text-base sm:text-lg font-semibold tracking-tight text-foreground group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors line-clamp-2">
+          <h3 className="font-heading text-foreground line-clamp-2 text-base font-semibold tracking-tight transition-colors group-hover:text-amber-700 sm:text-lg dark:group-hover:text-amber-400">
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </h3>
 
           {post.excerpt && (
-            <p className="text-foreground/70 text-xs line-clamp-2 leading-relaxed">
+            <p className="text-foreground/70 line-clamp-2 text-xs leading-relaxed">
               {post.excerpt}
             </p>
           )}
         </div>
 
-        <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-foreground/60">
+        <div className="border-border text-foreground/60 flex items-center justify-between border-t pt-3 text-xs">
           <time>{formattedDate}</time>
           <span>{post.reading_time_minutes} min read</span>
         </div>

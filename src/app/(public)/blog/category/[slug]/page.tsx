@@ -51,8 +51,7 @@ export async function generateMetadata({
     generated: {
       title: `${category.name} | Blog`,
       description:
-        category.description ||
-        `Articles and tips in ${category.name}.`,
+        category.description || `Articles and tips in ${category.name}.`,
     },
   });
 }
@@ -63,7 +62,10 @@ async function BlogCategoryContent({
 }: CategoryPageProps) {
   const { slug } = await params;
   const resolvedSearchParams = await searchParams;
-  const pageNum = Math.max(1, parseInt(resolvedSearchParams?.page || "1", 10) || 1);
+  const pageNum = Math.max(
+    1,
+    parseInt(resolvedSearchParams?.page || "1", 10) || 1
+  );
 
   const [category, categories, postsData] = await Promise.all([
     getPublicBlogCategoryBySlug(slug),
@@ -79,10 +81,10 @@ async function BlogCategoryContent({
   const { posts, totalPages, currentPage } = postsData;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-10">
+    <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 md:py-16 lg:px-8">
       {/* Category Header */}
-      <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <div className="text-xs text-foreground/60 flex items-center justify-center gap-1.5">
+      <div className="mx-auto max-w-2xl space-y-3 text-center">
+        <div className="text-foreground/60 flex items-center justify-center gap-1.5 text-xs">
           <Link href="/blog" className="hover:text-foreground">
             Blog
           </Link>
@@ -90,7 +92,7 @@ async function BlogCategoryContent({
           <span className="text-foreground font-medium">Category</span>
         </div>
 
-        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+        <h1 className="font-heading text-foreground text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           {category.name}
         </h1>
 
@@ -103,10 +105,10 @@ async function BlogCategoryContent({
 
       {/* Category Filter Pills */}
       {categories.length > 0 && (
-        <div className="flex items-center justify-center gap-2 flex-wrap pb-2 border-b border-border">
+        <div className="border-border flex flex-wrap items-center justify-center gap-2 border-b pb-2">
           <Link
             href="/blog"
-            className="px-3.5 py-1.5 rounded-full text-xs font-medium text-foreground/70 hover:text-foreground bg-page-background border border-border hover:bg-surface transition-colors"
+            className="text-foreground/70 hover:text-foreground bg-page-background border-border hover:bg-surface rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors"
           >
             All Articles
           </Link>
@@ -116,10 +118,10 @@ async function BlogCategoryContent({
               <Link
                 key={cat.id}
                 href={`/blog/category/${cat.slug}`}
-                className={`px-3.5 py-1.5 rounded-full text-xs transition-colors ${
+                className={`rounded-full px-3.5 py-1.5 text-xs transition-colors ${
                   isActive
-                    ? "font-semibold bg-foreground text-background"
-                    : "font-medium text-foreground/70 hover:text-foreground bg-page-background border border-border hover:bg-surface"
+                    ? "bg-foreground text-background font-semibold"
+                    : "text-foreground/70 hover:text-foreground bg-page-background border-border hover:bg-surface border font-medium"
                 }`}
               >
                 {cat.name}
@@ -131,18 +133,18 @@ async function BlogCategoryContent({
 
       {/* Posts Grid */}
       {posts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-border bg-surface p-16 text-center text-foreground/60 space-y-2">
-          <p className="font-heading text-lg font-medium text-foreground">
+        <div className="border-border bg-surface text-foreground/60 space-y-2 rounded-xl border p-16 text-center">
+          <p className="font-heading text-foreground text-lg font-medium">
             No articles in this category yet.
           </p>
           <p className="text-xs">
-            <Link href="/blog" className="underline hover:text-foreground">
+            <Link href="/blog" className="hover:text-foreground underline">
               View all articles
             </Link>
           </p>
@@ -170,7 +172,7 @@ export default function BlogCategoryPage({
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center text-sm text-foreground/40">
+        <div className="text-foreground/40 mx-auto max-w-7xl px-4 py-16 text-center text-sm sm:px-6 lg:px-8">
           Loading category articles...
         </div>
       }

@@ -101,7 +101,12 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
       { label: "Home", href: "/" },
       { label: "Blog", href: "/blog" },
       ...(post.category
-        ? [{ label: post.category.name, href: `/blog/category/${post.category.slug}` }]
+        ? [
+            {
+              label: post.category.name,
+              href: `/blog/category/${post.category.slug}`,
+            },
+          ]
         : []),
       { label: post.title, href: `/blog/${post.slug}` },
     ],
@@ -109,7 +114,7 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
   );
 
   return (
-    <article className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
       <JsonLdScript
         data={[
           ...(blogSchema ? [blogSchema] : []),
@@ -119,7 +124,7 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
       {/* Breadcrumb Trail */}
       <nav
         aria-label="Breadcrumb"
-        className="text-xs text-foreground/60 mb-8 flex items-center gap-1.5 flex-wrap"
+        className="text-foreground/60 mb-8 flex flex-wrap items-center gap-1.5 text-xs"
       >
         <Link href="/" className="hover:text-foreground">
           Home
@@ -140,42 +145,45 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
           </>
         )}
         <span>/</span>
-        <span className="text-foreground font-medium truncate max-w-xs">
+        <span className="text-foreground max-w-xs truncate font-medium">
           {post.title}
         </span>
       </nav>
 
       {/* Article Header */}
       <header className="mb-8 space-y-4">
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           {post.category && (
             <Link
               href={`/blog/category/${post.category.slug}`}
-              className="text-xs font-semibold px-2.5 py-1 rounded-full bg-page-background border border-border text-foreground hover:bg-surface transition-colors"
+              className="bg-page-background border-border text-foreground hover:bg-surface rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors"
             >
               {post.category.name}
             </Link>
           )}
-          <span className="text-xs text-foreground/60">•</span>
-          <time className="text-xs text-foreground/60">{formattedDate}</time>
-          <span className="text-xs text-foreground/60">•</span>
-          <span className="text-xs text-foreground/60">
+          <span className="text-foreground/60 text-xs">•</span>
+          <time className="text-foreground/60 text-xs">{formattedDate}</time>
+          <span className="text-foreground/60 text-xs">•</span>
+          <span className="text-foreground/60 text-xs">
             {post.reading_time_minutes} min read
           </span>
         </div>
 
-        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+        <h1 className="font-heading text-foreground text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           {post.title}
         </h1>
 
-        <p className="text-sm text-foreground/70">
-          By <span className="font-medium text-foreground">{post.author_name}</span>
+        <p className="text-foreground/70 text-sm">
+          By{" "}
+          <span className="text-foreground font-medium">
+            {post.author_name}
+          </span>
         </p>
       </header>
 
       {/* LCP Featured Image (priority=true, reserved aspect ratio) */}
       {featuredImgUrl && (
-        <div className="relative aspect-video w-full rounded-xl overflow-hidden border border-border bg-page-background mb-8 shadow-xs">
+        <div className="border-border bg-page-background relative mb-8 aspect-video w-full overflow-hidden rounded-xl border shadow-xs">
           <Image
             src={featuredImgUrl}
             alt={post.featured_image?.alt_text || post.title}
@@ -189,34 +197,35 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
 
       {/* Excerpt Lead */}
       {post.excerpt && (
-        <div className="text-base sm:text-lg font-serif italic text-foreground/80 border-l-4 border-amber-600 pl-4 py-2 mb-8 bg-surface rounded-r">
+        <div className="text-foreground/80 bg-surface mb-8 rounded-r border-l-4 border-amber-600 py-2 pl-4 font-serif text-base italic sm:text-lg">
           {post.excerpt}
         </div>
       )}
 
       {/* Rendered Rich Text Content */}
-      <div className="mt-8 border-t border-border pt-8">
+      <div className="border-border mt-8 border-t pt-8">
         <RichTextRenderer content={post.content} />
       </div>
 
       {/* Closing Call-To-Action Block */}
-      <div className="mt-14 rounded-xl border border-border bg-surface p-8 text-center space-y-4 shadow-xs">
-        <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground">
+      <div className="border-border bg-surface mt-14 space-y-4 rounded-xl border p-8 text-center shadow-xs">
+        <h2 className="font-heading text-foreground text-xl font-semibold sm:text-2xl">
           Elevate Your Look with Nandhini
         </h2>
-        <p className="text-xs sm:text-sm text-foreground/70 max-w-xl mx-auto leading-relaxed">
-          Book a bridal makeup consultation or browse our exclusive designer jewellery rental and sale collections.
+        <p className="text-foreground/70 mx-auto max-w-xl text-xs leading-relaxed sm:text-sm">
+          Book a bridal makeup consultation or browse our exclusive designer
+          jewellery rental and sale collections.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
             href="/services"
-            className="px-5 py-2.5 rounded-md bg-foreground text-background text-xs font-semibold hover:bg-foreground/90 transition-colors tracking-wider uppercase"
+            className="bg-foreground text-background hover:bg-foreground/90 rounded-md px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors"
           >
             Our Services
           </Link>
           <Link
             href="/jewellery"
-            className="px-5 py-2.5 rounded-md border border-border text-foreground text-xs font-semibold hover:bg-page-background transition-colors tracking-wider uppercase"
+            className="border-border text-foreground hover:bg-page-background rounded-md border px-5 py-2.5 text-xs font-semibold tracking-wider uppercase transition-colors"
           >
             Browse Jewellery
           </Link>
@@ -225,7 +234,7 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
               href={`https://wa.me/${settings.business.whatsapp_number.replace(/\D/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-md bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors tracking-wider uppercase"
+              className="rounded-md bg-emerald-600 px-5 py-2.5 text-xs font-semibold tracking-wider text-white uppercase transition-colors hover:bg-emerald-700"
             >
               WhatsApp Us
             </a>
@@ -235,11 +244,11 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="mt-16 border-t border-border pt-12 space-y-6">
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-foreground">
+        <section className="border-border mt-16 space-y-6 border-t pt-12">
+          <h2 className="font-heading text-foreground text-2xl font-bold tracking-tight">
             Related Articles
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {relatedPosts.map((rel) => (
               <BlogCard key={rel.id} post={rel} />
             ))}
@@ -254,7 +263,7 @@ export default function BlogPostDetailPage({ params }: BlogPostPageProps) {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-4xl px-4 py-16 text-center text-sm text-foreground/40">
+        <div className="text-foreground/40 mx-auto max-w-4xl px-4 py-16 text-center text-sm">
           Loading article...
         </div>
       }

@@ -55,7 +55,7 @@ export function Header({
           className="font-heading text-foreground flex items-center gap-3 text-lg font-semibold tracking-wide sm:text-2xl"
         >
           {logoUrl && (
-            <div className="relative h-10 w-10 flex-none overflow-hidden rounded-full border border-border/80 bg-white shadow-xs sm:h-11 sm:w-11">
+            <div className="border-border/80 relative h-10 w-10 flex-none overflow-hidden rounded-full border bg-white shadow-xs sm:h-11 sm:w-11">
               <Image
                 src={logoUrl}
                 alt={logoAlt || businessName}
@@ -69,7 +69,7 @@ export function Header({
           <span>{businessName}</span>
         </Link>
 
-          {/* Desktop Navigation & Actions */}
+        {/* Desktop Navigation & Actions */}
         <div className="hidden md:flex md:items-center md:gap-6">
           <nav className="flex items-center gap-6" aria-label="Main Navigation">
             {navItems.map((item) => (

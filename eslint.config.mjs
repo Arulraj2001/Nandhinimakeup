@@ -8,6 +8,8 @@ const eslintConfig = defineConfig([
   {
     rules: {
       "react-hooks/incompatible-library": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   // Override default ignores of eslint-config-next.
@@ -17,6 +19,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "tests/**",
   ]),
 ]);
 

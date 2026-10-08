@@ -337,7 +337,7 @@ function BusinessSettingsForm({
       </FormField>
 
       {/* Structured Address (for Search Engines / Structured Data) */}
-      <div className="space-y-4 rounded-lg border border-border p-4 bg-muted/20">
+      <div className="border-border bg-muted/20 space-y-4 rounded-lg border p-4">
         <div>
           <h3 className="text-foreground text-sm font-semibold">
             Structured Address Parts (for Search Engines)
@@ -756,24 +756,27 @@ function ShippingSettingsForm({
           Shipping & Orders Configuration
         </h2>
         <p className="text-foreground/70 text-sm">
-          Configure online order acceptance, order numbering prefix, and domestic shipping rates.
+          Configure online order acceptance, order numbering prefix, and
+          domestic shipping rates.
         </p>
       </div>
 
-      <div className="bg-surface border-border rounded-lg border p-4 space-y-4">
+      <div className="bg-surface border-border space-y-4 rounded-lg border p-4">
         <label className="flex cursor-pointer items-start gap-3">
           <input
             type="checkbox"
             id="accept_orders"
             {...form.register("accept_orders")}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-foreground focus:ring-foreground"
+            className="text-foreground focus:ring-foreground mt-1 h-4 w-4 rounded border-gray-300"
           />
           <div>
             <span className="text-foreground text-sm font-medium">
               Accept Online Orders
             </span>
-            <p className="text-foreground/70 text-xs mt-0.5">
-              Allow customers to add products to cart and proceed to checkout. When turned off, cart and checkout are paused with a notice to enquire on WhatsApp.
+            <p className="text-foreground/70 mt-0.5 text-xs">
+              Allow customers to add products to cart and proceed to checkout.
+              When turned off, cart and checkout are paused with a notice to
+              enquire on WhatsApp.
             </p>
           </div>
         </label>
@@ -1753,7 +1756,8 @@ export function SeoSettingsForm({
           Global SEO Settings
         </h2>
         <p className="text-foreground/70 text-sm">
-          Default meta tags, Open Graph fallbacks, and local business discovery parameters.
+          Default meta tags, Open Graph fallbacks, and local business discovery
+          parameters.
         </p>
       </div>
 
@@ -1773,12 +1777,13 @@ export function SeoSettingsForm({
       </FormField>
 
       {/* Default Social Share Image */}
-      <div className="space-y-2 rounded-lg border border-border p-4">
+      <div className="border-border space-y-2 rounded-lg border p-4">
         <label className="text-foreground text-sm font-semibold">
           Default Social Share Image (OG Image)
         </label>
         <p className="text-foreground/70 text-xs">
-          Fallback image displayed when links to pages without a dedicated image are shared on social media (1200x630 recommended).
+          Fallback image displayed when links to pages without a dedicated image
+          are shared on social media (1200x630 recommended).
         </p>
 
         {socialImageMedia ? (
@@ -1871,7 +1876,8 @@ export function SeoSettingsForm({
             type="number"
             step="any"
             {...form.register("latitude", {
-              setValueAs: (v) => (v === "" || v === null || isNaN(Number(v)) ? null : Number(v)),
+              setValueAs: (v) =>
+                v === "" || v === null || isNaN(Number(v)) ? null : Number(v),
             })}
             placeholder="e.g. 13.0827"
           />
@@ -1888,7 +1894,8 @@ export function SeoSettingsForm({
             type="number"
             step="any"
             {...form.register("longitude", {
-              setValueAs: (v) => (v === "" || v === null || isNaN(Number(v)) ? null : Number(v)),
+              setValueAs: (v) =>
+                v === "" || v === null || isNaN(Number(v)) ? null : Number(v),
             })}
             placeholder="e.g. 80.2707"
           />

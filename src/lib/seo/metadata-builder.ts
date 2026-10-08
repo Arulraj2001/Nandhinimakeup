@@ -81,9 +81,12 @@ export async function buildMetadata(
   options: MetadataBuilderOptions
 ): Promise<Metadata> {
   const settings = options.settings || (await getPublicSiteSettings());
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nandhinimakeup.com";
-  const businessName = settings.business.business_name || "Nandhini Makeup & Jewellery";
-  const tagline = settings.business.tagline || "Bridal Makeup & Premium Jewellery";
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://nandhinimakeup.com";
+  const businessName =
+    settings.business.business_name || "Nandhini Makeup & Jewellery";
+  const tagline =
+    settings.business.tagline || "Bridal Makeup & Premium Jewellery";
 
   // Check static page overrides if this is a static route and no explicit entity was passed
   let staticOverride = null;
@@ -190,7 +193,9 @@ export async function buildMetadata(
   } else if (options.generated?.imageUrl) {
     resolvedImageUrl = options.generated.imageUrl;
   } else if (settings.seo.default_social_image_id) {
-    const defaultMedia = await getPublicMedia(settings.seo.default_social_image_id);
+    const defaultMedia = await getPublicMedia(
+      settings.seo.default_social_image_id
+    );
     if (defaultMedia) {
       resolvedImageUrl = getPublicMediaUrl(defaultMedia.storage_path);
       imageAlt = defaultMedia.alt_text || businessName;

@@ -121,8 +121,7 @@ export function CartView({ settings }: CartViewProps) {
   const whatsAppLines = lineItems
     .filter((l) => l.product)
     .map(
-      (l) =>
-        `- ${l.product?.name} x ${l.quantity}: ${formatINR(l.lineTotal)}`
+      (l) => `- ${l.product?.name} x ${l.quantity}: ${formatINR(l.lineTotal)}`
     );
   whatsAppLines.push(`Subtotal: ${formatINR(subtotal)}`);
   whatsAppLines.push(
@@ -159,7 +158,8 @@ export function CartView({ settings }: CartViewProps) {
           Your Cart is Empty
         </h1>
         <p className="text-foreground/70 mx-auto mt-2 max-w-md text-sm">
-          Explore our handcrafted bridal jewellery collection and add pieces to your cart.
+          Explore our handcrafted bridal jewellery collection and add pieces to
+          your cart.
         </p>
         <div className="mt-8">
           <Link
@@ -185,24 +185,27 @@ export function CartView({ settings }: CartViewProps) {
       </div>
 
       {!acceptOrders && (
-        <div className="mb-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-foreground">
+        <div className="text-foreground mb-8 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm">
           <p className="font-semibold">Online ordering is currently paused.</p>
           <p className="text-foreground/80 mt-1 text-xs sm:text-sm">
-            Online checkout is temporarily disabled. You can review your items and tap &quot;Send cart on WhatsApp&quot; below to complete your order directly with us.
+            Online checkout is temporarily disabled. You can review your items
+            and tap &quot;Send cart on WhatsApp&quot; below to complete your
+            order directly with us.
           </p>
         </div>
       )}
 
       {hasErrors && (
-        <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-3.5 text-xs text-destructive">
-          One or more items in your cart are unavailable or out of stock. Please remove or adjust them before proceeding.
+        <div className="border-destructive/40 bg-destructive/10 text-destructive mb-6 rounded-md border p-3.5 text-xs">
+          One or more items in your cart are unavailable or out of stock. Please
+          remove or adjust them before proceeding.
         </div>
       )}
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
         {/* Cart Item Lines */}
         <div className="lg:col-span-8">
-          <div className="border-border divide-border divide-y rounded-lg border bg-surface">
+          <div className="border-border divide-border bg-surface divide-y rounded-lg border">
             {lineItems.map((line) => {
               const product = line.product;
               const hasLineError = Boolean(line.errorReason);
@@ -210,7 +213,7 @@ export function CartView({ settings }: CartViewProps) {
               return (
                 <div
                   key={line.productId}
-                  className={`p-4 sm:p-6 transition-colors ${
+                  className={`p-4 transition-colors sm:p-6 ${
                     hasLineError ? "bg-destructive/5" : ""
                   }`}
                 >
@@ -241,7 +244,7 @@ export function CartView({ settings }: CartViewProps) {
                                 ? `/jewellery/${product.categorySlug}/${product.slug}`
                                 : `/jewellery`
                             }
-                            className="text-foreground hover:underline text-sm font-semibold sm:text-base"
+                            className="text-foreground text-sm font-semibold hover:underline sm:text-base"
                           >
                             {product.name}
                           </Link>
@@ -255,7 +258,7 @@ export function CartView({ settings }: CartViewProps) {
                           <div className="text-foreground/80 text-xs sm:text-sm">
                             {formatINR(product.effectivePrice)} each
                             {product.salePrice !== null && (
-                              <span className="text-foreground/50 ml-2 line-through text-xs">
+                              <span className="text-foreground/50 ml-2 text-xs line-through">
                                 {formatINR(product.price)}
                               </span>
                             )}
@@ -263,7 +266,7 @@ export function CartView({ settings }: CartViewProps) {
                         )}
 
                         {hasLineError && (
-                          <p className="text-destructive text-xs font-medium pt-1">
+                          <p className="text-destructive pt-1 text-xs font-medium">
                             {line.errorReason}
                           </p>
                         )}
@@ -273,19 +276,19 @@ export function CartView({ settings }: CartViewProps) {
                     {/* Stepper, Line Total, Remove */}
                     <div className="flex items-center justify-between gap-6 sm:justify-end">
                       {/* Quantity Stepper */}
-                      <div className="flex h-9 items-center rounded-md border border-border bg-page-background px-1">
+                      <div className="border-border bg-page-background flex h-9 items-center rounded-md border px-1">
                         <button
                           type="button"
                           onClick={() =>
                             updateQuantity(line.productId, line.quantity - 1)
                           }
                           disabled={line.quantity <= 1}
-                          className="flex h-7 w-7 items-center justify-center rounded text-foreground hover:bg-surface disabled:opacity-30"
+                          className="text-foreground hover:bg-surface flex h-7 w-7 items-center justify-center rounded disabled:opacity-30"
                           aria-label="Decrease quantity"
                         >
                           -
                         </button>
-                        <span className="w-8 text-center text-xs font-semibold text-foreground">
+                        <span className="text-foreground w-8 text-center text-xs font-semibold">
                           {line.quantity}
                         </span>
                         <button
@@ -299,7 +302,7 @@ export function CartView({ settings }: CartViewProps) {
                               product?.stockQuantity !== undefined &&
                               line.quantity >= product.stockQuantity)
                           }
-                          className="flex h-7 w-7 items-center justify-center rounded text-foreground hover:bg-surface disabled:opacity-30"
+                          className="text-foreground hover:bg-surface flex h-7 w-7 items-center justify-center rounded disabled:opacity-30"
                           aria-label="Increase quantity"
                         >
                           +
@@ -342,24 +345,24 @@ export function CartView({ settings }: CartViewProps) {
 
         {/* Order Summary & Actions */}
         <div className="lg:col-span-4">
-          <div className="border-border rounded-lg border bg-surface p-6 space-y-6">
+          <div className="border-border bg-surface space-y-6 rounded-lg border p-6">
             <h2 className="font-heading text-foreground text-lg font-semibold">
               Order Summary
             </h2>
 
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-foreground/80">
+              <div className="text-foreground/80 flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-medium text-foreground">
+                <span className="text-foreground font-medium">
                   {formatINR(subtotal)}
                 </span>
               </div>
 
-              <div className="flex justify-between text-foreground/80">
+              <div className="text-foreground/80 flex justify-between">
                 <span>Estimated Delivery</span>
-                <span className="font-medium text-foreground">
+                <span className="text-foreground font-medium">
                   {isFreeDelivery ? (
-                    <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
+                    <span className="font-semibold text-emerald-700 dark:text-emerald-400">
                       FREE
                     </span>
                   ) : (
@@ -368,20 +371,23 @@ export function CartView({ settings }: CartViewProps) {
                 </span>
               </div>
 
-              {freeThreshold !== null && freeThreshold > 0 && !isFreeDelivery && (
-                <p className="text-xs text-foreground/60">
-                  Add {formatINR(freeThreshold - subtotal)} more for free delivery!
-                </p>
-              )}
+              {freeThreshold !== null &&
+                freeThreshold > 0 &&
+                !isFreeDelivery && (
+                  <p className="text-foreground/60 text-xs">
+                    Add {formatINR(freeThreshold - subtotal)} more for free
+                    delivery!
+                  </p>
+                )}
 
-              <div className="border-border border-t pt-3 flex justify-between text-base font-semibold text-foreground">
+              <div className="border-border text-foreground flex justify-between border-t pt-3 text-base font-semibold">
                 <span>Total</span>
                 <span>{formatINR(total)}</span>
               </div>
             </div>
 
             {deliveryNote && (
-              <p className="text-foreground/70 text-xs leading-relaxed border-border border-t pt-3">
+              <p className="text-foreground/70 border-border border-t pt-3 text-xs leading-relaxed">
                 {deliveryNote}
               </p>
             )}
@@ -391,7 +397,7 @@ export function CartView({ settings }: CartViewProps) {
                 <Link
                   href={hasErrors || items.length === 0 ? "#" : "/checkout"}
                   aria-disabled={hasErrors || items.length === 0}
-                  className={`w-full inline-flex items-center justify-center rounded-md px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors ${
+                  className={`inline-flex w-full items-center justify-center rounded-md px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors ${
                     hasErrors || items.length === 0
                       ? "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
                       : "bg-foreground text-background hover:bg-foreground/90"
@@ -406,7 +412,7 @@ export function CartView({ settings }: CartViewProps) {
                   href={whatsAppLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center rounded-md border border-border bg-page-background text-foreground hover:bg-surface px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors"
+                  className="border-border bg-page-background text-foreground hover:bg-surface inline-flex w-full items-center justify-center rounded-md border px-6 py-3.5 text-xs font-semibold tracking-wider uppercase transition-colors"
                 >
                   Send Cart on WhatsApp
                 </Link>

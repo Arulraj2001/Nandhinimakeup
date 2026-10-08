@@ -25,7 +25,10 @@ export async function getPublishedLegalPage(
   const { data, error } = await supabase
     .from("legal_pages")
     .select("slug, title, content, updated_at")
-    .eq("slug", slug as "privacy-policy" | "terms-and-conditions" | "shipping-and-returns")
+    .eq(
+      "slug",
+      slug as "privacy-policy" | "terms-and-conditions" | "shipping-and-returns"
+    )
     .eq("is_published", true)
     .maybeSingle();
 
@@ -36,7 +39,10 @@ export async function getPublishedLegalPage(
   return {
     slug: data.slug,
     title: data.title,
-    content: (data.content as unknown as RichTextDoc) || { type: "doc", content: [] },
+    content: (data.content as unknown as RichTextDoc) || {
+      type: "doc",
+      content: [],
+    },
     updated_at: data.updated_at,
   };
 }

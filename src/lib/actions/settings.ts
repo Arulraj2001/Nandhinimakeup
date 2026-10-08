@@ -413,4 +413,3 @@ export async function saveSeoSettings(
   revalidateCacheTag("seo");
   return actionSuccess(parsed.data);
 }
-

@@ -11,7 +11,10 @@ import {
 } from "@/lib/actions/blog-admin";
 import type { BlogCategory, BlogPostWithDetails } from "@/types/blog";
 import { RichTextEditor } from "@/components/admin/rich-text-editor";
-import { MediaPicker, getPublicMediaUrl } from "@/components/admin/media-picker";
+import {
+  MediaPicker,
+  getPublicMediaUrl,
+} from "@/components/admin/media-picker";
 import { SeoPanel } from "@/components/admin/seo-panel";
 import type { MediaItem } from "@/lib/actions/media";
 import {
@@ -52,7 +55,9 @@ export function PostEditDialog({
     type: "doc",
     content: [],
   });
-  const [featuredMedia, setFeaturedMedia] = React.useState<MediaItem | null>(null);
+  const [featuredMedia, setFeaturedMedia] = React.useState<MediaItem | null>(
+    null
+  );
   const [mediaPickerOpen, setMediaPickerOpen] = React.useState(false);
   const [authorName, setAuthorName] = React.useState(defaultAuthorName);
   const [status, setStatus] = React.useState<"draft" | "published">("draft");
@@ -62,7 +67,9 @@ export function PostEditDialog({
   // SEO fields
   const [seoTitle, setSeoTitle] = React.useState("");
   const [seoDescription, setSeoDescription] = React.useState("");
-  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(
+    null
+  );
   const [noindex, setNoindex] = React.useState(false);
   const [focusKeyword, setFocusKeyword] = React.useState("");
 
@@ -81,9 +88,7 @@ export function PostEditDialog({
       setFeaturedMedia(post.featured_image || null);
       setAuthorName(post.author_name || defaultAuthorName);
       setStatus(post.status);
-      setPublishedAt(
-        post.published_at ? post.published_at.slice(0, 16) : ""
-      );
+      setPublishedAt(post.published_at ? post.published_at.slice(0, 16) : "");
       setIsFeatured(Boolean(post.is_featured));
       setSeoTitle(post.seo_title || "");
       setSeoDescription(post.seo_description || "");
@@ -146,7 +151,11 @@ export function PostEditDialog({
         for (const m of node.marks) {
           if (m.type === "link" && m.attrs?.href) {
             const href = String(m.attrs.href).trim();
-            if (href.startsWith("/") || href.startsWith("#") || href.includes("nandhinimakeup")) {
+            if (
+              href.startsWith("/") ||
+              href.startsWith("#") ||
+              href.includes("nandhinimakeup")
+            ) {
               internalLink = true;
             }
           }
@@ -160,7 +169,11 @@ export function PostEditDialog({
     }
 
     walk(content);
-    return { wordCount: words, firstParagraph: firstP, hasInternalLink: internalLink };
+    return {
+      wordCount: words,
+      firstParagraph: firstP,
+      hasInternalLink: internalLink,
+    };
   }, [content]);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -185,9 +198,7 @@ export function PostEditDialog({
       if (!categoryId) missing.push("Category");
 
       if (missing.length > 0) {
-        toast.error(
-          `Cannot publish post. Required: ${missing.join(", ")}.`
-        );
+        toast.error(`Cannot publish post. Required: ${missing.join(", ")}.`);
         return;
       }
     }
@@ -268,15 +279,16 @@ export function PostEditDialog({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 overflow-y-auto">
-      <div className="w-full max-w-4xl my-8 rounded-lg border border-border bg-surface p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-border pb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
+      <div className="border-border bg-surface my-8 max-h-[90vh] w-full max-w-4xl space-y-6 overflow-y-auto rounded-lg border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
           <div>
-            <h2 className="font-heading text-xl font-semibold text-foreground">
+            <h2 className="font-heading text-foreground text-xl font-semibold">
               {post ? "Edit Blog Post" : "New Blog Post"}
             </h2>
-            <p className="text-xs text-foreground/60 mt-0.5">
-              Reading time: ~{estimatedReadingTime} min ({calculateReadingTime(content)} min)
+            <p className="text-foreground/60 mt-0.5 text-xs">
+              Reading time: ~{estimatedReadingTime} min (
+              {calculateReadingTime(content)} min)
             </p>
           </div>
 
@@ -285,7 +297,7 @@ export function PostEditDialog({
               <Link
                 href={`/admin/blog/preview/${post.id}`}
                 target="_blank"
-                className="text-xs px-3 py-1.5 rounded-md border border-border bg-page-background hover:bg-surface text-foreground font-medium"
+                className="border-border bg-page-background hover:bg-surface text-foreground rounded-md border px-3 py-1.5 text-xs font-medium"
               >
                 Preview ↗
               </Link>
@@ -293,7 +305,7 @@ export function PostEditDialog({
             <button
               type="button"
               onClick={handleClose}
-              className="text-foreground/60 hover:text-foreground text-sm px-2 py-1"
+              className="text-foreground/60 hover:text-foreground px-2 py-1 text-sm"
             >
               ✕
             </button>
@@ -301,7 +313,7 @@ export function PostEditDialog({
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Title */}
             <div className="space-y-1.5 md:col-span-2">
               <Label htmlFor="post-title">
@@ -365,7 +377,7 @@ export function PostEditDialog({
             </Label>
             <div className="flex items-center gap-4">
               {featuredMedia ? (
-                <div className="relative h-24 w-36 rounded-md border border-border overflow-hidden bg-page-background group">
+                <div className="border-border bg-page-background group relative h-24 w-36 overflow-hidden rounded-md border">
                   <img
                     src={getPublicMediaUrl(featuredMedia.storage_path)}
                     alt={featuredMedia.alt_text || featuredMedia.file_name}
@@ -377,14 +389,14 @@ export function PostEditDialog({
                       setFeaturedMedia(null);
                       setHasChanges(true);
                     }}
-                    className="absolute top-1 right-1 bg-black/70 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute top-1 right-1 rounded-full bg-black/70 p-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
                     title="Remove image"
                   >
                     ✕
                   </button>
                 </div>
               ) : (
-                <div className="h-24 w-36 rounded-md border border-dashed border-border flex items-center justify-center text-xs text-foreground/50 bg-page-background">
+                <div className="border-border text-foreground/50 bg-page-background flex h-24 w-36 items-center justify-center rounded-md border border-dashed text-xs">
                   No image selected
                 </div>
               )}
@@ -411,8 +423,8 @@ export function PostEditDialog({
                   excerpt.length > 200
                     ? "text-destructive font-medium"
                     : excerpt.length >= 100
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : "text-foreground/50"
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-foreground/50"
                 }`}
               >
                 {excerpt.length} characters (ideal: 120–160)
@@ -444,7 +456,7 @@ export function PostEditDialog({
           </div>
 
           {/* Publishing Settings Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-border">
+          <div className="border-border grid grid-cols-1 gap-4 border-t pt-2 md:grid-cols-3">
             {/* Status */}
             <div className="space-y-1.5">
               <Label htmlFor="post-status">Status</Label>
@@ -464,7 +476,9 @@ export function PostEditDialog({
 
             {/* Published At Date */}
             <div className="space-y-1.5">
-              <Label htmlFor="post-published-at">Published Date &amp; Time</Label>
+              <Label htmlFor="post-published-at">
+                Published Date &amp; Time
+              </Label>
               <Input
                 id="post-published-at"
                 type="datetime-local"
@@ -501,15 +515,18 @@ export function PostEditDialog({
                 setIsFeatured(e.target.checked);
                 setHasChanges(true);
               }}
-              className="h-4 w-4 rounded border-border text-foreground focus:ring-foreground cursor-pointer"
+              className="border-border text-foreground focus:ring-foreground h-4 w-4 cursor-pointer rounded"
             />
-            <Label htmlFor="is-featured" className="cursor-pointer font-medium text-xs">
+            <Label
+              htmlFor="is-featured"
+              className="cursor-pointer text-xs font-medium"
+            >
               Highlight as Featured Post (shown first on blog page 1)
             </Label>
           </div>
 
           {/* SEO Settings */}
-          <div className="border-t border-border pt-6">
+          <div className="border-border border-t pt-6">
             <SeoPanel
               seoTitle={seoTitle}
               onSeoTitleChange={(val) => {
@@ -557,7 +574,7 @@ export function PostEditDialog({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-between border-t border-border pt-4">
+          <div className="border-border flex items-center justify-between border-t pt-4">
             {post ? (
               <Button
                 type="button"
@@ -586,10 +603,10 @@ export function PostEditDialog({
                 {isSaving
                   ? "Saving..."
                   : post
-                  ? "Save Changes"
-                  : status === "published"
-                  ? "Publish Post"
-                  : "Save Draft"}
+                    ? "Save Changes"
+                    : status === "published"
+                      ? "Publish Post"
+                      : "Save Draft"}
               </Button>
             </div>
           </div>

@@ -32,8 +32,8 @@ export function HeaderCartIcon({ acceptOrders }: { acceptOrders?: boolean }) {
       </svg>
       {/* Reserved badge space with no layout shift */}
       <span
-        className={`bg-foreground text-background absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] font-bold leading-none transition-opacity ${
-          count > 0 ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`bg-foreground text-background absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] leading-none font-bold transition-opacity ${
+          count > 0 ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         aria-hidden="true"
       >

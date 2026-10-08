@@ -23,7 +23,9 @@ export default async function SeoAdminPage() {
 
   const mediaIds = [
     settings.seo.default_social_image_id,
-    ...staticPages.map((p) => p.og_image_id).filter((id): id is string => Boolean(id)),
+    ...staticPages
+      .map((p) => p.og_image_id)
+      .filter((id): id is string => Boolean(id)),
   ].filter((id): id is string => Boolean(id));
 
   const mediaRes = await getMediaMapByIds(mediaIds);

@@ -1,10 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  getPublicBlogPosts,
-  getPublicBlogCategories,
-} from "@/lib/data/blog";
+import { getPublicBlogPosts, getPublicBlogCategories } from "@/lib/data/blog";
 import { BlogCard } from "@/components/public/blog/blog-card";
 import { Pagination } from "@/components/public/pagination";
 import { buildMetadata } from "@/lib/seo/metadata-builder";
@@ -33,7 +30,10 @@ export async function generateMetadata({
 
 async function BlogIndexContent({ searchParams }: BlogIndexPageProps) {
   const resolvedSearchParams = await searchParams;
-  const pageNum = Math.max(1, parseInt(resolvedSearchParams?.page || "1", 10) || 1);
+  const pageNum = Math.max(
+    1,
+    parseInt(resolvedSearchParams?.page || "1", 10) || 1
+  );
 
   const [postsData, categories] = await Promise.all([
     getPublicBlogPosts({ page: pageNum, limit: 9 }),
@@ -51,23 +51,24 @@ async function BlogIndexContent({ searchParams }: BlogIndexPageProps) {
   const gridPosts = featuredPost ? posts.slice(1) : posts;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 space-y-10">
+    <div className="mx-auto max-w-7xl space-y-10 px-4 py-12 sm:px-6 md:py-16 lg:px-8">
       {/* Header */}
-      <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+      <div className="mx-auto max-w-2xl space-y-3 text-center">
+        <h1 className="font-heading text-foreground text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
           Journal &amp; Beauty Guides
         </h1>
         <p className="text-foreground/70 text-sm sm:text-base">
-          Expert beauty advice, bridal makeup preparation, and jewellery styling tips from Nandhini.
+          Expert beauty advice, bridal makeup preparation, and jewellery styling
+          tips from Nandhini.
         </p>
       </div>
 
       {/* Category Pills */}
       {categories.length > 0 && (
-        <div className="flex items-center justify-center gap-2 flex-wrap pb-2 border-b border-border">
+        <div className="border-border flex flex-wrap items-center justify-center gap-2 border-b pb-2">
           <Link
             href="/blog"
-            className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-foreground text-background transition-colors"
+            className="bg-foreground text-background rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors"
           >
             All Articles
           </Link>
@@ -75,7 +76,7 @@ async function BlogIndexContent({ searchParams }: BlogIndexPageProps) {
             <Link
               key={cat.id}
               href={`/blog/category/${cat.slug}`}
-              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-foreground/70 hover:text-foreground bg-page-background border border-border hover:bg-surface transition-colors"
+              className="text-foreground/70 hover:text-foreground bg-page-background border-border hover:bg-surface rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors"
             >
               {cat.name}
             </Link>
@@ -90,14 +91,14 @@ async function BlogIndexContent({ searchParams }: BlogIndexPageProps) {
 
       {/* Posts Grid */}
       {gridPosts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {gridPosts.map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
       ) : !featuredPost ? (
-        <div className="rounded-xl border border-border bg-surface p-16 text-center text-foreground/60 space-y-2">
-          <p className="font-heading text-lg font-medium text-foreground">
+        <div className="border-border bg-surface text-foreground/60 space-y-2 rounded-xl border p-16 text-center">
+          <p className="font-heading text-foreground text-lg font-medium">
             No articles published yet.
           </p>
           <p className="text-xs">
@@ -124,7 +125,7 @@ export default function BlogIndexPage({ searchParams }: BlogIndexPageProps) {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center text-sm text-foreground/40">
+        <div className="text-foreground/40 mx-auto max-w-7xl px-4 py-16 text-center text-sm sm:px-6 lg:px-8">
           Loading articles...
         </div>
       }

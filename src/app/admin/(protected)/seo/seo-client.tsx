@@ -25,14 +25,16 @@ export function SeoAdminClient({
   initialSettings,
   initialMediaMap,
 }: SeoAdminClientProps) {
-  const [activeTab, setActiveTab] = React.useState<"static" | "global">("static");
-  const [staticPages, setStaticPages] = React.useState<StaticPageSeoRowWithMedia[]>(
-    initialStaticPages
+  const [activeTab, setActiveTab] = React.useState<"static" | "global">(
+    "static"
   );
-  const [mediaMap, setMediaMap] = React.useState<Record<string, MediaItem>>(
-    initialMediaMap
+  const [staticPages, setStaticPages] =
+    React.useState<StaticPageSeoRowWithMedia[]>(initialStaticPages);
+  const [mediaMap, setMediaMap] =
+    React.useState<Record<string, MediaItem>>(initialMediaMap);
+  const [editingPage, setEditingPage] = React.useState<StaticPageMeta | null>(
+    null
   );
-  const [editingPage, setEditingPage] = React.useState<StaticPageMeta | null>(null);
 
   const handleMediaMapUpdate = (item: MediaItem) => {
     setMediaMap((prev) => ({ ...prev, [item.id]: item }));
@@ -53,14 +55,14 @@ export function SeoAdminClient({
   return (
     <div className="space-y-6">
       {/* Tab Navigation */}
-      <div className="flex border-b border-border">
+      <div className="border-border flex border-b">
         <button
           type="button"
           onClick={() => setActiveTab("static")}
           className={`border-b-2 px-4 py-2.5 text-sm font-medium transition-colors ${
             activeTab === "static"
               ? "border-foreground text-foreground font-semibold"
-              : "border-transparent text-foreground/60 hover:text-foreground"
+              : "text-foreground/60 hover:text-foreground border-transparent"
           }`}
         >
           Static Pages SEO ({STATIC_PAGES_LIST.length})
@@ -71,7 +73,7 @@ export function SeoAdminClient({
           className={`border-b-2 px-4 py-2.5 text-sm font-medium transition-colors ${
             activeTab === "global"
               ? "border-foreground text-foreground font-semibold"
-              : "border-transparent text-foreground/60 hover:text-foreground"
+              : "text-foreground/60 hover:text-foreground border-transparent"
           }`}
         >
           Global SEO & Discovery Settings
@@ -86,14 +88,15 @@ export function SeoAdminClient({
                 Static Pages SEO Configuration
               </h2>
               <p className="text-foreground/70 text-xs">
-                Manage titles, descriptions, social images, and canonical URLs for every core page. Custom values override generated defaults.
+                Manage titles, descriptions, social images, and canonical URLs
+                for every core page. Custom values override generated defaults.
               </p>
             </div>
           </div>
 
-          <div className="overflow-x-auto rounded-lg border border-border bg-surface">
+          <div className="border-border bg-surface overflow-x-auto rounded-lg border">
             <table className="w-full text-left text-sm">
-              <thead className="border-b border-border bg-page-background/50 text-xs text-foreground/70 uppercase">
+              <thead className="border-border bg-page-background/50 text-foreground/70 border-b text-xs uppercase">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">
                     Page
@@ -110,16 +113,25 @@ export function SeoAdminClient({
                   <th scope="col" className="px-4 py-3 font-semibold">
                     Indexing
                   </th>
-                  <th scope="col" className="px-4 py-3 font-semibold text-right">
+                  <th
+                    scope="col"
+                    className="px-4 py-3 text-right font-semibold"
+                  >
                     Action
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-border divide-y">
                 {STATIC_PAGES_LIST.map((pageMeta) => {
-                  const record = staticPages.find((p) => p.path === pageMeta.path);
-                  const hasCustomTitle = Boolean(record?.title && record.title.trim());
-                  const hasCustomDesc = Boolean(record?.description && record.description.trim());
+                  const record = staticPages.find(
+                    (p) => p.path === pageMeta.path
+                  );
+                  const hasCustomTitle = Boolean(
+                    record?.title && record.title.trim()
+                  );
+                  const hasCustomDesc = Boolean(
+                    record?.description && record.description.trim()
+                  );
                   const isNoindex = Boolean(record?.noindex);
 
                   return (
@@ -128,47 +140,47 @@ export function SeoAdminClient({
                       className="hover:bg-page-background/30 transition-colors"
                     >
                       <td className="px-4 py-3">
-                        <span className="font-medium text-foreground block">
+                        <span className="text-foreground block font-medium">
                           {pageMeta.name}
                         </span>
-                        <span className="text-xs text-foreground/60 block truncate max-w-xs">
+                        <span className="text-foreground/60 block max-w-xs truncate text-xs">
                           {pageMeta.description}
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <code className="text-xs font-mono bg-page-background px-1.5 py-0.5 rounded border border-border text-foreground/80">
+                        <code className="bg-page-background border-border text-foreground/80 rounded border px-1.5 py-0.5 font-mono text-xs">
                           {pageMeta.path}
                         </code>
                       </td>
                       <td className="px-4 py-3">
                         {hasCustomTitle ? (
-                          <span className="inline-flex items-center gap-1 rounded bg-green-100 dark:bg-green-950/60 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-300">
+                          <span className="inline-flex items-center gap-1 rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-950/60 dark:text-green-300">
                             Custom set
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded bg-muted/30 px-2 py-0.5 text-xs text-foreground/60">
+                          <span className="bg-muted/30 text-foreground/60 inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs">
                             Generated default
                           </span>
                         )}
                       </td>
                       <td className="px-4 py-3">
                         {hasCustomDesc ? (
-                          <span className="inline-flex items-center gap-1 rounded bg-green-100 dark:bg-green-950/60 px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-300">
+                          <span className="inline-flex items-center gap-1 rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-950/60 dark:text-green-300">
                             Custom set
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 rounded bg-muted/30 px-2 py-0.5 text-xs text-foreground/60">
+                          <span className="bg-muted/30 text-foreground/60 inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs">
                             Generated default
                           </span>
                         )}
                       </td>
                       <td className="px-4 py-3">
                         {isNoindex ? (
-                          <span className="inline-flex items-center rounded bg-red-100 dark:bg-red-950/60 px-2 py-0.5 text-xs font-medium text-red-700 dark:text-red-300">
+                          <span className="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950/60 dark:text-red-300">
                             noindex
                           </span>
                         ) : (
-                          <span className="inline-flex items-center rounded bg-blue-100 dark:bg-blue-950/60 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300">
+                          <span className="inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-950/60 dark:text-blue-300">
                             index
                           </span>
                         )}
@@ -191,7 +203,7 @@ export function SeoAdminClient({
           </div>
         </div>
       ) : (
-        <div className="rounded-lg border border-border bg-surface p-6 shadow-xs max-w-4xl">
+        <div className="border-border bg-surface max-w-4xl rounded-lg border p-6 shadow-xs">
           <SeoSettingsForm
             initialValues={initialSettings.seo}
             mediaMap={mediaMap}
@@ -204,7 +216,9 @@ export function SeoAdminClient({
       {editingPage && (
         <StaticPageEditDialog
           pageMeta={editingPage}
-          existingRecord={staticPages.find((p) => p.path === editingPage.path) || null}
+          existingRecord={
+            staticPages.find((p) => p.path === editingPage.path) || null
+          }
           onClose={() => setEditingPage(null)}
           onSaved={(row) => {
             handlePageSaved(row);
@@ -233,14 +247,18 @@ function StaticPageEditDialog({
   onMediaUpdate,
 }: StaticPageEditDialogProps) {
   const [seoTitle, setSeoTitle] = React.useState(existingRecord?.title || "");
-  const [seoDescription, setSeoDescription] = React.useState(existingRecord?.description || "");
+  const [seoDescription, setSeoDescription] = React.useState(
+    existingRecord?.description || ""
+  );
   const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(
     existingRecord?.social_image || null
   );
   const [canonicalUrl, setCanonicalUrl] = React.useState(
     existingRecord?.canonical_url || ""
   );
-  const [noindex, setNoindex] = React.useState(Boolean(existingRecord?.noindex));
+  const [noindex, setNoindex] = React.useState(
+    Boolean(existingRecord?.noindex)
+  );
   const [focusKeyword, setFocusKeyword] = React.useState(
     existingRecord?.focus_keyword || ""
   );
@@ -285,14 +303,14 @@ function StaticPageEditDialog({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 overflow-y-auto">
-      <div className="w-full max-w-4xl my-8 rounded-lg border border-border bg-surface p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-border pb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
+      <div className="border-border bg-surface my-8 max-h-[90vh] w-full max-w-4xl space-y-6 overflow-y-auto rounded-lg border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
           <div>
-            <h2 className="font-heading text-xl font-semibold text-foreground">
+            <h2 className="font-heading text-foreground text-xl font-semibold">
               Edit SEO: {pageMeta.name}
             </h2>
-            <p className="text-xs text-foreground/60 mt-0.5">
+            <p className="text-foreground/60 mt-0.5 text-xs">
               Path: <code className="font-mono">{pageMeta.path}</code>
             </p>
           </div>
@@ -333,7 +351,7 @@ function StaticPageEditDialog({
             }}
           />
 
-          <div className="flex items-center justify-end gap-3 border-t border-border pt-4">
+          <div className="border-border flex items-center justify-end gap-3 border-t pt-4">
             <Button
               type="button"
               variant="outline"

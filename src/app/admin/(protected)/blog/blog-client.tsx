@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import * as React from "react";
@@ -29,7 +28,9 @@ export function BlogClient({
   initialCategories,
   defaultAuthorName,
 }: BlogClientProps) {
-  const [activeTab, setActiveTab] = React.useState<"posts" | "categories">("posts");
+  const [activeTab, setActiveTab] = React.useState<"posts" | "categories">(
+    "posts"
+  );
 
   // Posts State
   const [posts, setPosts] = React.useState<BlogPostWithDetails[]>(initialPosts);
@@ -37,17 +38,19 @@ export function BlogClient({
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
   const [categoryFilter, setCategoryFilter] = React.useState<string>("all");
-  const [page, setPage] = React.useState(1);
   const [loadingPosts, setLoadingPosts] = React.useState(false);
 
   // Categories State
-  const [categories, setCategories] = React.useState<BlogCategory[]>(initialCategories);
+  const [categories, setCategories] =
+    React.useState<BlogCategory[]>(initialCategories);
 
   // Dialogs State
-  const [editingPost, setEditingPost] = React.useState<BlogPostWithDetails | null>(null);
+  const [editingPost, setEditingPost] =
+    React.useState<BlogPostWithDetails | null>(null);
   const [postDialogOpen, setPostDialogOpen] = React.useState(false);
 
-  const [editingCategory, setEditingCategory] = React.useState<BlogCategory | null>(null);
+  const [editingCategory, setEditingCategory] =
+    React.useState<BlogCategory | null>(null);
   const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
 
   // Refresh posts list
@@ -58,7 +61,7 @@ export function BlogClient({
         search,
         status: statusFilter,
         categoryId: categoryFilter,
-        page,
+        page: 1,
         pageSize: 20,
       });
       if (res.success) {
@@ -68,7 +71,7 @@ export function BlogClient({
     } finally {
       setLoadingPosts(false);
     }
-  }, [search, statusFilter, categoryFilter, page]);
+  }, [search, statusFilter, categoryFilter]);
 
   // Refresh categories list
   const refreshCategories = React.useCallback(async () => {
@@ -102,7 +105,10 @@ export function BlogClient({
   };
 
   // Handle category reordering
-  const handleMoveCategory = async (index: number, direction: "up" | "down") => {
+  const handleMoveCategory = async (
+    index: number,
+    direction: "up" | "down"
+  ) => {
     const targetIndex = direction === "up" ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= categories.length) return;
 
@@ -122,14 +128,14 @@ export function BlogClient({
   return (
     <div className="space-y-6">
       {/* Tab Switcher */}
-      <div className="flex border-b border-border">
+      <div className="border-border flex border-b">
         <button
           type="button"
           onClick={() => setActiveTab("posts")}
-          className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+          className={`border-b-2 px-4 py-2.5 text-sm font-medium transition-colors ${
             activeTab === "posts"
               ? "border-foreground text-foreground"
-              : "border-transparent text-foreground/60 hover:text-foreground"
+              : "text-foreground/60 hover:text-foreground border-transparent"
           }`}
         >
           Blog Posts ({totalPosts})
@@ -137,10 +143,10 @@ export function BlogClient({
         <button
           type="button"
           onClick={() => setActiveTab("categories")}
-          className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+          className={`border-b-2 px-4 py-2.5 text-sm font-medium transition-colors ${
             activeTab === "categories"
               ? "border-foreground text-foreground"
-              : "border-transparent text-foreground/60 hover:text-foreground"
+              : "text-foreground/60 hover:text-foreground border-transparent"
           }`}
         >
           Categories ({categories.length})
@@ -151,7 +157,7 @@ export function BlogClient({
         <div className="space-y-4">
           {/* Filters & Actions Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-3 flex-1 max-w-2xl">
+            <div className="flex max-w-2xl flex-1 flex-wrap items-center gap-3">
               <Input
                 placeholder="Search posts..."
                 value={search}
@@ -162,7 +168,7 @@ export function BlogClient({
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="border-input bg-page-background text-foreground text-xs rounded-md border px-3 py-2"
+                className="border-input bg-page-background text-foreground rounded-md border px-3 py-2 text-xs"
               >
                 <option value="all">All Statuses</option>
                 <option value="published">Published</option>
@@ -172,7 +178,7 @@ export function BlogClient({
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="border-input bg-page-background text-foreground text-xs rounded-md border px-3 py-2"
+                className="border-input bg-page-background text-foreground rounded-md border px-3 py-2 text-xs"
               >
                 <option value="all">All Categories</option>
                 {categories.map((c) => (
@@ -194,30 +200,30 @@ export function BlogClient({
           </div>
 
           {/* Posts Table */}
-          <div className="rounded-lg border border-border bg-surface overflow-hidden">
+          <div className="border-border bg-surface overflow-hidden rounded-lg border">
             {posts.length === 0 ? (
-              <div className="p-12 text-center text-foreground/60 text-sm">
+              <div className="text-foreground/60 p-12 text-center text-sm">
                 {loadingPosts ? "Loading posts..." : "No blog posts found."}
               </div>
             ) : (
-              <div className="divide-y divide-border">
+              <div className="divide-border divide-y">
                 {posts.map((post) => (
                   <div
                     key={post.id}
-                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-page-background/50 transition-colors"
+                    className="hover:bg-page-background/50 flex flex-col justify-between gap-4 p-4 transition-colors sm:flex-row sm:items-center"
                   >
-                    <div className="space-y-1 min-w-0 flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-medium text-foreground text-sm">
+                    <div className="min-w-0 flex-1 space-y-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-foreground text-sm font-medium">
                           {post.title}
                         </span>
                         {post.is_featured && (
-                          <span className="text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300">
+                          <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-amber-900 uppercase dark:bg-amber-950/60 dark:text-amber-300">
                             ★ Featured
                           </span>
                         )}
                         <span
-                          className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase ${
                             post.status === "published"
                               ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"
                               : "bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
@@ -226,17 +232,17 @@ export function BlogClient({
                           {post.status}
                         </span>
                         {post.category && (
-                          <span className="text-xs text-foreground/60">
+                          <span className="text-foreground/60 text-xs">
                             in {post.category.name}
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-foreground/60 line-clamp-1">
+                      <p className="text-foreground/60 line-clamp-1 text-xs">
                         {post.excerpt || "No excerpt provided."}
                       </p>
 
-                      <div className="text-[11px] text-foreground/50 flex items-center gap-3">
+                      <div className="text-foreground/50 flex items-center gap-3 text-[11px]">
                         <span>
                           {post.published_at
                             ? `Published ${new Date(post.published_at).toLocaleDateString("en-IN")}`
@@ -249,11 +255,11 @@ export function BlogClient({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 flex-none">
+                    <div className="flex flex-none items-center gap-2">
                       <Link
                         href={`/admin/blog/preview/${post.id}`}
                         target="_blank"
-                        className="text-xs px-2.5 py-1.5 rounded border border-border text-foreground hover:bg-surface font-medium"
+                        className="border-border text-foreground hover:bg-surface rounded border px-2.5 py-1.5 text-xs font-medium"
                       >
                         Preview
                       </Link>
@@ -276,9 +282,10 @@ export function BlogClient({
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <p className="text-xs text-foreground/60">
-              Manage categories used to organize blog articles. Deleting a category is blocked if articles are assigned to it.
+          <div className="flex items-center justify-between">
+            <p className="text-foreground/60 text-xs">
+              Manage categories used to organize blog articles. Deleting a
+              category is blocked if articles are assigned to it.
             </p>
             <Button
               onClick={() => {
@@ -290,29 +297,29 @@ export function BlogClient({
             </Button>
           </div>
 
-          <div className="rounded-lg border border-border bg-surface overflow-hidden">
+          <div className="border-border bg-surface overflow-hidden rounded-lg border">
             {categories.length === 0 ? (
-              <div className="p-12 text-center text-foreground/60 text-sm">
+              <div className="text-foreground/60 p-12 text-center text-sm">
                 No categories created yet.
               </div>
             ) : (
-              <div className="divide-y divide-border">
+              <div className="divide-border divide-y">
                 {categories.map((cat, index) => (
                   <div
                     key={cat.id}
-                    className="p-4 flex items-center justify-between gap-4"
+                    className="flex items-center justify-between gap-4 p-4"
                   >
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-foreground text-sm font-medium">
                           {cat.name}
                         </span>
-                        <span className="text-xs text-foreground/50">
+                        <span className="text-foreground/50 text-xs">
                           /{cat.slug}
                         </span>
                       </div>
                       {cat.description && (
-                        <p className="text-xs text-foreground/60 mt-0.5">
+                        <p className="text-foreground/60 mt-0.5 text-xs">
                           {cat.description}
                         </p>
                       )}
@@ -323,7 +330,7 @@ export function BlogClient({
                         type="button"
                         onClick={() => handleMoveCategory(index, "up")}
                         disabled={index === 0}
-                        className="p-1 rounded text-foreground/60 hover:text-foreground disabled:opacity-20"
+                        className="text-foreground/60 hover:text-foreground rounded p-1 disabled:opacity-20"
                         title="Move Up"
                       >
                         ↑
@@ -332,7 +339,7 @@ export function BlogClient({
                         type="button"
                         onClick={() => handleMoveCategory(index, "down")}
                         disabled={index === categories.length - 1}
-                        className="p-1 rounded text-foreground/60 hover:text-foreground disabled:opacity-20"
+                        className="text-foreground/60 hover:text-foreground rounded p-1 disabled:opacity-20"
                         title="Move Down"
                       >
                         ↓

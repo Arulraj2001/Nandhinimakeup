@@ -11,7 +11,8 @@ import { revalidateCacheTag } from "@/lib/utils/revalidate";
 import { isEmptyRichText, type RichTextDoc } from "@/lib/utils/rich-text";
 import type { Database, Json } from "@/types/database";
 
-export type LegalPageRecord = Database["public"]["Tables"]["legal_pages"]["Row"];
+export type LegalPageRecord =
+  Database["public"]["Tables"]["legal_pages"]["Row"];
 
 const legalPageSlugEnum = z.enum([
   "privacy-policy",
@@ -33,7 +34,9 @@ export type UpdateLegalPageInput = z.infer<typeof updateLegalPageSchema>;
 /**
  * Returns all three legal pages for admin management.
  */
-export async function getAdminLegalPages(): Promise<ActionResult<LegalPageRecord[]>> {
+export async function getAdminLegalPages(): Promise<
+  ActionResult<LegalPageRecord[]>
+> {
   const auth = await verifyAdmin();
   if (!auth.ok) {
     return actionError(auth.error);

@@ -30,12 +30,9 @@ export const saveRedirectSchema = z
       ),
     status_code: z.union([z.literal(301), z.literal(302)]),
   })
-  .refine(
-    (data) => data.from_path !== data.to_path,
-    {
-      message: "Source and target paths cannot be identical (self-redirect)",
-      path: ["to_path"],
-    }
-  );
+  .refine((data) => data.from_path !== data.to_path, {
+    message: "Source and target paths cannot be identical (self-redirect)",
+    path: ["to_path"],
+  });
 
 export type SaveRedirectInput = z.infer<typeof saveRedirectSchema>;

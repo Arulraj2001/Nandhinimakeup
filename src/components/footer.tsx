@@ -173,7 +173,7 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
         </div>
 
         {legalPages.length > 0 && (
-          <div className="border-border border-t mt-8 pt-4 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs">
+          <div className="border-border mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 border-t pt-4 text-xs">
             {legalPages.map((lp) => (
               <Link
                 key={lp.slug}

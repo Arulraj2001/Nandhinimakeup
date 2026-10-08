@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getPublicProductCategoryBySlug } from "@/lib/data/product-categories";
 import { getPublicProducts } from "@/lib/data/products";
-import { getPublicSiteSettings } from "@/lib/data/settings";
 import { ProductCard } from "@/components/public/product-card";
 import { Pagination } from "@/components/public/pagination";
 import { EmptyState } from "@/components/public/empty-state";
@@ -60,8 +59,7 @@ export async function generateMetadata({
     generated: {
       title: `${category.name} Jewellery`,
       description:
-        category.description ||
-        `Browse handcrafted ${category.name} pieces.`,
+        category.description || `Browse handcrafted ${category.name} pieces.`,
     },
   });
 }

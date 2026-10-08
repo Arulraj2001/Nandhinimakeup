@@ -233,7 +233,7 @@ async function ProductDetailContent({
             </div>
 
             {/* Ordering & Add to Cart */}
-            <div className="border-border border-t pt-6 space-y-4">
+            <div className="border-border space-y-4 border-t pt-6">
               <AddToCart
                 productId={product.id}
                 productName={product.name}

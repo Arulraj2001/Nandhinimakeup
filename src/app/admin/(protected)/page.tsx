@@ -13,8 +13,7 @@ const STATUS_CONFIG: Record<
   },
   payment_submitted: {
     label: "Payment Submitted",
-    badgeClass:
-      "bg-blue-600 text-white font-semibold",
+    badgeClass: "bg-blue-600 text-white font-semibold",
   },
   paid: {
     label: "Paid",
@@ -84,12 +83,12 @@ export default async function AdminDashboardPage() {
   const recentOrders = recentOrdersRes.data ?? [];
 
   return (
-    <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl space-y-8 p-6 md:p-8">
       <div>
         <h1 className="font-heading text-foreground text-2xl font-semibold sm:text-3xl">
           Admin Dashboard
         </h1>
-        <p className="text-foreground/70 text-xs sm:text-sm mt-1">
+        <p className="text-foreground/70 mt-1 text-xs sm:text-sm">
           Overview of customer orders requiring action.
         </p>
       </div>
@@ -99,102 +98,104 @@ export default async function AdminDashboardPage() {
         {/* Orders Awaiting Verification */}
         <Link
           href="/admin/orders?status=payment_submitted"
-          className="border border-border bg-surface hover:border-foreground/40 rounded-lg p-5 transition-colors block"
+          className="border-border bg-surface hover:border-foreground/40 block rounded-lg border p-5 transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
+            <span className="text-foreground/70 text-xs font-semibold tracking-wider uppercase">
               Awaiting Verification
             </span>
             <span className="h-2 w-2 rounded-full bg-blue-600" />
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-bold text-foreground">
+            <span className="font-heading text-foreground text-3xl font-bold">
               {countVerification}
             </span>
-            <span className="text-xs text-foreground/60">action needed</span>
+            <span className="text-foreground/60 text-xs">action needed</span>
           </div>
         </Link>
 
         {/* Orders Awaiting Payment */}
         <Link
           href="/admin/orders?status=pending_payment"
-          className="border border-border bg-surface hover:border-foreground/40 rounded-lg p-5 transition-colors block"
+          className="border-border bg-surface hover:border-foreground/40 block rounded-lg border p-5 transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
+            <span className="text-foreground/70 text-xs font-semibold tracking-wider uppercase">
               Awaiting Payment
             </span>
             <span className="h-2 w-2 rounded-full bg-amber-500" />
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-bold text-foreground">
+            <span className="font-heading text-foreground text-3xl font-bold">
               {countAwaitingPayment}
             </span>
-            <span className="text-xs text-foreground/60">pending UPI</span>
+            <span className="text-foreground/60 text-xs">pending UPI</span>
           </div>
         </Link>
 
         {/* Paid Orders to Pack */}
         <Link
           href="/admin/orders?status=paid"
-          className="border border-border bg-surface hover:border-foreground/40 rounded-lg p-5 transition-colors block"
+          className="border-border bg-surface hover:border-foreground/40 block rounded-lg border p-5 transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
+            <span className="text-foreground/70 text-xs font-semibold tracking-wider uppercase">
               Paid to Pack
             </span>
             <span className="h-2 w-2 rounded-full bg-emerald-600" />
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-bold text-foreground">
+            <span className="font-heading text-foreground text-3xl font-bold">
               {countPaidToPack}
             </span>
-            <span className="text-xs text-foreground/60">ready for packing</span>
+            <span className="text-foreground/60 text-xs">
+              ready for packing
+            </span>
           </div>
         </Link>
 
         {/* Orders Shipped */}
         <Link
           href="/admin/orders?status=shipped"
-          className="border border-border bg-surface hover:border-foreground/40 rounded-lg p-5 transition-colors block"
+          className="border-border bg-surface hover:border-foreground/40 block rounded-lg border p-5 transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-foreground/70">
+            <span className="text-foreground/70 text-xs font-semibold tracking-wider uppercase">
               Orders Shipped
             </span>
             <span className="h-2 w-2 rounded-full bg-purple-600" />
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-bold text-foreground">
+            <span className="font-heading text-foreground text-3xl font-bold">
               {countShipped}
             </span>
-            <span className="text-xs text-foreground/60">in transit</span>
+            <span className="text-foreground/60 text-xs">in transit</span>
           </div>
         </Link>
       </div>
 
       {/* Five Most Recent Orders */}
-      <div className="border border-border rounded-lg bg-surface p-6 space-y-4">
-        <div className="flex items-center justify-between border-b border-border pb-3">
+      <div className="border-border bg-surface space-y-4 rounded-lg border p-6">
+        <div className="border-border flex items-center justify-between border-b pb-3">
           <h2 className="font-heading text-foreground text-lg font-semibold">
             Recent Orders
           </h2>
           <Link
             href="/admin/orders"
-            className="text-foreground hover:underline text-xs font-semibold uppercase tracking-wider"
+            className="text-foreground text-xs font-semibold tracking-wider uppercase hover:underline"
           >
             View All Orders →
           </Link>
         </div>
 
         {recentOrders.length === 0 ? (
-          <p className="text-foreground/60 text-xs py-6 text-center">
+          <p className="text-foreground/60 py-6 text-center text-xs">
             No orders placed yet.
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-page-background border-b border-border text-foreground/70 uppercase text-[11px] font-semibold tracking-wider">
+              <thead className="bg-page-background border-border text-foreground/70 border-b text-[11px] font-semibold tracking-wider uppercase">
                 <tr>
                   <th className="px-4 py-2.5">Order #</th>
                   <th className="px-4 py-2.5">Date</th>
@@ -203,13 +204,14 @@ export default async function AdminDashboardPage() {
                   <th className="px-4 py-2.5 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-border divide-y">
                 {recentOrders.map((ord) => {
-                  const statusConf =
-                    STATUS_CONFIG[ord.status as OrderStatus] || {
-                      label: ord.status,
-                      badgeClass: "bg-muted text-muted-foreground",
-                    };
+                  const statusConf = STATUS_CONFIG[
+                    ord.status as OrderStatus
+                  ] || {
+                    label: ord.status,
+                    badgeClass: "bg-muted text-muted-foreground",
+                  };
                   const dateStr = new Date(ord.created_at).toLocaleDateString(
                     "en-IN",
                     {
@@ -225,7 +227,7 @@ export default async function AdminDashboardPage() {
                       key={ord.id}
                       className="hover:bg-page-background/50 transition-colors"
                     >
-                      <td className="px-4 py-3 font-mono font-semibold text-foreground">
+                      <td className="text-foreground px-4 py-3 font-mono font-semibold">
                         <Link
                           href={`/admin/orders/${ord.id}`}
                           className="hover:underline"
@@ -233,10 +235,10 @@ export default async function AdminDashboardPage() {
                           {ord.order_number}
                         </Link>
                       </td>
-                      <td className="px-4 py-3 text-foreground/80 whitespace-nowrap">
+                      <td className="text-foreground/80 px-4 py-3 whitespace-nowrap">
                         {dateStr}
                       </td>
-                      <td className="px-4 py-3 font-medium text-foreground">
+                      <td className="text-foreground px-4 py-3 font-medium">
                         {ord.customer_name}
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
@@ -249,7 +251,7 @@ export default async function AdminDashboardPage() {
                       <td className="px-4 py-3 text-right">
                         <Link
                           href={`/admin/orders/${ord.id}`}
-                          className="text-foreground hover:underline font-semibold text-xs"
+                          className="text-foreground text-xs font-semibold hover:underline"
                         >
                           Details →
                         </Link>

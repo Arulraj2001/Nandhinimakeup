@@ -19,7 +19,9 @@ import { normalizeRedirectPath } from "@/lib/data/redirects";
 /**
  * Returns all redirects for admin management.
  */
-export async function getAdminRedirects(): Promise<ActionResult<RedirectRow[]>> {
+export async function getAdminRedirects(): Promise<
+  ActionResult<RedirectRow[]>
+> {
   const auth = await verifyAdmin();
   if (!auth.ok) {
     return actionError(auth.error);
@@ -57,7 +59,9 @@ export async function saveAdminRedirect(
 
   const parsed = saveRedirectSchema.safeParse(input);
   if (!parsed.success) {
-    return actionError(parsed.error.issues[0]?.message || "Invalid redirect data");
+    return actionError(
+      parsed.error.issues[0]?.message || "Invalid redirect data"
+    );
   }
 
   const fromPath = normalizeRedirectPath(parsed.data.from_path);
@@ -68,7 +72,9 @@ export async function saveAdminRedirect(
 
   // 1. Self redirect check
   if (fromPath === toPath) {
-    return actionError("Source and target paths cannot be identical (self-redirect)");
+    return actionError(
+      "Source and target paths cannot be identical (self-redirect)"
+    );
   }
 
   // 2. Admin path check
@@ -86,7 +92,9 @@ export async function saveAdminRedirect(
     .maybeSingle();
 
   if (existingFrom && existingFrom.id !== parsed.data.id) {
-    return actionError(`A redirect already exists for source path "${fromPath}".`);
+    return actionError(
+      `A redirect already exists for source path "${fromPath}".`
+    );
   }
 
   // 4. Chain prevention: target path cannot be an existing redirect source
@@ -97,7 +105,10 @@ export async function saveAdminRedirect(
       .eq("from_path", toPath)
       .maybeSingle();
 
-    if (existingTargetRedirect && existingTargetRedirect.from_path !== fromPath) {
+    if (
+      existingTargetRedirect &&
+      existingTargetRedirect.from_path !== fromPath
+    ) {
       return actionError(
         `Cannot create chained redirect: target "${toPath}" is already redirected to "${existingTargetRedirect.to_path}". Please redirect directly to the final destination.`
       );
@@ -123,7 +134,9 @@ export async function saveAdminRedirect(
     const visited = new Set<string>([fromPath]);
     while (current && redirectMap.has(current)) {
       if (visited.has(current)) {
-        return actionError("Cannot save redirect: this configuration would create an infinite redirect loop.");
+        return actionError(
+          "Cannot save redirect: this configuration would create an infinite redirect loop."
+        );
       }
       visited.add(current);
       current = redirectMap.get(current)!;

@@ -45,7 +45,9 @@ export function CategoryDialog({
   const [seoSocialImageId, setSeoSocialImageId] = React.useState<string | null>(
     (category as any)?.seo_social_image_id || null
   );
-  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(
+    null
+  );
   const [noindex, setNoindex] = React.useState<boolean>(
     (category as any)?.noindex ?? false
   );
@@ -134,8 +136,8 @@ export function CategoryDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg border border-border bg-surface p-6 shadow-xl space-y-4">
-        <h2 className="font-heading text-lg font-semibold text-foreground">
+      <div className="border-border bg-surface max-h-[90vh] w-full max-w-2xl space-y-4 overflow-y-auto rounded-lg border p-6 shadow-xl">
+        <h2 className="font-heading text-foreground text-lg font-semibold">
           {category ? "Edit Category" : "New Category"}
         </h2>
 
@@ -214,7 +216,11 @@ export function CategoryDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>
-              {isSaving ? "Saving..." : category ? "Update Category" : "Create Category"}
+              {isSaving
+                ? "Saving..."
+                : category
+                  ? "Update Category"
+                  : "Create Category"}
             </Button>
           </div>
         </form>

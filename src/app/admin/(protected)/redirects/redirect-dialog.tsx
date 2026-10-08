@@ -56,7 +56,9 @@ export function RedirectDialog({
 
     const clientValidation = saveRedirectSchema.safeParse(payload);
     if (!clientValidation.success) {
-      toast.error(clientValidation.error.issues[0]?.message || "Validation failed");
+      toast.error(
+        clientValidation.error.issues[0]?.message || "Validation failed"
+      );
       return;
     }
 
@@ -82,14 +84,14 @@ export function RedirectDialog({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 overflow-y-auto">
-      <div className="w-full max-w-lg my-8 rounded-lg border border-border bg-surface p-6 shadow-2xl space-y-6">
-        <div className="flex items-center justify-between border-b border-border pb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
+      <div className="border-border bg-surface my-8 w-full max-w-lg space-y-6 rounded-lg border p-6 shadow-2xl">
+        <div className="border-border flex items-center justify-between border-b pb-4">
           <div>
-            <h2 className="font-heading text-lg font-semibold text-foreground">
+            <h2 className="font-heading text-foreground text-lg font-semibold">
               {redirectItem ? "Edit Redirect" : "Create New Redirect"}
             </h2>
-            <p className="text-xs text-foreground/60 mt-0.5">
+            <p className="text-foreground/60 mt-0.5 text-xs">
               Specify the incoming request path and its destination target.
             </p>
           </div>
@@ -118,8 +120,9 @@ export function RedirectDialog({
               className="font-mono text-sm"
               required
             />
-            <p className="text-[11px] text-foreground/60">
-              Must start with a slash (<code>/</code>). Cannot be under <code>/admin</code>.
+            <p className="text-foreground/60 text-[11px]">
+              Must start with a slash (<code>/</code>). Cannot be under{" "}
+              <code>/admin</code>.
             </p>
           </div>
 
@@ -136,8 +139,9 @@ export function RedirectDialog({
               className="font-mono text-sm"
               required
             />
-            <p className="text-[11px] text-foreground/60">
-              Relative path (e.g. <code>/services/bridal</code>) or absolute <code>https://</code> URL.
+            <p className="text-foreground/60 text-[11px]">
+              Relative path (e.g. <code>/services/bridal</code>) or absolute{" "}
+              <code>https://</code> URL.
             </p>
           </div>
 
@@ -160,9 +164,12 @@ export function RedirectDialog({
                   className="mt-0.5"
                 />
                 <div>
-                  <div className="font-semibold text-foreground">301 Permanent</div>
-                  <div className="text-[11px] text-foreground/60">
-                    Transfers SEO ranking equity. Recommended for moved or renamed pages.
+                  <div className="text-foreground font-semibold">
+                    301 Permanent
+                  </div>
+                  <div className="text-foreground/60 text-[11px]">
+                    Transfers SEO ranking equity. Recommended for moved or
+                    renamed pages.
                   </div>
                 </div>
               </label>
@@ -182,9 +189,12 @@ export function RedirectDialog({
                   className="mt-0.5"
                 />
                 <div>
-                  <div className="font-semibold text-foreground">302 Temporary</div>
-                  <div className="text-[11px] text-foreground/60">
-                    Does not transfer ranking equity. Use for seasonal or temporary redirects.
+                  <div className="text-foreground font-semibold">
+                    302 Temporary
+                  </div>
+                  <div className="text-foreground/60 text-[11px]">
+                    Does not transfer ranking equity. Use for seasonal or
+                    temporary redirects.
                   </div>
                 </div>
               </label>
@@ -193,23 +203,25 @@ export function RedirectDialog({
 
           {/* Rule Preview */}
           {fromPath && toPath && (
-            <div className="rounded border border-border/80 bg-page-background/50 p-3 text-xs font-mono">
-              <div className="text-[10px] uppercase font-sans text-foreground/50 mb-1">
+            <div className="border-border/80 bg-page-background/50 rounded border p-3 font-mono text-xs">
+              <div className="text-foreground/50 mb-1 font-sans text-[10px] uppercase">
                 Rule Preview
               </div>
-              <div className="flex items-center gap-2 text-foreground/90 overflow-x-auto">
-                <span className="text-blue-600 dark:text-blue-400 font-semibold">
+              <div className="text-foreground/90 flex items-center gap-2 overflow-x-auto">
+                <span className="font-semibold text-blue-600 dark:text-blue-400">
                   {statusCode}
                 </span>
                 <span>{fromPath}</span>
                 <span className="text-foreground/40">→</span>
-                <span className="text-green-600 dark:text-green-400">{toPath}</span>
+                <span className="text-green-600 dark:text-green-400">
+                  {toPath}
+                </span>
               </div>
             </div>
           )}
 
           {/* Buttons */}
-          <div className="flex items-center justify-end gap-3 border-t border-border pt-4">
+          <div className="border-border flex items-center justify-end gap-3 border-t pt-4">
             <Button
               type="button"
               variant="outline"
@@ -222,8 +234,8 @@ export function RedirectDialog({
               {isSaving
                 ? "Saving..."
                 : redirectItem
-                ? "Save Changes"
-                : "Create Redirect"}
+                  ? "Save Changes"
+                  : "Create Redirect"}
             </Button>
           </div>
         </form>

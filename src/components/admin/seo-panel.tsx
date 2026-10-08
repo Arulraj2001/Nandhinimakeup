@@ -5,7 +5,10 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/admin/form-helpers";
-import { MediaPicker, getPublicMediaUrl } from "@/components/admin/media-picker";
+import {
+  MediaPicker,
+  getPublicMediaUrl,
+} from "@/components/admin/media-picker";
 import type { MediaItem } from "@/lib/actions/media";
 
 export interface SeoPanelContext {
@@ -67,10 +70,11 @@ export function SeoPanel({
   context,
 }: SeoPanelProps) {
   const [pickerOpen, setPickerOpen] = React.useState(false);
-  const [previewDevice, setPreviewDevice] = React.useState<"desktop" | "mobile">("desktop");
+  const [previewDevice, setPreviewDevice] = React.useState<
+    "desktop" | "mobile"
+  >("desktop");
 
   const siteName = context.siteName || "Nandhini Makeup & Jewellery";
-  const siteUrl = context.siteUrl || "https://nandhinimakeup.com";
   const pathPrefix = context.pathPrefix || "";
   const cleanSlug = context.slug.trim().replace(/^\//, "");
   const fullPath = pathPrefix
@@ -110,7 +114,11 @@ export function SeoPanel({
   // Deterministic Checklist Calculation
   const kw = focusKeyword.trim().toLowerCase();
   const titleToCheck = (seoTitle || context.generatedTitle || "").toLowerCase();
-  const descToCheck = (seoDescription || context.generatedDescription || "").toLowerCase();
+  const descToCheck = (
+    seoDescription ||
+    context.generatedDescription ||
+    ""
+  ).toLowerCase();
   const slugToCheck = cleanSlug.toLowerCase();
   const firstParaToCheck = (context.firstParagraphText || "").toLowerCase();
 
@@ -119,20 +127,24 @@ export function SeoPanel({
     /^[a-z0-9-]+$/.test(cleanSlug) &&
     cleanSlug.length <= 60;
 
-  const hasImage = Boolean(socialImageMedia || context.featuredImage?.storagePath);
+  const hasImage = Boolean(
+    socialImageMedia || context.featuredImage?.storagePath
+  );
   const hasImageAlt = hasImage && Boolean(effectiveImageAlt.trim());
 
   const checklist = [
     {
       id: "title-length",
       label: "Title length in range (30 - 60 chars)",
-      passed: isTitleIdeal || (titleLen === 0 && Boolean(context.generatedTitle)),
+      passed:
+        isTitleIdeal || (titleLen === 0 && Boolean(context.generatedTitle)),
       note: `${titleLen} / 70 characters (ideal 30-60)`,
     },
     {
       id: "desc-length",
       label: "Description length in range (70 - 160 chars)",
-      passed: isDescIdeal || (descLen === 0 && Boolean(context.generatedDescription)),
+      passed:
+        isDescIdeal || (descLen === 0 && Boolean(context.generatedDescription)),
       note: `${descLen} / 200 characters (ideal 70-160)`,
     },
     {
@@ -161,25 +173,33 @@ export function SeoPanel({
         id: "kw-title",
         label: `Focus keyword "${kw}" appears in Title`,
         passed: titleToCheck.includes(kw),
-        note: titleToCheck.includes(kw) ? "Found in title" : "Not found in title",
+        note: titleToCheck.includes(kw)
+          ? "Found in title"
+          : "Not found in title",
       },
       {
         id: "kw-desc",
         label: `Focus keyword "${kw}" appears in Description`,
         passed: descToCheck.includes(kw),
-        note: descToCheck.includes(kw) ? "Found in description" : "Not found in description",
+        note: descToCheck.includes(kw)
+          ? "Found in description"
+          : "Not found in description",
       },
       {
         id: "kw-slug",
         label: `Focus keyword appears in URL Slug`,
         passed: slugToCheck.includes(kw.replace(/\s+/g, "-")),
-        note: slugToCheck.includes(kw.replace(/\s+/g, "-")) ? "Found in slug" : "Not found in slug",
+        note: slugToCheck.includes(kw.replace(/\s+/g, "-"))
+          ? "Found in slug"
+          : "Not found in slug",
       },
       {
         id: "kw-first-para",
         label: `Focus keyword appears in first paragraph`,
         passed: firstParaToCheck.includes(kw),
-        note: firstParaToCheck.includes(kw) ? "Found in first paragraph" : "Not found in intro text",
+        note: firstParaToCheck.includes(kw)
+          ? "Found in first paragraph"
+          : "Not found in intro text",
       }
     );
   }
@@ -197,24 +217,27 @@ export function SeoPanel({
         id: "blog-internal-links",
         label: "Contains at least one internal link",
         passed: Boolean(context.hasInternalLink),
-        note: context.hasInternalLink ? "Internal link present" : "No internal links detected",
+        note: context.hasInternalLink
+          ? "Internal link present"
+          : "No internal links detected",
       }
     );
   }
 
   return (
-    <div className="space-y-6 rounded-xl border border-border bg-card p-4 sm:p-6 text-card-foreground">
-      <div className="border-border border-b pb-3 flex items-center justify-between">
+    <div className="border-border bg-card text-card-foreground space-y-6 rounded-xl border p-4 sm:p-6">
+      <div className="border-border flex items-center justify-between border-b pb-3">
         <div>
-          <h3 className="text-base font-semibold text-foreground">
+          <h3 className="text-foreground text-base font-semibold">
             Search Engine Optimisation (SEO)
           </h3>
-          <p className="text-xs text-muted-foreground">
-            Configure metadata, search snippets, indexing directives, and social cards.
+          <p className="text-muted-foreground text-xs">
+            Configure metadata, search snippets, indexing directives, and social
+            cards.
           </p>
         </div>
         {noindex && (
-          <span className="inline-flex items-center rounded-md bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-600 border border-amber-500/20">
+          <span className="inline-flex items-center rounded-md border border-amber-500/20 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-600">
             noindex enabled
           </span>
         )}
@@ -223,7 +246,10 @@ export function SeoPanel({
       {/* SEO Title Field */}
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <label htmlFor="seo_title" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="seo_title"
+            className="text-foreground text-sm font-medium"
+          >
             SEO Title
           </label>
           <span
@@ -231,8 +257,8 @@ export function SeoPanel({
               isTitleOver
                 ? "text-destructive font-semibold"
                 : isTitleIdeal
-                ? "text-emerald-600 font-medium"
-                : "text-muted-foreground"
+                  ? "font-medium text-emerald-600"
+                  : "text-muted-foreground"
             }`}
           >
             {titleLen} / 70 {isTitleIdeal && "✓ Ideal"}
@@ -242,10 +268,13 @@ export function SeoPanel({
           id="seo_title"
           value={seoTitle}
           onChange={(e) => onSeoTitleChange(e.target.value.slice(0, 70))}
-          placeholder={context.generatedTitle || "Custom SEO Title (defaults to entity title)"}
+          placeholder={
+            context.generatedTitle ||
+            "Custom SEO Title (defaults to entity title)"
+          }
           maxLength={70}
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           Recommended length: 30–60 characters. Hard limit: 70 characters.
         </p>
       </div>
@@ -253,7 +282,10 @@ export function SeoPanel({
       {/* SEO Description Field */}
       <div className="space-y-1.5">
         <div className="flex items-center justify-between">
-          <label htmlFor="seo_description" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="seo_description"
+            className="text-foreground text-sm font-medium"
+          >
             SEO Meta Description
           </label>
           <span
@@ -261,8 +293,8 @@ export function SeoPanel({
               isDescOver
                 ? "text-destructive font-semibold"
                 : isDescIdeal
-                ? "text-emerald-600 font-medium"
-                : "text-muted-foreground"
+                  ? "font-medium text-emerald-600"
+                  : "text-muted-foreground"
             }`}
           >
             {descLen} / 200 {isDescIdeal && "✓ Ideal"}
@@ -280,15 +312,18 @@ export function SeoPanel({
           maxLength={200}
           className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
         />
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           Recommended length: 70–160 characters. Hard limit: 200 characters.
         </p>
       </div>
 
       {/* Focus Keyword & Noindex Row */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 items-start">
+      <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <label htmlFor="focus_keyword" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="focus_keyword"
+            className="text-foreground text-sm font-medium"
+          >
             Focus Keyword (Admin Helper)
           </label>
           <Input
@@ -297,29 +332,31 @@ export function SeoPanel({
             onChange={(e) => onFocusKeywordChange(e.target.value)}
             placeholder="e.g. bridal makeup chennai"
           />
-          <p className="text-xs text-muted-foreground">
-            Internal on-page reference. Used only for the deterministic checklist below.
+          <p className="text-muted-foreground text-xs">
+            Internal on-page reference. Used only for the deterministic
+            checklist below.
           </p>
         </div>
 
-        <div className="space-y-1.5 rounded-lg border border-border p-3 bg-muted/20">
-          <label className="text-sm font-medium text-foreground block">
+        <div className="border-border bg-muted/20 space-y-1.5 rounded-lg border p-3">
+          <label className="text-foreground block text-sm font-medium">
             Search Indexing Directive
           </label>
-          <label className="flex items-center gap-2 cursor-pointer pt-1">
+          <label className="flex cursor-pointer items-center gap-2 pt-1">
             <input
               type="checkbox"
               id="noindex_toggle"
               checked={noindex}
               onChange={(e) => onNoindexChange(e.target.checked)}
-              className="h-4 w-4 rounded border-border text-primary focus:ring-ring"
+              className="border-border text-primary focus:ring-ring h-4 w-4 rounded"
             />
-            <span className="text-sm text-foreground">
+            <span className="text-foreground text-sm">
               Block search engines (<code className="text-xs">noindex</code>)
             </span>
           </label>
-          <p className="text-xs text-muted-foreground pt-1">
-            When checked, search engines are instructed not to index this specific page.
+          <p className="text-muted-foreground pt-1 text-xs">
+            When checked, search engines are instructed not to index this
+            specific page.
           </p>
         </div>
       </div>
@@ -341,14 +378,15 @@ export function SeoPanel({
       )}
 
       {/* Social Image Picker */}
-      <div className="space-y-2 rounded-lg border border-border p-4 bg-muted/10">
+      <div className="border-border bg-muted/10 space-y-2 rounded-lg border p-4">
         <div className="flex items-center justify-between">
           <div>
-            <label className="text-sm font-medium text-foreground block">
+            <label className="text-foreground block text-sm font-medium">
               Dedicated Social Share Image (OG Image)
             </label>
-            <p className="text-xs text-muted-foreground">
-              Overrides the featured image for social media link previews (1200x630 recommended).
+            <p className="text-muted-foreground text-xs">
+              Overrides the featured image for social media link previews
+              (1200x630 recommended).
             </p>
           </div>
         </div>
@@ -361,10 +399,10 @@ export function SeoPanel({
               className="h-16 w-28 rounded border bg-white object-cover shadow-xs"
             />
             <div className="space-y-1">
-              <p className="text-xs font-medium text-foreground">
+              <p className="text-foreground text-xs font-medium">
                 {socialImageMedia.file_name}
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 Alt: {socialImageMedia.alt_text || "(none)"}
               </p>
               <div className="flex gap-2">
@@ -399,7 +437,7 @@ export function SeoPanel({
               Select Social Image
             </Button>
             {context.featuredImage?.storagePath && (
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 Currently falling back to entity featured image.
               </span>
             )}
@@ -420,12 +458,12 @@ export function SeoPanel({
       />
 
       {/* Google-Style Search Result Preview */}
-      <div className="space-y-3 rounded-xl border border-border p-4 bg-muted/20">
+      <div className="border-border bg-muted/20 space-y-3 rounded-xl border p-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <span className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             Search Result Preview
           </span>
-          <div className="flex items-center gap-1 rounded-lg border border-border bg-background p-0.5">
+          <div className="border-border bg-background flex items-center gap-1 rounded-lg border p-0.5">
             <button
               type="button"
               onClick={() => setPreviewDevice("desktop")}
@@ -453,39 +491,39 @@ export function SeoPanel({
 
         {/* Snippet Card */}
         <div
-          className={`rounded-lg border border-slate-200 bg-white p-4 font-sans text-left shadow-xs dark:border-slate-800 dark:bg-slate-950 ${
+          className={`rounded-lg border border-slate-200 bg-white p-4 text-left font-sans shadow-xs dark:border-slate-800 dark:bg-slate-950 ${
             previewDevice === "mobile" ? "max-w-sm" : "max-w-2xl"
           }`}
         >
           {/* Header Line */}
-          <div className="flex items-center gap-2 mb-1">
-            <div className="h-4 w-4 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-[10px] text-slate-600 dark:text-slate-400">
+          <div className="mb-1 flex items-center gap-2">
+            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 text-[10px] text-slate-600 dark:bg-slate-800 dark:text-slate-400">
               ●
             </div>
-            <div className="text-xs text-slate-700 dark:text-slate-300 truncate">
+            <div className="truncate text-xs text-slate-700 dark:text-slate-300">
               <span className="font-medium">{siteName}</span>
-              <span className="text-slate-400 dark:text-slate-500 mx-1">›</span>
-              <span className="text-slate-500 dark:text-slate-400">{fullPath}</span>
+              <span className="mx-1 text-slate-400 dark:text-slate-500">›</span>
+              <span className="text-slate-500 dark:text-slate-400">
+                {fullPath}
+              </span>
             </div>
           </div>
 
           {/* Title */}
-          <h4
-            className="text-[#1a0dab] dark:text-[#8ab4f8] hover:underline font-normal cursor-pointer leading-snug line-clamp-2 text-base sm:text-lg mb-1"
-          >
+          <h4 className="mb-1 line-clamp-2 cursor-pointer text-base leading-snug font-normal text-[#1a0dab] hover:underline sm:text-lg dark:text-[#8ab4f8]">
             {fullPreviewTitle}
           </h4>
 
           {/* Description & Thumbnail layout */}
           <div className="flex items-start gap-3">
-            <p className="text-xs sm:text-sm text-[#4d5156] dark:text-[#bdc1c6] leading-relaxed line-clamp-2 flex-1">
+            <p className="line-clamp-2 flex-1 text-xs leading-relaxed text-[#4d5156] sm:text-sm dark:text-[#bdc1c6]">
               {effectiveDescription}
             </p>
             {effectiveImageUrl && previewDevice === "mobile" && (
               <img
                 src={effectiveImageUrl}
                 alt=""
-                className="h-14 w-14 rounded-md object-cover border border-slate-200 dark:border-slate-800 shrink-0"
+                className="h-14 w-14 shrink-0 rounded-md border border-slate-200 object-cover dark:border-slate-800"
               />
             )}
           </div>
@@ -493,19 +531,23 @@ export function SeoPanel({
       </div>
 
       {/* Deterministic Checklist */}
-      <div className="space-y-3 rounded-xl border border-border p-4 bg-background">
+      <div className="border-border bg-background space-y-3 rounded-xl border p-4">
         <div className="border-border border-b pb-2">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
             SEO Audit Checklist (Deterministic)
           </h4>
-          <p className="text-xs text-muted-foreground">
-            On-page content rules and length compliance without arbitrary scoring.
+          <p className="text-muted-foreground text-xs">
+            On-page content rules and length compliance without arbitrary
+            scoring.
           </p>
         </div>
 
-        <div className="divide-y divide-border/60">
+        <div className="divide-border/60 divide-y">
           {checklist.map((item) => (
-            <div key={item.id} className="py-2.5 flex items-start justify-between gap-3 text-xs">
+            <div
+              key={item.id}
+              className="flex items-start justify-between gap-3 py-2.5 text-xs"
+            >
               <div className="flex items-start gap-2">
                 <span
                   className={`mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${

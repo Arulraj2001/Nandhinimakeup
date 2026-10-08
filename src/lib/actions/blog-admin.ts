@@ -28,9 +28,23 @@ const saveBlogCategorySchema = z.object({
   slug: z.string().trim().min(1, "Category slug is required"),
   description: z.string().trim().optional().nullable(),
   sort_order: z.number().int().default(0),
-  seo_title: z.string().trim().max(70, "SEO title must not exceed 70 characters").nullable().optional(),
-  seo_description: z.string().trim().max(200, "SEO description must not exceed 200 characters").nullable().optional(),
-  seo_social_image_id: z.string().uuid("Invalid image ID").nullable().optional(),
+  seo_title: z
+    .string()
+    .trim()
+    .max(70, "SEO title must not exceed 70 characters")
+    .nullable()
+    .optional(),
+  seo_description: z
+    .string()
+    .trim()
+    .max(200, "SEO description must not exceed 200 characters")
+    .nullable()
+    .optional(),
+  seo_social_image_id: z
+    .string()
+    .uuid("Invalid image ID")
+    .nullable()
+    .optional(),
   noindex: z.boolean().default(false),
   focus_keyword: z.string().trim().nullable().optional(),
 });
@@ -233,9 +247,23 @@ const saveBlogPostSchema = z.object({
   status: z.enum(["draft", "published"]),
   published_at: z.string().optional().nullable(),
   is_featured: z.boolean().default(false),
-  seo_title: z.string().trim().max(70, "SEO title must not exceed 70 characters").nullable().optional(),
-  seo_description: z.string().trim().max(200, "SEO description must not exceed 200 characters").nullable().optional(),
-  seo_social_image_id: z.string().uuid("Invalid image ID").nullable().optional(),
+  seo_title: z
+    .string()
+    .trim()
+    .max(70, "SEO title must not exceed 70 characters")
+    .nullable()
+    .optional(),
+  seo_description: z
+    .string()
+    .trim()
+    .max(200, "SEO description must not exceed 200 characters")
+    .nullable()
+    .optional(),
+  seo_social_image_id: z
+    .string()
+    .uuid("Invalid image ID")
+    .nullable()
+    .optional(),
   noindex: z.boolean().default(false),
   focus_keyword: z.string().trim().nullable().optional(),
 });
@@ -276,7 +304,9 @@ export async function getAdminBlogPosts(params?: {
 
   if (params?.search?.trim()) {
     const s = params.search.trim();
-    query = query.or(`title.ilike.%${s}%,excerpt.ilike.%${s}%,slug.ilike.%${s}%`);
+    query = query.or(
+      `title.ilike.%${s}%,excerpt.ilike.%${s}%,slug.ilike.%${s}%`
+    );
   }
 
   if (params?.status && params.status !== "all") {
@@ -300,10 +330,15 @@ export async function getAdminBlogPosts(params?: {
 
   const formatted: BlogPostWithDetails[] = (data || []).map((p) => ({
     ...p,
-    content: (p.content as unknown as RichTextDoc) || { type: "doc", content: [] },
+    content: (p.content as unknown as RichTextDoc) || {
+      type: "doc",
+      content: [],
+    },
     category: p.category as unknown as BlogCategory | null,
-    featured_image: p.featured_image as unknown as BlogPostWithDetails["featured_image"],
-    seo_social_image: p.seo_social_image as unknown as BlogPostWithDetails["seo_social_image"],
+    featured_image:
+      p.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    seo_social_image:
+      p.seo_social_image as unknown as BlogPostWithDetails["seo_social_image"],
   }));
 
   return actionSuccess({
@@ -325,7 +360,9 @@ export async function getAdminBlogPost(
 
   const { data, error } = await auth.data.supabase
     .from("blog_posts")
-    .select("*, category:category_id(*), featured_image:featured_image_id(*), seo_social_image:seo_social_image_id(*)")
+    .select(
+      "*, category:category_id(*), featured_image:featured_image_id(*), seo_social_image:seo_social_image_id(*)"
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -339,10 +376,15 @@ export async function getAdminBlogPost(
 
   const formatted: BlogPostWithDetails = {
     ...data,
-    content: (data.content as unknown as RichTextDoc) || { type: "doc", content: [] },
+    content: (data.content as unknown as RichTextDoc) || {
+      type: "doc",
+      content: [],
+    },
     category: data.category as unknown as BlogCategory | null,
-    featured_image: data.featured_image as unknown as BlogPostWithDetails["featured_image"],
-    seo_social_image: data.seo_social_image as unknown as BlogPostWithDetails["seo_social_image"],
+    featured_image:
+      data.featured_image as unknown as BlogPostWithDetails["featured_image"],
+    seo_social_image:
+      data.seo_social_image as unknown as BlogPostWithDetails["seo_social_image"],
   };
 
   return actionSuccess(formatted);

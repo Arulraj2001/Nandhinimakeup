@@ -42,12 +42,12 @@ export default async function PrivacyPolicyPage() {
   });
 
   return (
-    <article className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-      <header className="mb-8 border-b border-border pb-6">
-        <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+    <article className="mx-auto max-w-4xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
+      <header className="border-border mb-8 border-b pb-6">
+        <h1 className="font-heading text-foreground text-3xl font-semibold tracking-tight sm:text-4xl">
           {page.title}
         </h1>
-        <p className="mt-2 text-xs sm:text-sm text-foreground/60">
+        <p className="text-foreground/60 mt-2 text-xs sm:text-sm">
           Last updated: {formattedDate}
         </p>
       </header>

@@ -167,16 +167,18 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
         <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-6 text-sm">
-          <h1 className="font-heading text-xl font-semibold text-foreground">
+          <h1 className="font-heading text-foreground text-xl font-semibold">
             Online Orders Temporarily Paused
           </h1>
-          <p className="mt-2 text-foreground/80">
-            We are not accepting direct online orders at the moment. You can still review your selected items in the cart and connect with us on WhatsApp for assistance.
+          <p className="text-foreground/80 mt-2">
+            We are not accepting direct online orders at the moment. You can
+            still review your selected items in the cart and connect with us on
+            WhatsApp for assistance.
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <Link
               href="/cart"
-              className="bg-foreground text-background inline-flex items-center justify-center rounded-md px-5 py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-foreground/90"
+              className="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-xs font-semibold tracking-wider uppercase"
             >
               Back to Cart
             </Link>
@@ -192,7 +194,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
         <p className="text-foreground/70 text-sm">Your cart is empty.</p>
         <Link
           href="/jewellery"
-          className="mt-4 inline-block font-semibold underline text-foreground text-sm"
+          className="text-foreground mt-4 inline-block text-sm font-semibold underline"
         >
           Explore Jewellery →
         </Link>
@@ -207,15 +209,17 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
           Checkout
         </h1>
         <p className="text-foreground/70 mt-1 text-sm">
-          Please enter your delivery details. Payment will be completed via UPI on the next screen.
+          Please enter your delivery details. Payment will be completed via UPI
+          on the next screen.
         </p>
       </div>
 
       {serverError && (
-        <div className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 p-4 text-xs text-destructive">
+        <div className="border-destructive/40 bg-destructive/10 text-destructive mb-6 rounded-md border p-4 text-xs">
           <p className="font-semibold">Notice:</p>
           <p className="mt-1">{serverError}</p>
-          {serverError.includes("stock") || serverError.includes("available") ? (
+          {serverError.includes("stock") ||
+          serverError.includes("available") ? (
             <div className="mt-2">
               <Link
                 href="/cart"
@@ -233,7 +237,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
         <div className="lg:col-span-7">
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="border-border rounded-lg border bg-surface p-6 sm:p-8 space-y-6"
+            className="border-border bg-surface space-y-6 rounded-lg border p-6 sm:p-8"
             noValidate
           >
             {/* Honeypot field (hidden from real users) */}
@@ -247,7 +251,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
             </div>
 
             <div>
-              <h2 className="font-heading text-foreground text-lg font-semibold border-border border-b pb-3">
+              <h2 className="font-heading text-foreground border-border border-b pb-3 text-lg font-semibold">
                 Customer Information
               </h2>
             </div>
@@ -257,7 +261,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <div className="space-y-1 sm:col-span-2">
                 <label
                   htmlFor="customer_name"
-                  className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                  className="text-foreground text-xs font-semibold tracking-wider uppercase"
                 >
                   Full Name <span className="text-destructive">*</span>
                 </label>
@@ -280,7 +284,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <div className="space-y-1">
                 <label
                   htmlFor="phone"
-                  className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                  className="text-foreground text-xs font-semibold tracking-wider uppercase"
                 >
                   Mobile Number <span className="text-destructive">*</span>
                 </label>
@@ -306,9 +310,10 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <div className="space-y-1">
                 <label
                   htmlFor="email"
-                  className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                  className="text-foreground text-xs font-semibold tracking-wider uppercase"
                 >
-                  Email Address <span className="text-foreground/50">(Optional)</span>
+                  Email Address{" "}
+                  <span className="text-foreground/50">(Optional)</span>
                 </label>
                 <input
                   id="email"
@@ -327,7 +332,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
             </div>
 
             <div className="pt-2">
-              <h2 className="font-heading text-foreground text-lg font-semibold border-border border-b pb-3">
+              <h2 className="font-heading text-foreground border-border border-b pb-3 text-lg font-semibold">
                 Shipping Address
               </h2>
             </div>
@@ -337,7 +342,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <div className="space-y-1">
                 <label
                   htmlFor="address_line_1"
-                  className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                  className="text-foreground text-xs font-semibold tracking-wider uppercase"
                 >
                   Address Line 1 <span className="text-destructive">*</span>
                 </label>
@@ -360,9 +365,10 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <div className="space-y-1">
                 <label
                   htmlFor="address_line_2"
-                  className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                  className="text-foreground text-xs font-semibold tracking-wider uppercase"
                 >
-                  Address Line 2 <span className="text-foreground/50">(Optional)</span>
+                  Address Line 2{" "}
+                  <span className="text-foreground/50">(Optional)</span>
                 </label>
                 <input
                   id="address_line_2"
@@ -384,7 +390,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                 <div className="space-y-1">
                   <label
                     htmlFor="city"
-                    className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                    className="text-foreground text-xs font-semibold tracking-wider uppercase"
                   >
                     City <span className="text-destructive">*</span>
                   </label>
@@ -407,7 +413,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                 <div className="space-y-1">
                   <label
                     htmlFor="state"
-                    className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                    className="text-foreground text-xs font-semibold tracking-wider uppercase"
                   >
                     State <span className="text-destructive">*</span>
                   </label>
@@ -434,7 +440,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                 <div className="space-y-1">
                   <label
                     htmlFor="pin_code"
-                    className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                    className="text-foreground text-xs font-semibold tracking-wider uppercase"
                   >
                     PIN Code <span className="text-destructive">*</span>
                   </label>
@@ -459,9 +465,10 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <div className="space-y-1 pt-2">
                 <label
                   htmlFor="customer_note"
-                  className="text-foreground text-xs font-semibold uppercase tracking-wider"
+                  className="text-foreground text-xs font-semibold tracking-wider uppercase"
                 >
-                  Order Notes <span className="text-foreground/50">(Optional)</span>
+                  Order Notes{" "}
+                  <span className="text-foreground/50">(Optional)</span>
                 </label>
                 <textarea
                   id="customer_note"
@@ -484,11 +491,11 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
 
                 if (terms && shipping) {
                   return (
-                    <p className="text-foreground/70 text-xs mb-3 text-center sm:text-left">
+                    <p className="text-foreground/70 mb-3 text-center text-xs sm:text-left">
                       By placing this order you agree to our{" "}
                       <Link
                         href="/terms-and-conditions"
-                        className="underline hover:text-foreground underline-offset-2"
+                        className="hover:text-foreground underline underline-offset-2"
                         target="_blank"
                       >
                         Terms &amp; Conditions
@@ -496,7 +503,7 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                       and{" "}
                       <Link
                         href="/shipping-returns"
-                        className="underline hover:text-foreground underline-offset-2"
+                        className="hover:text-foreground underline underline-offset-2"
                         target="_blank"
                       >
                         Shipping &amp; Returns
@@ -508,11 +515,11 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
 
                 if (terms) {
                   return (
-                    <p className="text-foreground/70 text-xs mb-3 text-center sm:text-left">
+                    <p className="text-foreground/70 mb-3 text-center text-xs sm:text-left">
                       By placing this order you agree to our{" "}
                       <Link
                         href="/terms-and-conditions"
-                        className="underline hover:text-foreground underline-offset-2"
+                        className="hover:text-foreground underline underline-offset-2"
                         target="_blank"
                       >
                         Terms &amp; Conditions
@@ -524,11 +531,11 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
 
                 if (shipping) {
                   return (
-                    <p className="text-foreground/70 text-xs mb-3 text-center sm:text-left">
+                    <p className="text-foreground/70 mb-3 text-center text-xs sm:text-left">
                       By placing this order you agree to our{" "}
                       <Link
                         href="/shipping-returns"
-                        className="underline hover:text-foreground underline-offset-2"
+                        className="hover:text-foreground underline underline-offset-2"
                         target="_blank"
                       >
                         Shipping &amp; Returns
@@ -544,12 +551,15 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
               <button
                 type="submit"
                 disabled={isSubmitting || items.length === 0}
-                className="w-full h-12 bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center rounded-md text-xs font-semibold tracking-wider uppercase transition-colors"
+                className="bg-foreground text-background hover:bg-foreground/90 flex h-12 w-full items-center justify-center rounded-md text-xs font-semibold tracking-wider uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {isSubmitting ? "Placing Order..." : "Place Order & Pay via UPI →"}
+                {isSubmitting
+                  ? "Placing Order..."
+                  : "Place Order & Pay via UPI →"}
               </button>
-              <p className="text-foreground/60 text-center text-xs mt-2">
-                Manual UPI payment: You will be shown a UPI QR and link to pay on the next screen.
+              <p className="text-foreground/60 mt-2 text-center text-xs">
+                Manual UPI payment: You will be shown a UPI QR and link to pay
+                on the next screen.
               </p>
             </div>
           </form>
@@ -557,14 +567,18 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
 
         {/* Order Summary */}
         <div className="lg:col-span-5">
-          <div className="border-border rounded-lg border bg-surface p-6 space-y-6 sticky top-20">
+          <div className="border-border bg-surface sticky top-20 space-y-6 rounded-lg border p-6">
             <h2 className="font-heading text-foreground text-lg font-semibold">
-              Order Summary ({items.reduce((acc, i) => acc + i.quantity, 0)} items)
+              Order Summary ({items.reduce((acc, i) => acc + i.quantity, 0)}{" "}
+              items)
             </h2>
 
-            <div className="divide-border divide-y max-h-80 overflow-y-auto pr-1">
+            <div className="divide-border max-h-80 divide-y overflow-y-auto pr-1">
               {lineItems.map((line) => (
-                <div key={line.productId} className="py-3 flex items-center gap-3">
+                <div
+                  key={line.productId}
+                  className="flex items-center gap-3 py-3"
+                >
                   <div className="border-border bg-page-background relative h-14 w-14 flex-none overflow-hidden rounded-md border">
                     {line.product?.primaryImageUrl ? (
                       <Image
@@ -580,32 +594,34 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                       </div>
                     )}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-foreground font-medium text-xs truncate">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-foreground truncate text-xs font-medium">
                       {line.product?.name || "Loading..."}
                     </p>
-                    <p className="text-foreground/60 text-xs">Qty: {line.quantity}</p>
+                    <p className="text-foreground/60 text-xs">
+                      Qty: {line.quantity}
+                    </p>
                   </div>
-                  <div className="text-right text-xs font-semibold text-foreground">
+                  <div className="text-foreground text-right text-xs font-semibold">
                     {formatINR(line.lineTotal)}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="border-border border-t pt-4 space-y-2.5 text-sm">
-              <div className="flex justify-between text-foreground/80">
+            <div className="border-border space-y-2.5 border-t pt-4 text-sm">
+              <div className="text-foreground/80 flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-medium text-foreground">
+                <span className="text-foreground font-medium">
                   {formatINR(subtotal)}
                 </span>
               </div>
 
-              <div className="flex justify-between text-foreground/80">
+              <div className="text-foreground/80 flex justify-between">
                 <span>Delivery</span>
-                <span className="font-medium text-foreground">
+                <span className="text-foreground font-medium">
                   {isFreeDelivery ? (
-                    <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
+                    <span className="font-semibold text-emerald-700 dark:text-emerald-400">
                       FREE
                     </span>
                   ) : (
@@ -614,14 +630,14 @@ export function CheckoutView({ settings, legalPages = [] }: CheckoutViewProps) {
                 </span>
               </div>
 
-              <div className="border-border border-t pt-3 flex justify-between text-base font-semibold text-foreground">
+              <div className="border-border text-foreground flex justify-between border-t pt-3 text-base font-semibold">
                 <span>Total</span>
                 <span>{formatINR(total)}</span>
               </div>
             </div>
 
             {deliveryNote && (
-              <p className="border-border border-t pt-3 text-xs text-foreground/70 leading-relaxed">
+              <p className="border-border text-foreground/70 border-t pt-3 text-xs leading-relaxed">
                 {deliveryNote}
               </p>
             )}

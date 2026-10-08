@@ -809,7 +809,8 @@ export interface Database {
       legal_pages: {
         Row: {
           id: string;
-          slug: "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
+          slug:
+            "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
           title: string;
           content: Json;
           is_published: boolean;
@@ -818,7 +819,8 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          slug: "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
+          slug:
+            "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
           title: string;
           content?: Json;
           is_published?: boolean;
@@ -827,7 +829,8 @@ export interface Database {
         };
         Update: {
           id?: string;
-          slug?: "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
+          slug?:
+            "privacy-policy" | "terms-and-conditions" | "shipping-and-returns";
           title?: string;
           content?: Json;
           is_published?: boolean;

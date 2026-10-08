@@ -139,7 +139,9 @@ function ServiceEditDialogInner({
   const [selectedMedia, setSelectedMedia] = React.useState<MediaItem | null>(
     (service?.image as MediaItem) || null
   );
-  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(null);
+  const [seoSocialMedia, setSeoSocialMedia] = React.useState<MediaItem | null>(
+    null
+  );
   const [newIncludeText, setNewIncludeText] = React.useState("");
 
   const form = useForm<SaveServiceInput>({
