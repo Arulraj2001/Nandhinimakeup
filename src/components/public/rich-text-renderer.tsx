@@ -42,7 +42,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <p
           key={key}
-          className="text-base leading-relaxed text-zinc-700 dark:text-zinc-300"
+          className="text-base leading-relaxed text-[#1C1917] sm:text-lg sm:leading-relaxed"
         >
           {children && children.length > 0 ? children : "\u00A0"}
         </p>
@@ -59,7 +59,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
         return (
           <h2
             key={key}
-            className="mt-8 mb-4 font-serif text-2xl font-bold tracking-tight text-zinc-900 dark:text-white"
+            className="mt-8 mb-4 font-heading text-2xl font-bold tracking-tight text-[#1C1917] sm:text-3xl"
           >
             {children}
           </h2>
@@ -69,7 +69,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
         return (
           <h3
             key={key}
-            className="mt-6 mb-3 font-serif text-xl font-semibold tracking-tight text-zinc-900 dark:text-white"
+            className="mt-6 mb-3 font-heading text-xl font-semibold tracking-tight text-[#1C1917] sm:text-2xl"
           >
             {children}
           </h3>
@@ -78,7 +78,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <h4
           key={key}
-          className="mt-5 mb-2 font-serif text-lg font-semibold text-zinc-900 dark:text-white"
+          className="mt-5 mb-2 font-heading text-lg font-semibold text-[#1C1917]"
         >
           {children}
         </h4>
@@ -89,7 +89,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <ul
           key={key}
-          className="list-outside list-disc space-y-2 pl-6 text-zinc-700 dark:text-zinc-300"
+          className="list-outside list-disc space-y-2 pl-6 text-[#1C1917]"
         >
           {renderChildren(node.content, key)}
         </ul>
@@ -100,7 +100,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <ol
           key={key}
-          className="list-outside list-decimal space-y-2 pl-6 text-zinc-700 dark:text-zinc-300"
+          className="list-outside list-decimal space-y-2 pl-6 text-[#1C1917]"
         >
           {renderChildren(node.content, key)}
         </ol>
@@ -109,7 +109,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
 
     case "listItem": {
       return (
-        <li key={key} className="leading-relaxed">
+        <li key={key} className="leading-relaxed text-[#1C1917]">
           {renderChildren(node.content, key)}
         </li>
       );
@@ -119,7 +119,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <blockquote
           key={key}
-          className="my-4 rounded-r border-l-4 border-amber-600 bg-amber-50/30 py-1 pl-4 text-zinc-700 italic dark:bg-zinc-800/40 dark:text-zinc-300"
+          className="my-6 rounded-r-lg border-l-4 border-[#C5A059] bg-[#F4ECE4]/60 py-3 pl-5 text-[#1C1917] italic text-base sm:text-lg"
         >
           {renderChildren(node.content, key)}
         </blockquote>
@@ -130,7 +130,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       return (
         <hr
           key={key}
-          className="my-8 border-t border-zinc-200 dark:border-zinc-800"
+          className="my-8 border-t border-[#E5DFD7]"
         />
       );
     }
@@ -147,7 +147,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
 
       return (
         <figure key={key} className="my-6">
-          <div className="relative overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="relative overflow-hidden rounded-lg border border-[#E5DFD7] bg-[#F4ECE4]">
             <Image
               src={src}
               alt={alt}
@@ -158,7 +158,7 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
             />
           </div>
           {alt ? (
-            <figcaption className="mt-2 text-center text-xs text-zinc-500 italic dark:text-zinc-400">
+            <figcaption className="mt-2 text-center text-xs text-[#78716C] italic">
               {alt}
             </figcaption>
           ) : null}
@@ -207,7 +207,7 @@ function renderTextWithMarks(
         currentElement = (
           <strong
             key={markKey}
-            className="font-semibold text-zinc-900 dark:text-white"
+            className="font-semibold text-[#1C1917]"
           >
             {currentElement}
           </strong>
@@ -233,7 +233,7 @@ function renderTextWithMarks(
           <a
             key={markKey}
             href={href}
-            className="text-amber-700 underline underline-offset-2 transition-colors hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300"
+            className="font-medium text-[#8C2524] underline underline-offset-2 transition-colors hover:text-[#731E1D]"
             {...(isExternal
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}
