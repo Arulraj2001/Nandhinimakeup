@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getProductCategories } from "@/lib/actions/product-categories";
 import { PageHeader } from "@/components/admin/page-header";
 import { ProductCategoriesClient } from "./product-categories-client";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductCategoriesPage() {
+  await connection();
   const res = await getProductCategories();
   const categories = res.success ? res.data : [];
 

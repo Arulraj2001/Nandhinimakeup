@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getGalleryItems } from "@/lib/actions/gallery";
 import { getServiceCategories } from "@/lib/actions/services";
 import { PageHeader } from "@/components/admin/page-header";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GalleryPage() {
+  await connection();
   const [galleryRes, categoriesRes] = await Promise.all([
     getGalleryItems(),
     getServiceCategories(),

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getAdminLegalPages } from "@/lib/actions/legal-pages";
 import { PageHeader } from "@/components/admin/page-header";
 import { LegalClient } from "./legal-client";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function LegalAdminPage() {
+  await connection();
   const res = await getAdminLegalPages();
   const pages = res.success ? res.data : [];
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import {
   getAdminBlogPosts,
   getAdminBlogCategories,
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminBlogPage() {
+  await connection();
   const [postsRes, categoriesRes, settings] = await Promise.all([
     getAdminBlogPosts({ page: 1, pageSize: 20 }),
     getAdminBlogCategories(),

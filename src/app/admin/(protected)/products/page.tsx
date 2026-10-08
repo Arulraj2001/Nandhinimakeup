@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getProducts } from "@/lib/actions/products";
 import { getProductCategories } from "@/lib/actions/product-categories";
 import { PageHeader } from "@/components/admin/page-header";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
+  await connection();
   const [productsRes, categoriesRes] = await Promise.all([
     getProducts(),
     getProductCategories(),

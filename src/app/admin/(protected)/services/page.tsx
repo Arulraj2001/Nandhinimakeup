@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getServices, getServiceCategories } from "@/lib/actions/services";
 import { PageHeader } from "@/components/admin/page-header";
 import { ServicesClient } from "./services-client";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
+  await connection();
   const [servicesRes, categoriesRes] = await Promise.all([
     getServices(),
     getServiceCategories(),

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { getAdminOrderDetail } from "@/lib/actions/orders-admin";
 import { OrderDetailClient } from "./order-detail-client";
 import { env } from "@/lib/config/env";
@@ -12,6 +13,7 @@ interface AdminOrderDetailPageProps {
 export default async function AdminOrderDetailPage({
   params,
 }: AdminOrderDetailPageProps) {
+  await connection();
   const { id } = await params;
 
   if (!id) {

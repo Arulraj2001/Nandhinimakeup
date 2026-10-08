@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getSiteSettings } from "@/lib/actions/settings";
 import { getMediaMapByIds } from "@/lib/actions/media";
 import { getAdminStaticSeoPages } from "@/lib/actions/seo-admin";
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SeoAdminPage() {
+  await connection();
   const [settings, staticPagesRes] = await Promise.all([
     getSiteSettings(),
     getAdminStaticSeoPages(),

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getAdminRedirects } from "@/lib/actions/redirects-admin";
 import { PageHeader } from "@/components/admin/page-header";
 import { RedirectsClient } from "./redirects-client";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RedirectsPage() {
+  await connection();
   const res = await getAdminRedirects();
   const redirects = res.success ? res.data : [];
 

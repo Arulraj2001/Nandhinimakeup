@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import Image from "next/image";
 import Link from "next/link";
 import { getAdminBlogPost } from "@/lib/actions/blog-admin";
@@ -22,6 +23,7 @@ interface PreviewPageProps {
 export default async function BlogPostPreviewPage({
   params,
 }: PreviewPageProps) {
+  await connection();
   const { id } = await params;
   const [postRes, settings] = await Promise.all([
     getAdminBlogPost(id),

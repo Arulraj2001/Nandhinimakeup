@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { getSiteSettings } from "@/lib/actions/settings";
 import { getMediaMapByIds } from "@/lib/actions/media";
 import { PageHeader } from "@/components/admin/page-header";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SettingsPage() {
+  await connection();
   const settings = await getSiteSettings();
 
   const mediaIds = [

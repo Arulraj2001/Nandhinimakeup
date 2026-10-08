@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { getAdminOrders } from "@/lib/actions/orders-admin";
 import { OrdersClient } from "./orders-client";
 
@@ -12,6 +13,7 @@ interface AdminOrdersPageProps {
 export default async function AdminOrdersPage({
   searchParams,
 }: AdminOrdersPageProps) {
+  await connection();
   const { status, q, page } = await searchParams;
   const currentPage = page ? parseInt(page, 10) : 1;
 

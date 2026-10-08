@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import type { OrderStatus } from "@/types/orders";
 
@@ -43,6 +44,7 @@ const STATUS_CONFIG: Record<
 };
 
 export default async function AdminDashboardPage() {
+  await connection();
   const supabase = await createClient();
 
   // Parallel count queries and recent 5 orders
