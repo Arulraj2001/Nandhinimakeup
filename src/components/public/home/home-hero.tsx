@@ -18,10 +18,12 @@ function renderColoredHeadline(text: string) {
   if (text.includes("South Indian Brides") && text.includes("Handcrafted Adornments")) {
     return (
       <>
-        <span>Crafting Timeless </span>
-        <span className="text-[#8C2524]">South Indian Brides</span>{" "}
-        <span className="font-serif font-normal italic text-[#C5A059]">&amp;</span>{" "}
-        <span>Handcrafted Adornments</span>
+        <span className="block">Crafting Timeless</span>
+        <span className="block text-[#8C2524]">South Indian Brides</span>
+        <span className="block">
+          <span className="font-serif font-normal italic text-[#C5A059]">&amp;</span>{" "}
+          <span>Handcrafted Adornments</span>
+        </span>
       </>
     );
   }
