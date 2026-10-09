@@ -482,7 +482,7 @@ export interface Database {
       gallery_items: {
         Row: {
           id: string;
-          media_id: string;
+          media_id: string | null;
           before_media_id: string | null;
           type: "single" | "before_after";
           title: string;
@@ -497,7 +497,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          media_id: string;
+          media_id?: string | null;
           before_media_id?: string | null;
           type?: "single" | "before_after";
           title?: string;
@@ -512,7 +512,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          media_id?: string;
+          media_id?: string | null;
           before_media_id?: string | null;
           type?: "single" | "before_after";
           title?: string;

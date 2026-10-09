@@ -207,9 +207,30 @@ function GalleryItemDialogInner({
           {/* Image Selection Section */}
           {currentType === "single" ? (
             <div className="border-border space-y-2 rounded-md border p-3">
-              <label className="text-foreground text-sm font-medium">
-                Photo (from Media Library)
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="text-foreground text-sm font-medium">
+                  Photo (Optional if Instagram Reel is linked)
+                </label>
+                {mainMedia && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMainMedia(null);
+                      form.setValue("media_id", "", {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      });
+                    }}
+                    className="text-xs text-[#8C2524] hover:underline cursor-pointer"
+                  >
+                    Remove Photo
+                  </button>
+                )}
+              </div>
+              <p className="text-xs text-[#78716C]">
+                If you enter an Instagram Reel or Post link below, you can leave
+                this empty to show the look directly from Instagram.
+              </p>
               {mainMedia ? (
                 <div className="flex items-center gap-3">
                   <img
@@ -240,7 +261,7 @@ function GalleryItemDialogInner({
                   variant="outline"
                   onClick={() => setPickerTarget("media")}
                 >
-                  Choose Photo
+                  Choose Photo (Optional)
                 </Button>
               )}
               {form.formState.errors.media_id && (

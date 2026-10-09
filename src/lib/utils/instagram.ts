@@ -92,6 +92,22 @@ export function detectInstagramType(
   return null;
 }
 
+export function extractInstagramShortcode(
+  url?: string | null
+): string | null {
+  if (!url) return null;
+  const match = url.match(/instagram\.com\/(?:p|reel|reels)\/([A-Za-z0-9_-]+)/i);
+  return match ? match[1] : null;
+}
+
+export function getInstagramEmbedUrl(
+  url?: string | null
+): string | null {
+  const code = extractInstagramShortcode(url);
+  if (!code) return null;
+  return `https://www.instagram.com/reel/${code}/embed/`;
+}
+
 /**
  * Extracts Instagram info from explicit URL or fallback text (such as occasion or caption)
  */
@@ -102,13 +118,20 @@ export function resolveInstagramData(
   url: string | null;
   handle: string | null;
   type: "reel" | "post" | "profile" | null;
+  shortcode: string | null;
+  embedUrl: string | null;
 } {
   const directUrl = cleanInstagramUrl(explicitUrl);
   if (directUrl) {
+    const shortcode = extractInstagramShortcode(directUrl);
     return {
       url: directUrl,
-      handle: extractInstagramHandle(explicitUrl) || extractInstagramHandle(directUrl),
+      handle:
+        extractInstagramHandle(explicitUrl) ||
+        extractInstagramHandle(directUrl),
       type: detectInstagramType(directUrl),
+      shortcode,
+      embedUrl: shortcode ? getInstagramEmbedUrl(directUrl) : null,
     };
   }
 
@@ -121,19 +144,26 @@ export function resolveInstagramData(
         url: cleanInstagramUrl(handle),
         handle,
         type: "profile",
+        shortcode: null,
+        embedUrl: null,
       };
     }
 
-    const matchUrl = fallbackText.match(/https?:\/\/(www\.)?instagram\.com\/[^\s)]+/);
+    const matchUrl = fallbackText.match(
+      /https?:\/\/(www\.)?instagram\.com\/[^\s)]+/
+    );
     if (matchUrl) {
       const url = cleanInstagramUrl(matchUrl[0]);
+      const shortcode = extractInstagramShortcode(url);
       return {
         url,
         handle: extractInstagramHandle(url),
         type: detectInstagramType(url),
+        shortcode,
+        embedUrl: shortcode ? getInstagramEmbedUrl(url) : null,
       };
     }
   }
 
-  return { url: null, handle: null, type: null };
+  return { url: null, handle: null, type: null, shortcode: null, embedUrl: null };
 }

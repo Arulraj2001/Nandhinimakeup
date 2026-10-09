@@ -181,7 +181,7 @@ export function RecentWorksInstagram({
           >
             {displayItems.map((item, idx) => {
               const img = item.media;
-              if (!img) return null;
+              if (!img && !item.instagram_url) return null;
 
               const insta = resolveInstagramData(
                 item.instagram_url,
@@ -201,20 +201,47 @@ export function RecentWorksInstagram({
                     rel={isExternal ? "noopener noreferrer" : undefined}
                     className="group relative flex aspect-[4/5] w-full flex-col justify-between overflow-hidden rounded-2xl border border-[#E5DFD7] bg-white shadow-xs transition-all duration-500 hover:border-[#C5A059] hover:shadow-xl hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                   >
-                    {/* Background Image */}
-                    <Image
-                      src={getPublicMediaUrl(img.storage_path)}
-                      alt={img.alt_text || item.title || "Bridal look"}
-                      fill
-                      sizes="(max-width: 640px) 240px, 290px"
-                      className="object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-108"
-                    />
-
-                    {/* Gradient Overlay */}
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-0 bg-gradient-to-t from-[#1C1917]/90 via-[#1C1917]/25 to-black/30 transition-opacity duration-300 group-hover:opacity-95"
-                    />
+                    {/* Background: Either local media image OR rich Instagram Reel poster styling */}
+                    {img ? (
+                      <>
+                        <Image
+                          src={getPublicMediaUrl(img.storage_path)}
+                          alt={img.alt_text || item.title || "Bridal look"}
+                          fill
+                          sizes="(max-width: 640px) 240px, 290px"
+                          className="object-cover transition-transform duration-700 ease-out will-change-transform group-hover:scale-108"
+                        />
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-gradient-to-t from-[#1C1917]/90 via-[#1C1917]/25 to-black/30 transition-opacity duration-300 group-hover:opacity-95"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-gradient-to-br from-[#8C2524] via-[#5C1615] to-[#1C1917] transition-transform duration-700 ease-out will-change-transform group-hover:scale-105"
+                        />
+                        <div
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-0 opacity-25"
+                          style={{
+                            backgroundImage: `radial-gradient(circle at 50% 35%, rgba(197, 160, 89, 0.4) 0%, transparent 60%)`,
+                          }}
+                        />
+                        {/* Center Reel Play Icon */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-white/20 text-white shadow-lg backdrop-blur-md transition-transform duration-300 group-hover:scale-115 group-hover:bg-[#8C2524]">
+                            <svg className="h-6 w-6 fill-current ml-0.5" viewBox="0 0 24 24">
+                              <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                          </div>
+                          <span className="text-xs font-medium text-white/90 drop-shadow-xs">
+                            Watch Reel
+                          </span>
+                        </div>
+                      </>
+                    )}
 
                     {/* Top Header inside card */}
                     <div className="relative z-10 flex items-center justify-between p-3.5">
@@ -258,7 +285,7 @@ export function RecentWorksInstagram({
                         </p>
                       )}
 
-                      <h3 className="font-heading mt-0.5 text-base font-semibold leading-snug text-white drop-shadow-xs">
+                      <h3 className="font-heading mt-0.5 text-base font-semibold leading-snug text-white drop-shadow-xs line-clamp-1">
                         {item.title || "Bridal Artistry"}
                       </h3>
 

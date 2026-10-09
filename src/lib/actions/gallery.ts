@@ -74,7 +74,7 @@ export async function saveGalleryItem(
 
   const payload = {
     type: parsed.data.type,
-    media_id: parsed.data.media_id,
+    media_id: parsed.data.media_id || null,
     before_media_id: beforeMediaId,
     title: parsed.data.title.trim(),
     caption: parsed.data.caption.trim(),

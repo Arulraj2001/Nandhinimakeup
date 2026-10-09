@@ -135,15 +135,15 @@ function TestimonialDialogInner({
             </FormField>
 
             <FormField
-              label="Quote / Review"
-              required
+              label="Quote / Review (Optional)"
+              hint="Optional if Instagram Reel is linked — the card will highlight the Reel."
               error={form.formState.errors.quote?.message}
             >
               <textarea
                 {...form.register("quote")}
                 rows={4}
                 className="border-input bg-background text-foreground w-full rounded-md border p-2 text-sm"
-                placeholder="The customer's kind words..."
+                placeholder="The customer's kind words (optional if sharing Instagram Reel)..."
               />
             </FormField>
 

@@ -19,7 +19,7 @@ export const saveTestimonialSchema = z.object({
   id: z.string().uuid().optional(),
   customer_name: z.string().trim().min(1, "Customer name is required"),
   occasion: z.string().trim().nullable().optional(),
-  quote: z.string().trim().min(1, "Quote is required"),
+  quote: z.string().trim(),
   rating: z
     .number()
     .int("Rating must be an integer")

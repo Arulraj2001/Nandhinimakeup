@@ -57,7 +57,59 @@ export default async function ReviewsPage() {
                   className="flex flex-col justify-between rounded-xl border border-[#E5DFD7] bg-white p-5 shadow-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md"
                 >
                   <div>
-                    {/* Header: Stars + Instagram / Source badge */}
+                    {/* Reel Visual Thumbnail when Instagram link is present */}
+                    {hasInsta && (
+                      <a
+                        href={insta.url!}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Watch ${t.customer_name}'s Reel on Instagram`}
+                        className="group/reel relative mb-3.5 flex aspect-[16/10] w-full flex-col justify-between overflow-hidden rounded-lg bg-gradient-to-br from-[#1C1917] via-[#2F1818] to-[#1C1917] p-3 text-white transition-all duration-300 hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
+                      >
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-radial from-[#DD2A7B]/25 via-[#8C2524]/15 to-transparent pointer-events-none"
+                        />
+                        <div className="relative z-10 flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-md">
+                            <svg
+                              className="h-3 w-3 text-[#E87A5D]"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg>
+                            <span>Instagram Reel</span>
+                          </span>
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-[10px] text-white">
+                            ↗
+                          </span>
+                        </div>
+                        <div className="relative z-10 flex flex-col items-center justify-center gap-1 py-1 text-center">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white shadow-md backdrop-blur-md transition-transform duration-300 group-hover/reel:scale-115 group-hover/reel:bg-[#8C2524]">
+                            <svg className="h-4 w-4 fill-current ml-0.5" viewBox="0 0 24 24">
+                              <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                          </div>
+                          <span className="text-[11px] font-semibold text-white/90 drop-shadow-xs">
+                            Watch Bride Reel ↗
+                          </span>
+                        </div>
+                        <div className="relative z-10 text-left">
+                          <span className="rounded bg-black/45 px-1.5 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-xs">
+                            {insta.handle || "@nandhini__makeupartist"}
+                          </span>
+                        </div>
+                      </a>
+                    )}
+
+                    {/* Header: Stars + Source */}
                     <div className="flex items-center justify-between">
                       <div
                         className="flex items-center gap-1 text-[#C5A059]"
@@ -78,52 +130,25 @@ export default async function ReviewsPage() {
                         ))}
                       </div>
 
-                      {hasInsta ? (
-                        <a
-                          href={insta.url!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`View ${t.customer_name}'s Instagram`}
-                          className="inline-flex items-center gap-1 rounded-full border border-[#DD2A7B]/25 bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 px-2 py-0.5 text-[11px] font-medium text-[#8C2524] transition-all hover:border-[#DD2A7B]/50"
-                        >
-                          <svg
-                            className="h-3 w-3 text-[#DD2A7B]"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <rect
-                              x="2"
-                              y="2"
-                              width="20"
-                              height="20"
-                              rx="5"
-                              ry="5"
-                            />
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                          </svg>
-                          <span className="font-semibold">
-                            {insta.handle || "Instagram"}
-                          </span>
-                          <span className="text-[9px]">↗</span>
-                        </a>
-                      ) : (
-                        t.source && (
-                          <span className="rounded-full border border-[#E5DFD7] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold tracking-wider text-[#78716C] uppercase">
-                            {t.source}
-                          </span>
-                        )
+                      {!hasInsta && t.source && (
+                        <span className="rounded-full border border-[#E5DFD7] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold tracking-wider text-[#78716C] uppercase">
+                          {t.source}
+                        </span>
+                      )}
+
+                      {hasInsta && (
+                        <span className="rounded-full border border-[#DD2A7B]/25 bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 px-2 py-0.5 text-[10px] font-semibold text-[#8C2524]">
+                          Reel Story
+                        </span>
                       )}
                     </div>
 
-                    {/* Quote */}
-                    <blockquote className="mt-3.5 text-xs sm:text-[13px] leading-relaxed text-[#57534E] italic">
-                      &ldquo;{t.quote}&rdquo;
-                    </blockquote>
+                    {/* Quote (only if provided) */}
+                    {t.quote && t.quote.trim().length > 0 && (
+                      <blockquote className="mt-3.5 text-xs sm:text-[13px] leading-relaxed text-[#57534E] italic">
+                        &ldquo;{t.quote}&rdquo;
+                      </blockquote>
+                    )}
                   </div>
 
                   {/* Author Info */}
