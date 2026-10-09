@@ -19,7 +19,6 @@ export function RecentWorksInstagram({
   instagramHandle = "@nandhini__makeupartist",
 }: RecentWorksInstagramProps) {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const [isSlowed, setIsSlowed] = React.useState(false);
 
   if (!items || items.length === 0) return null;
 
@@ -157,12 +156,8 @@ export function RecentWorksInstagram({
           </div>
         </div>
 
-        {/* Moving Animation Cards Track */}
-        <div
-          className="relative -mx-4 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-          onMouseEnter={() => setIsSlowed(true)}
-          onMouseLeave={() => setIsSlowed(false)}
-        >
+        {/* Moving Animation Cards Track: Continuous auto-glide */}
+        <div className="relative -mx-4 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
           {/* Subtle lateral gradient fades */}
           <div
             aria-hidden="true"
@@ -175,9 +170,7 @@ export function RecentWorksInstagram({
 
           <div
             ref={scrollContainerRef}
-            className={`animate-marquee-slow flex items-stretch gap-5 py-4 ${
-              isSlowed ? "[animation-duration:110s]" : "[animation-duration:45s]"
-            }`}
+            className="animate-marquee-slow flex items-stretch gap-5 py-4"
           >
             {displayItems.map((item, idx) => {
               const img = item.media;

@@ -193,20 +193,10 @@ h3 {
   animation: marquee 45s linear infinite;
 }
 
-.animate-marquee-slow:hover,
-.animate-marquee-slow:focus-within {
-  animation-duration: 110s;
-}
-
 .animate-marquee-cards {
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
-}
-
-.animate-marquee-cards:hover,
-.animate-marquee-cards:focus-within {
-  animation-duration: 95s;
 }
 
 /* Luxury Editorial Colored Grid Backgrounds */

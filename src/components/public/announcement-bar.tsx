@@ -48,36 +48,51 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
     : {
         initial: { y: "-100%", opacity: 0 },
         animate: { y: 0, opacity: 1 },
-        transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const },
+        transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const },
       };
 
   return (
     <m.aside
       {...motionProps}
       aria-label="Announcement"
-      className="w-full border-b border-[#C5A059]/30 bg-[#1C1917] px-4 py-2 text-center text-xs font-medium text-[#FAF8F5] sm:text-sm"
+      className="relative w-full border-b border-[#C5A059]/40 bg-gradient-to-r from-[#1C1917] via-[#2A1515] to-[#1C1917] px-4 py-2 text-center text-xs font-medium text-[#FAF8F5] shadow-xs sm:py-2.5 sm:text-[13px]"
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-        <div className="flex-1 text-center">
-          <span className="animate-gold-shimmer inline-block font-medium">
+      {/* Decorative top gold hairline glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent"
+      />
+
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+        <div className="flex flex-1 flex-wrap items-center justify-center gap-x-2 gap-y-1">
+          {/* Subtle gold badge pill */}
+          <span className="inline-flex items-center gap-1 rounded-full border border-[#C5A059]/40 bg-[#C5A059]/15 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-[#E8DCC4] uppercase shadow-2xs">
+            <span className="h-1 w-1 rounded-full bg-[#C5A059] animate-pulse" />
+            <span>Bridal Season</span>
+          </span>
+
+          <span className="animate-gold-shimmer font-medium tracking-wide">
             {announcement.message}
           </span>
+
           {announcement.link_url && (
             <Link
               href={announcement.link_url}
-              className="ml-2 font-semibold text-[#C5A059] underline underline-offset-4 transition-colors hover:text-white"
+              className="inline-flex items-center gap-1 rounded-full border border-[#C5A059]/50 bg-gradient-to-r from-[#8C2524] to-[#731E1D] hover:from-[#731E1D] hover:to-[#5E1615] px-2.5 py-0.5 text-[11px] font-semibold text-white shadow-2xs transition-all hover:scale-105 active:scale-95 ml-1"
             >
-              {announcement.link_label || "Learn more"} →
+              <span>{announcement.link_label || "Learn more"}</span>
+              <span className="text-[10px]">→</span>
             </Link>
           )}
         </div>
+
         <button
           type="button"
           onClick={handleDismiss}
-          className="cursor-pointer p-1 text-sm font-medium text-[#FAF8F5]/60 hover:text-[#FAF8F5]"
+          className="inline-flex h-6 w-6 flex-none cursor-pointer items-center justify-center rounded-full text-[#FAF8F5]/60 transition-colors hover:bg-white/10 hover:text-white"
           aria-label="Dismiss announcement"
         >
-          ✕
+          <span className="text-sm leading-none">✕</span>
         </button>
       </div>
     </m.aside>
