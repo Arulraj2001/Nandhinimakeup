@@ -335,7 +335,7 @@ export default async function HomePage() {
                 </div>
                 <div className="rounded-xl border border-[#E5DFD7]/80 bg-white/80 px-3.5 py-2.5 text-center shadow-2xs">
                   <p className="font-heading text-sm font-semibold text-[#8C2524]">
-                    Fairlands Salem Studio
+                    Salem Bridal Studio
                   </p>
                   <p className="text-[11px] text-[#78716C] mt-0.5">
                     Private Trials &amp; Saree Draping
@@ -408,7 +408,7 @@ export default async function HomePage() {
 
               {/* Subtle footer guarantee */}
               <p className="mt-6 text-xs text-[#78716C]">
-                📍 Fairlands, Salem, Tamil Nadu • Advance Muhurtham bookings recommended 2–6 months ahead
+                📍 Salem, Tamil Nadu • Advance Muhurtham bookings recommended 2–6 months ahead
               </p>
             </div>
           </div>

@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     path: "/contact",
     generated: {
       title: "Contact & Studio Location",
-      description: `Visit ${settings.business.business_name} in Fairlands, Salem, or reach out for bridal makeup bookings, wedding trials, and curated jewellery rental consultations.`,
+      description: `Visit ${settings.business.business_name} in Salem, Tamil Nadu, or reach out for bridal makeup bookings, wedding trials, and curated jewellery rental consultations.`,
     },
   });
 }
@@ -31,7 +31,7 @@ const WEEKDAYS: Array<{
 ];
 
 /**
- * Verified Google Maps Embed URL pointing to Nandhini Makeup Artist in Fairlands, Salem.
+ * Verified Google Maps Embed URL pointing to Nandhini Makeup Artist in Salem, Tamil Nadu.
  * Coordinates: 11.7641475, 78.011412.
  */
 const GOOGLE_MAPS_EMBED_URL =
@@ -111,7 +111,7 @@ export default async function ContactPage() {
 
           <p className="text-foreground/80 mx-auto mt-2 max-w-2xl text-xs leading-relaxed sm:text-sm">
             Reach out to schedule a bridal trial, enquire about curated temple jewellery
-            rentals, or visit our studio in Fairlands, Salem.
+            rentals, or visit our studio in Salem, Tamil Nadu.
           </p>
         </div>
 
@@ -246,15 +246,13 @@ export default async function ContactPage() {
                     {business.business_name}
                   </p>
                   <p className="text-foreground/80 mt-1 whitespace-pre-line">
-                    {business.street_address ? `${business.street_address}, ` : ""}
-                    {business.full_address}
-                    {business.postal_code ? ` – ${business.postal_code}` : ""}
+                    {business.full_address || "Panjakalipatti, Kalipatti, Salem, Tamil Nadu 636455"}
                   </p>
 
                   <div className="mt-3 space-y-1 border-t border-border/60 pt-3 text-[11px] text-foreground/70">
                     <p className="flex items-center gap-1.5">
                       <span className="text-gold">✦</span>
-                      <span>Located in Fairlands with dedicated customer parking.</span>
+                      <span>Convenient road connectivity across Salem with dedicated parking.</span>
                     </p>
                     <p className="flex items-center gap-1.5">
                       <span className="text-gold">✦</span>
@@ -390,7 +388,7 @@ export default async function ContactPage() {
                       Nandhini Makeup Artist Studio
                     </h3>
                     <p className="text-foreground/60 text-[11px]">
-                      Fairlands, Salem, Tamil Nadu
+                      {business.address_locality || "Salem"}, Tamil Nadu {business.postal_code || "636455"}
                     </p>
                   </div>
                 </div>
@@ -430,7 +428,7 @@ export default async function ContactPage() {
                 <div className="flex items-center gap-1.5">
                   <NavigationIcon className="h-3.5 w-3.5 text-accent flex-none" />
                   <span>
-                    Fairlands, Salem. Accessible via Salem New Bus Stand &amp; Junction.
+                    Salem, Tamil Nadu. Convenient road access across Salem, Erode &amp; Namakkal.
                   </span>
                 </div>
                 <a

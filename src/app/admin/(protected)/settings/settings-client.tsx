@@ -332,7 +332,7 @@ function BusinessSettingsForm({
           rows={3}
           {...form.register("full_address")}
           className="border-input bg-background text-foreground focus-visible:ring-ring w-full rounded-md border p-3 text-sm focus-visible:ring-1 focus-visible:outline-none"
-          placeholder="Fairlands, Salem, Tamil Nadu - 636016"
+          placeholder="Panjakalipatti, Kalipatti, Salem, Tamil Nadu 636455"
         />
       </FormField>
 
@@ -366,7 +366,7 @@ function BusinessSettingsForm({
             <Input
               id="address_locality"
               {...form.register("address_locality")}
-              placeholder="e.g. Fairlands, Salem"
+              placeholder="e.g. Kalipatti, Salem"
             />
           </FormField>
           <FormField

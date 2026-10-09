@@ -34,7 +34,8 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
     social?.instagram_secondary ||
     "https://www.instagram.com/nandhu_accessorie/";
   const fullAddress =
-    business?.full_address || "Fairlands, Salem, Tamil Nadu – 636016, India";
+    business?.full_address ||
+    "Panjakalipatti, Kalipatti, Salem, Tamil Nadu 636455";
   const mapsLink =
     business?.google_maps_link ||
     "https://maps.app.goo.gl/qH9srr73zGcWjFNe9";
@@ -227,15 +228,12 @@ export function Footer({ business, social, legalPages = [] }: FooterProps) {
           {/* Column 3: Studio Location & Hours (3 cols) */}
           <div className="space-y-3 lg:col-span-3">
             <h4 className="font-heading text-sm font-semibold tracking-wider text-[#8C2524] uppercase">
-              Fairlands Studio
+              Salem Bridal Studio
             </h4>
             <div className="space-y-2 text-xs text-[#57534E]">
               <p className="flex items-start gap-2 leading-relaxed">
                 <LocationIcon className="h-4 w-4 text-[#8C2524] flex-none mt-0.5" />
-                <span>
-                  {business?.street_address ? `${business.street_address}, ` : ""}
-                  {fullAddress}
-                </span>
+                <span>{fullAddress}</span>
               </p>
 
               <div className="pt-1">
