@@ -19,7 +19,7 @@ export function RecentWorksInstagram({
   instagramHandle = "@nandhini__makeupartist",
 }: RecentWorksInstagramProps) {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = React.useState(false);
+  const [isSlowed, setIsSlowed] = React.useState(false);
 
   if (!items || items.length === 0) return null;
 
@@ -64,7 +64,7 @@ export function RecentWorksInstagram({
               </p>
             </div>
             <h2 className="mt-1 font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
-              Recent Works on Instagram
+              Recent Works
             </h2>
             <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
               Real Muhurtham ceremonies, bespoke hair artistry, and HD glass-skin
@@ -160,8 +160,8 @@ export function RecentWorksInstagram({
         {/* Moving Animation Cards Track */}
         <div
           className="relative -mx-4 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          onMouseEnter={() => setIsSlowed(true)}
+          onMouseLeave={() => setIsSlowed(false)}
         >
           {/* Subtle lateral gradient fades */}
           <div
@@ -176,7 +176,7 @@ export function RecentWorksInstagram({
           <div
             ref={scrollContainerRef}
             className={`animate-marquee-slow flex items-stretch gap-5 py-4 ${
-              isPaused ? "[animation-play-state:paused]" : ""
+              isSlowed ? "[animation-duration:110s]" : "[animation-duration:45s]"
             }`}
           >
             {displayItems.map((item, idx) => {
@@ -199,7 +199,7 @@ export function RecentWorksInstagram({
                     href={targetUrl}
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
-                    className="group relative flex aspect-[4/5] w-full flex-col justify-between overflow-hidden rounded-2xl border border-[#E5DFD7] bg-white shadow-xs transition-all duration-500 hover:border-[#C5A059] hover:shadow-xl hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
+                    className="group relative flex aspect-[4/5] w-full flex-col justify-end overflow-hidden rounded-2xl border border-[#E5DFD7] bg-white shadow-xs transition-all duration-500 hover:border-[#C5A059] hover:shadow-xl hover:-translate-y-1.5 focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
                   >
                     {/* Background: Either local media image OR rich Instagram Reel poster styling */}
                     {img ? (
@@ -241,56 +241,11 @@ export function RecentWorksInstagram({
                             backgroundImage: `radial-gradient(circle at 50% 35%, rgba(197, 160, 89, 0.4) 0%, transparent 60%)`,
                           }}
                         />
-                        {/* Center Reel Play Icon */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/40 bg-white/20 text-white shadow-lg backdrop-blur-md transition-transform duration-300 group-hover:scale-115 group-hover:bg-[#8C2524]">
-                            <svg className="h-6 w-6 fill-current ml-0.5" viewBox="0 0 24 24">
-                              <polygon points="5 3 19 12 5 21 5 3" />
-                            </svg>
-                          </div>
-                          <span className="text-xs font-medium text-white/90 drop-shadow-xs">
-                            Watch Reel
-                          </span>
-                        </div>
                       </>
                     )}
 
-                    {/* Top Header inside card */}
-                    <div className="relative z-10 flex items-center justify-between p-3.5">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
-                        <svg
-                          className="h-3 w-3 text-[#E87A5D]"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <rect
-                            x="2"
-                            y="2"
-                            width="20"
-                            height="20"
-                            rx="5"
-                            ry="5"
-                          />
-                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                        </svg>
-                        <span>
-                          {insta.type === "reel" ? "Reel" : "Look"}
-                        </span>
-                      </span>
-
-                      {/* Floating Play / External indicator */}
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white/20 text-white backdrop-blur-xs transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#8C2524]">
-                        <span className="text-xs">↗</span>
-                      </span>
-                    </div>
-
-                    {/* Bottom Metadata & Hover Reveal */}
-                    <div className="relative z-10 p-4">
+                    {/* Bottom Metadata & Hover Reveal - Pinned to Bottom */}
+                    <div className="relative z-10 mt-auto w-full p-4 bg-gradient-to-t from-black/90 via-black/45 to-transparent">
                       {item.service_category?.name && (
                         <p className="text-[10px] font-semibold tracking-wider text-[#C5A059] uppercase">
                           {item.service_category.name}
@@ -308,7 +263,7 @@ export function RecentWorksInstagram({
                       )}
 
                       {/* Direct action button banner on hover */}
-                      <div className="mt-3 flex items-center justify-between rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 backdrop-blur-md transition-all duration-300 group-hover:bg-[#8C2524] group-hover:border-[#8C2524]">
+                      <div className="mt-2.5 flex items-center justify-between rounded-lg border border-white/20 bg-black/60 px-3 py-1.5 backdrop-blur-md transition-all duration-300 group-hover:bg-[#8C2524] group-hover:border-[#8C2524]">
                         <span className="text-[11px] font-medium tracking-wide text-white">
                           Watch on Instagram
                         </span>

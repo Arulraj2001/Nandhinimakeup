@@ -55,7 +55,7 @@ export function AnnouncementBar({ announcement }: AnnouncementBarProps) {
     <m.aside
       {...motionProps}
       aria-label="Announcement"
-      className="relative z-30 border-b border-[#C5A059]/30 bg-[#1C1917] px-4 py-2 text-center text-xs font-medium text-[#FAF8F5] sm:text-sm"
+      className="w-full border-b border-[#C5A059]/30 bg-[#1C1917] px-4 py-2 text-center text-xs font-medium text-[#FAF8F5] sm:text-sm"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <div className="flex-1 text-center">

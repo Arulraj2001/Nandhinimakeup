@@ -195,7 +195,7 @@ h3 {
 
 .animate-marquee-slow:hover,
 .animate-marquee-slow:focus-within {
-  animation-play-state: paused;
+  animation-duration: 110s;
 }
 
 .animate-marquee-cards {
@@ -206,7 +206,7 @@ h3 {
 
 .animate-marquee-cards:hover,
 .animate-marquee-cards:focus-within {
-  animation-play-state: paused;
+  animation-duration: 95s;
 }
 
 /* Luxury Editorial Colored Grid Backgrounds */

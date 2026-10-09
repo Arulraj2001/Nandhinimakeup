@@ -290,42 +290,126 @@ export default async function HomePage() {
         </EditorialSection>
       )}
 
-      {/* 10. Closing Call-to-Action (Skipped if no CTA text/headline) */}
+      {/* 10. Closing Call-to-Action - Luxury South Indian Bridal Atelier Invitation */}
       {hasClosingCta && (
-        <EditorialSection className="border-t border-[#C5A059]/40 bg-[#FAF8F5] py-16 text-center sm:py-20 md:py-24">
-          <div className="mx-auto max-w-3xl rounded-xl border border-[#E5DFD7] bg-white p-8 shadow-sm sm:p-12">
-            {closingHeadline && (
-              <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl md:text-5xl">
-                {closingHeadline}
-              </h2>
-            )}
+        <EditorialSection className="relative border-t border-[#C5A059]/40 bg-gradient-to-b from-[#FAF8F5] via-[#F4ECE4]/70 to-[#FAF8F5] py-20 sm:py-24 md:py-28 overflow-hidden">
+          {/* Ambient decorative glowing backdrops */}
+          <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-80 w-80 sm:h-96 sm:w-96 rounded-full bg-[#C5A059]/15 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 right-10 h-72 w-72 rounded-full bg-[#8C2524]/10 blur-3xl" />
 
-            {closingText && (
-              <p className="mt-4 text-base leading-relaxed whitespace-pre-line text-[#57534E] sm:text-lg">
-                {closingText}
-              </p>
-            )}
+          <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="relative overflow-hidden rounded-3xl border border-[#C5A059]/40 bg-gradient-to-br from-white via-[#FAF8F5] to-white p-8 sm:p-12 md:p-14 text-center shadow-lg">
+              {/* Decorative top antique gold hairline accent */}
+              <div className="pointer-events-none absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent opacity-70" />
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              {closingWhatsAppUrl && (
+              {/* Eyebrow badge */}
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#C5A059]/40 bg-[#FAF8F5] px-3.5 py-1 text-xs font-semibold tracking-widest text-[#8C2524] uppercase shadow-2xs backdrop-blur-xs">
+                <span className="text-[10px] text-[#C5A059] select-none">✦</span>
+                <span>Salem Bridal Atelier &amp; Studio</span>
+                <span className="text-[10px] text-[#C5A059] select-none">✦</span>
+              </div>
+
+              {/* Main Headline */}
+              {closingHeadline && (
+                <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl md:text-5xl">
+                  {closingHeadline}
+                </h2>
+              )}
+
+              {/* Supporting Text */}
+              {closingText && (
+                <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed whitespace-pre-line text-[#57534E] sm:text-base">
+                  {closingText}
+                </p>
+              )}
+
+              {/* 3 Luxury Value Pillars */}
+              <div className="mx-auto mt-7 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-[#E5DFD7]/80 bg-white/80 px-3.5 py-2.5 text-center shadow-2xs">
+                  <p className="font-heading text-sm font-semibold text-[#8C2524]">
+                    500+ Brides Styled
+                  </p>
+                  <p className="text-[11px] text-[#78716C] mt-0.5">
+                    HD &amp; Glass Skin Muhoortham
+                  </p>
+                </div>
+                <div className="rounded-xl border border-[#E5DFD7]/80 bg-white/80 px-3.5 py-2.5 text-center shadow-2xs">
+                  <p className="font-heading text-sm font-semibold text-[#8C2524]">
+                    Fairlands Salem Studio
+                  </p>
+                  <p className="text-[11px] text-[#78716C] mt-0.5">
+                    Private Trials &amp; Saree Draping
+                  </p>
+                </div>
+                <div className="rounded-xl border border-[#E5DFD7]/80 bg-white/80 px-3.5 py-2.5 text-center shadow-2xs">
+                  <p className="font-heading text-sm font-semibold text-[#8C2524]">
+                    From 3:00 AM Muhurtham
+                  </p>
+                  <p className="text-[11px] text-[#78716C] mt-0.5">
+                    Outstation Bridal Travel
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Buttons Row */}
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+                {closingWhatsAppUrl && (
+                  <Link
+                    href={closingWhatsAppUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-kumkum-glow inline-flex items-center justify-center gap-2 rounded-xl bg-[#15803D] hover:bg-[#166534] px-6 py-3.5 text-xs font-semibold tracking-wider text-white uppercase shadow-md transition-all hover:shadow-lg active:scale-[0.98]"
+                  >
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                    <span>Book on WhatsApp</span>
+                  </Link>
+                )}
+
+                {hasPhone && (
+                  <a
+                    href={`tel:${settings.business.phone}`}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#1C1917] bg-white px-5 py-3.5 text-xs font-semibold tracking-wider text-[#1C1917] uppercase transition-all hover:bg-[#F4ECE4] hover:border-[#8C2524] active:translate-y-[1px]"
+                  >
+                    <svg
+                      className="h-4 w-4 text-[#8C2524]"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <span>Call {settings.business.phone}</span>
+                  </a>
+                )}
+
                 <Link
-                  href={closingWhatsAppUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-kumkum-glow inline-flex items-center justify-center rounded-md bg-[#8C2524] px-6 py-3.5 text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#731E1D] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#C5A059]/60 bg-white/80 px-5 py-3.5 text-xs font-semibold tracking-wider text-[#8C2524] uppercase transition-all hover:bg-[#FAF8F5] hover:border-[#8C2524]"
                 >
-                  Book Consultation on WhatsApp
+                  <span>Studio &amp; Location</span>
+                  <span className="text-[#C5A059]">→</span>
                 </Link>
-              )}
+              </div>
 
-              {hasPhone && (
-                <a
-                  href={`tel:${settings.business.phone}`}
-                  className="inline-flex items-center justify-center rounded-md border border-[#1C1917] bg-white px-6 py-3.5 text-xs font-semibold tracking-wider text-[#1C1917] uppercase transition-all hover:bg-[#F4ECE4] active:translate-y-[1px] focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
-                >
-                  Call {settings.business.phone}
-                </a>
-              )}
+              {/* Subtle footer guarantee */}
+              <p className="mt-6 text-xs text-[#78716C]">
+                📍 Fairlands, Salem, Tamil Nadu • Advance Muhurtham bookings recommended 2–6 months ahead
+              </p>
             </div>
           </div>
         </EditorialSection>

@@ -8,20 +8,24 @@ interface InstagramReelEmbedProps {
   title?: string;
   height?: number | string;
   className?: string;
+  bare?: boolean;
 }
 
 export function InstagramReelEmbed({
   embedUrl,
   url,
   title = "Instagram Reel",
-  height = 380,
+  height = 250,
   className = "",
+  bare = false,
 }: InstagramReelEmbedProps) {
   const [isLoaded, setIsLoaded] = React.useState(false);
 
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-xl border border-[#E5DFD7] bg-[#1C1917] shadow-xs ${className}`}
+      className={`relative w-full overflow-hidden bg-black ${
+        bare ? "" : "rounded-xl border border-[#E5DFD7] shadow-xs"
+      } ${className}`}
       style={{
         minHeight: typeof height === "number" ? `${height}px` : height,
         height: typeof height === "number" ? `${height}px` : height,
@@ -29,9 +33,9 @@ export function InstagramReelEmbed({
     >
       {/* Loading Skeleton */}
       {!isLoaded && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-[#1C1917] via-[#2F1818] to-[#1C1917] p-4 text-center">
-          <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#C5A059] border-t-transparent" />
-          <p className="text-xs font-medium text-white/80">Loading Instagram Reel...</p>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#1C1917] via-[#2F1818] to-[#1C1917] p-4 text-center">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#C5A059] border-t-transparent" />
+          <p className="text-[11px] font-medium text-white/70">Loading Instagram Reel...</p>
         </div>
       )}
 
@@ -48,7 +52,7 @@ export function InstagramReelEmbed({
         title={title}
       />
 
-      {url && (
+      {url && !bare && (
         <a
           href={url}
           target="_blank"

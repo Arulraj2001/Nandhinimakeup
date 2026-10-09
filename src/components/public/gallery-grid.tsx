@@ -97,7 +97,8 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                     embedUrl={insta.embedUrl}
                     url={insta.url}
                     title={item.title || "Instagram Look"}
-                    height={320}
+                    height={300}
+                    bare={true}
                   />
                 ) : (
                   <a

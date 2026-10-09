@@ -27,15 +27,17 @@ export default async function PublicLayout({
   return (
     <MotionProvider>
       <div className="bg-page-background text-foreground flex min-h-screen flex-col">
-        <AnnouncementBar announcement={announcement} />
-        <Header
-          businessName={settings.business.business_name}
-          logoUrl={logoUrl}
-          logoAlt={logoMedia?.alt_text}
-          whatsappNumber={settings.business.whatsapp_number}
-          acceptOrders={settings.shipping.accept_orders}
-          hasBlog={hasBlog}
-        />
+        <div className="sticky top-0 z-40">
+          <AnnouncementBar announcement={announcement} />
+          <Header
+            businessName={settings.business.business_name}
+            logoUrl={logoUrl}
+            logoAlt={logoMedia?.alt_text}
+            whatsappNumber={settings.business.whatsapp_number}
+            acceptOrders={settings.shipping.accept_orders}
+            hasBlog={hasBlog}
+          />
+        </div>
         <main className="flex-1">{children}</main>
         <Footer
           business={settings.business}

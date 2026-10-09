@@ -14,7 +14,7 @@ export function TestimonialsCarousel({
   testimonials,
 }: TestimonialsCarouselProps) {
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = React.useState(false);
+  const [isSlowed, setIsSlowed] = React.useState(false);
 
   if (!testimonials || testimonials.length === 0) return null;
 
@@ -118,11 +118,11 @@ export function TestimonialsCarousel({
           </div>
         </div>
 
-        {/* Moving Animation Track: Continuous auto-glide + hover pause */}
+        {/* Moving Animation Track: Continuous auto-glide + hover slow down */}
         <div
           className="relative -mx-4 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          onMouseEnter={() => setIsSlowed(true)}
+          onMouseLeave={() => setIsSlowed(false)}
         >
           {/* Subtle fade edges for smooth infinite aesthetic */}
           <div
@@ -137,7 +137,7 @@ export function TestimonialsCarousel({
           <div
             ref={scrollContainerRef}
             className={`animate-marquee-cards flex items-stretch gap-5 py-4 ${
-              isPaused ? "[animation-play-state:paused]" : ""
+              isSlowed ? "[animation-duration:95s]" : "[animation-duration:38s]"
             }`}
           >
             {displayItems.map((t, idx) => {
@@ -149,99 +149,146 @@ export function TestimonialsCarousel({
                   key={`${t.id}-${idx}`}
                   className="w-[290px] flex-none sm:w-[320px] md:w-[340px]"
                 >
-                  <article className="flex h-full flex-col justify-between rounded-xl border border-[#E5DFD7]/90 bg-white/95 p-5 shadow-xs backdrop-blur-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md hover:-translate-y-1">
-                    <div>
-                      {/* Real Instagram Reel Embed when link is present */}
-                      {hasInsta && insta.embedUrl && (
-                        <div className="mb-3.5">
-                          <InstagramReelEmbed
-                            embedUrl={insta.embedUrl}
-                            url={insta.url}
-                            title={`Instagram Reel for ${t.customer_name}`}
-                            height={360}
-                          />
-                        </div>
-                      )}
-
-                      {/* Fallback Instagram Profile button if only handle / profile link */}
-                      {hasInsta && !insta.embedUrl && (
-                        <a
-                          href={insta.url || "https://www.instagram.com/nandhini__makeupartist/"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mb-3.5 flex items-center justify-between rounded-lg border border-[#DD2A7B]/30 bg-[#FAF8F5] px-3 py-2 text-xs font-medium text-[#1C1917] transition-colors hover:border-[#DD2A7B] hover:bg-white"
-                        >
-                          <span className="flex items-center gap-1.5">
-                            <span className="text-[#DD2A7B]">📸</span>
-                            <span>{insta.handle || "@nandhini__makeupartist"}</span>
-                          </span>
-                          <span className="text-[10px] text-[#DD2A7B]">View Profile ↗</span>
-                        </a>
-                      )}
-
-                      {/* Card Header: Stars + Source */}
-                      <div className="flex items-center justify-between">
-                        {/* Gold Star Rating */}
-                        <div
-                          className="flex items-center gap-1 text-[#C5A059]"
-                          aria-label={`Rated ${t.rating} out of 5 stars`}
-                        >
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <svg
-                              key={i}
-                              className={`h-3.5 w-3.5 ${
-                                i < t.rating
-                                  ? "fill-[#C5A059] text-[#C5A059]"
-                                  : "fill-none stroke-current stroke-2 text-[#E5DFD7]"
-                              }`}
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
-                          ))}
-                        </div>
-
-                        {/* Top Source / Instagram badge if no reel thumbnail above */}
-                        {!hasInsta && t.source && (
-                          <span className="rounded-full border border-[#E5DFD7] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold tracking-wider text-[#78716C] uppercase">
-                            {t.source}
-                          </span>
-                        )}
-
-                        {hasInsta && (
-                          <span className="rounded-full border border-[#DD2A7B]/25 bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 px-2 py-0.5 text-[10px] font-semibold text-[#8C2524]">
-                            Reel Story
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Quote text (only if provided) */}
-                      {t.quote && t.quote.trim().length > 0 && (
-                        <blockquote className="mt-3 text-xs sm:text-[13px] leading-relaxed text-[#57534E] italic line-clamp-3">
-                          &ldquo;{t.quote}&rdquo;
-                        </blockquote>
-                      )}
-                    </div>
-
-                    {/* Author Footer */}
-                    <div className="mt-5 flex items-end justify-between border-t border-[#E5DFD7]/80 pt-3.5">
+                  {hasInsta && insta.embedUrl ? (
+                    <article className="group flex h-full flex-col justify-between overflow-hidden rounded-xl border border-[#E5DFD7]/90 bg-white/95 shadow-xs backdrop-blur-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md hover:-translate-y-1">
                       <div>
-                        <p className="font-heading text-sm font-semibold tracking-tight text-[#1C1917]">
-                          {t.customer_name}
-                        </p>
-                        {t.occasion && (
-                          <p className="mt-0.5 text-[11px] font-medium text-[#78716C]">
-                            {t.occasion}
+                        {/* Top Live Reel flush with outer card - no inner card */}
+                        <InstagramReelEmbed
+                          embedUrl={insta.embedUrl}
+                          url={insta.url}
+                          title={`Instagram Reel for ${t.customer_name}`}
+                          height={240}
+                          bare={true}
+                        />
+
+                        <div className="p-4">
+                          {/* Stars + Badge */}
+                          <div className="flex items-center justify-between">
+                            <div
+                              className="flex items-center gap-1 text-[#C5A059]"
+                              aria-label={`Rated ${t.rating} out of 5 stars`}
+                            >
+                              {Array.from({ length: 5 }).map((_, i) => (
+                                <svg
+                                  key={i}
+                                  className={`h-3.5 w-3.5 ${
+                                    i < t.rating
+                                      ? "fill-[#C5A059] text-[#C5A059]"
+                                      : "fill-none stroke-current stroke-2 text-[#E5DFD7]"
+                                  }`}
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                              ))}
+                            </div>
+
+                            <span className="rounded-full border border-[#DD2A7B]/25 bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 px-2 py-0.5 text-[10px] font-semibold text-[#8C2524]">
+                              Reel Story
+                            </span>
+                          </div>
+
+                          {/* Quote text (only if provided) */}
+                          {t.quote && t.quote.trim().length > 0 && (
+                            <blockquote className="mt-2 text-xs leading-relaxed text-[#57534E] italic line-clamp-2">
+                              &ldquo;{t.quote}&rdquo;
+                            </blockquote>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Author Footer */}
+                      <div className="px-4 pb-4 pt-2 flex items-end justify-between border-t border-[#E5DFD7]/70">
+                        <div>
+                          <p className="font-heading text-sm font-semibold tracking-tight text-[#1C1917]">
+                            {t.customer_name}
                           </p>
+                          {t.occasion && (
+                            <p className="mt-0.5 text-[11px] font-medium text-[#78716C]">
+                              {t.occasion}
+                            </p>
+                          )}
+                        </div>
+
+                        <span className="inline-flex items-center gap-1 rounded bg-[#F4ECE4]/80 px-1.5 py-0.5 text-[10px] font-medium text-[#8C2524]">
+                          <span>✓</span> Verified Bride
+                        </span>
+                      </div>
+                    </article>
+                  ) : (
+                    <article className="flex h-full flex-col justify-between rounded-xl border border-[#E5DFD7]/90 bg-white/95 p-5 shadow-xs backdrop-blur-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md hover:-translate-y-1">
+                      <div>
+                        {/* Fallback Profile link if only handle / profile link */}
+                        {hasInsta && !insta.embedUrl && (
+                          <a
+                            href={insta.url || "https://www.instagram.com/nandhini__makeupartist/"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mb-3.5 flex items-center justify-between rounded-lg border border-[#DD2A7B]/30 bg-[#FAF8F5] px-3 py-2 text-xs font-medium text-[#1C1917] transition-colors hover:border-[#DD2A7B] hover:bg-white"
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span className="text-[#DD2A7B]">📸</span>
+                              <span>{insta.handle || "@nandhini__makeupartist"}</span>
+                            </span>
+                            <span className="text-[10px] text-[#DD2A7B]">View Profile ↗</span>
+                          </a>
+                        )}
+
+                        {/* Card Header: Stars + Source */}
+                        <div className="flex items-center justify-between">
+                          <div
+                            className="flex items-center gap-1 text-[#C5A059]"
+                            aria-label={`Rated ${t.rating} out of 5 stars`}
+                          >
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <svg
+                                key={i}
+                                className={`h-3.5 w-3.5 ${
+                                  i < t.rating
+                                    ? "fill-[#C5A059] text-[#C5A059]"
+                                    : "fill-none stroke-current stroke-2 text-[#E5DFD7]"
+                                }`}
+                                viewBox="0 0 24 24"
+                              >
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                              </svg>
+                            ))}
+                          </div>
+
+                          {t.source && (
+                            <span className="rounded-full border border-[#E5DFD7] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold tracking-wider text-[#78716C] uppercase">
+                              {t.source}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Quote text */}
+                        {t.quote && t.quote.trim().length > 0 && (
+                          <blockquote className="mt-3.5 text-xs sm:text-[13px] leading-relaxed text-[#57534E] italic">
+                            &ldquo;{t.quote}&rdquo;
+                          </blockquote>
                         )}
                       </div>
 
-                      {/* Verified Bride pill badge */}
-                      <span className="inline-flex items-center gap-1 rounded bg-[#F4ECE4]/80 px-1.5 py-0.5 text-[10px] font-medium text-[#8C2524]">
-                        <span>✓</span> Verified Bride
-                      </span>
-                    </div>
-                  </article>
+                      {/* Author Footer */}
+                      <div className="mt-5 flex items-end justify-between border-t border-[#E5DFD7]/80 pt-3.5">
+                        <div>
+                          <p className="font-heading text-sm font-semibold tracking-tight text-[#1C1917]">
+                            {t.customer_name}
+                          </p>
+                          {t.occasion && (
+                            <p className="mt-0.5 text-[11px] font-medium text-[#78716C]">
+                              {t.occasion}
+                            </p>
+                          )}
+                        </div>
+
+                        <span className="inline-flex items-center gap-1 rounded bg-[#F4ECE4]/80 px-1.5 py-0.5 text-[10px] font-medium text-[#8C2524]">
+                          <span>✓</span> Verified Bride
+                        </span>
+                      </div>
+                    </article>
+                  )}
                 </div>
               );
             })}
