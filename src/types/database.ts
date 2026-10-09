@@ -488,6 +488,7 @@ export interface Database {
           title: string;
           caption: string;
           service_category_id: string | null;
+          instagram_url?: string | null;
           is_featured: boolean;
           is_published: boolean;
           sort_order: number;
@@ -502,6 +503,7 @@ export interface Database {
           title?: string;
           caption?: string;
           service_category_id?: string | null;
+          instagram_url?: string | null;
           is_featured?: boolean;
           is_published?: boolean;
           sort_order?: number;
@@ -516,6 +518,7 @@ export interface Database {
           title?: string;
           caption?: string;
           service_category_id?: string | null;
+          instagram_url?: string | null;
           is_featured?: boolean;
           is_published?: boolean;
           sort_order?: number;
@@ -554,6 +557,7 @@ export interface Database {
           quote: string;
           rating: number;
           source: "google" | "instagram" | "whatsapp" | "direct";
+          instagram_url?: string | null;
           is_featured: boolean;
           is_published: boolean;
           sort_order: number;
@@ -567,6 +571,7 @@ export interface Database {
           quote: string;
           rating: number;
           source: "google" | "instagram" | "whatsapp" | "direct";
+          instagram_url?: string | null;
           is_featured?: boolean;
           is_published?: boolean;
           sort_order?: number;
@@ -580,6 +585,7 @@ export interface Database {
           quote?: string;
           rating?: number;
           source?: "google" | "instagram" | "whatsapp" | "direct";
+          instagram_url?: string | null;
           is_featured?: boolean;
           is_published?: boolean;
           sort_order?: number;

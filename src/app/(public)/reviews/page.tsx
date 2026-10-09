@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/public/breadcrumb";
 import { EmptyState } from "@/components/public/empty-state";
 
 import { buildMetadata } from "@/lib/seo/metadata-builder";
+import { resolveInstagramData } from "@/lib/utils/instagram";
 
 export async function generateMetadata(): Promise<Metadata> {
   const testimonials = await getPublicTestimonials();
@@ -45,60 +46,106 @@ export default async function ReviewsPage() {
         {testimonials.length === 0 ? (
           <EmptyState message="No reviews have been published yet." />
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((t) => (
-              <article
-                key={t.id}
-                className="border-border bg-surface flex flex-col justify-between rounded-xl border p-6 transition-shadow hover:shadow-sm"
-              >
-                <div>
-                  {/* Star Rating */}
-                  <div
-                    className="text-accent flex items-center gap-1"
-                    aria-label={`Rated ${t.rating} out of 5 stars`}
-                  >
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <svg
-                        key={i}
-                        className={`h-4 w-4 ${
-                          i < t.rating
-                            ? "text-[#C5A059] fill-[#C5A059]"
-                            : "text-[#E5DFD7] fill-none stroke-current stroke-2"
-                        }`}
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((t) => {
+              const insta = resolveInstagramData(t.instagram_url, t.occasion);
+              const hasInsta = Boolean(insta.url);
 
-                  {/* Quote */}
-                  <blockquote className="text-foreground/90 mt-4 text-sm leading-relaxed italic">
-                    &ldquo;{t.quote}&rdquo;
-                  </blockquote>
-                </div>
-
-                {/* Author Info */}
-                <div className="border-border mt-6 flex items-center justify-between border-t pt-4">
+              return (
+                <article
+                  key={t.id}
+                  className="flex flex-col justify-between rounded-xl border border-[#E5DFD7] bg-white p-5 shadow-xs transition-all duration-300 hover:border-[#C5A059] hover:shadow-md"
+                >
                   <div>
-                    <p className="font-heading text-foreground text-sm font-semibold">
-                      {t.customer_name}
-                    </p>
-                    {t.occasion && (
-                      <p className="text-foreground/60 mt-0.5 text-xs">
-                        {t.occasion}
-                      </p>
-                    )}
+                    {/* Header: Stars + Instagram / Source badge */}
+                    <div className="flex items-center justify-between">
+                      <div
+                        className="flex items-center gap-1 text-[#C5A059]"
+                        aria-label={`Rated ${t.rating} out of 5 stars`}
+                      >
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <svg
+                            key={i}
+                            className={`h-3.5 w-3.5 ${
+                              i < t.rating
+                                ? "fill-[#C5A059] text-[#C5A059]"
+                                : "fill-none stroke-current stroke-2 text-[#E5DFD7]"
+                            }`}
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                        ))}
+                      </div>
+
+                      {hasInsta ? (
+                        <a
+                          href={insta.url!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`View ${t.customer_name}'s Instagram`}
+                          className="inline-flex items-center gap-1 rounded-full border border-[#DD2A7B]/25 bg-gradient-to-r from-[#F58529]/10 via-[#DD2A7B]/10 to-[#8134AF]/10 px-2 py-0.5 text-[11px] font-medium text-[#8C2524] transition-all hover:border-[#DD2A7B]/50"
+                        >
+                          <svg
+                            className="h-3 w-3 text-[#DD2A7B]"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <rect
+                              x="2"
+                              y="2"
+                              width="20"
+                              height="20"
+                              rx="5"
+                              ry="5"
+                            />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                          </svg>
+                          <span className="font-semibold">
+                            {insta.handle || "Instagram"}
+                          </span>
+                          <span className="text-[9px]">↗</span>
+                        </a>
+                      ) : (
+                        t.source && (
+                          <span className="rounded-full border border-[#E5DFD7] bg-[#FAF8F5] px-2 py-0.5 text-[10px] font-semibold tracking-wider text-[#78716C] uppercase">
+                            {t.source}
+                          </span>
+                        )
+                      )}
+                    </div>
+
+                    {/* Quote */}
+                    <blockquote className="mt-3.5 text-xs sm:text-[13px] leading-relaxed text-[#57534E] italic">
+                      &ldquo;{t.quote}&rdquo;
+                    </blockquote>
                   </div>
 
-                  {t.source && (
-                    <span className="bg-page-background text-foreground/70 border-border rounded-full border px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase">
-                      {t.source}
+                  {/* Author Info */}
+                  <div className="mt-5 flex items-end justify-between border-t border-[#E5DFD7] pt-3.5">
+                    <div>
+                      <p className="font-heading text-sm font-semibold text-[#1C1917]">
+                        {t.customer_name}
+                      </p>
+                      {t.occasion && (
+                        <p className="mt-0.5 text-[11px] font-medium text-[#78716C]">
+                          {t.occasion}
+                        </p>
+                      )}
+                    </div>
+
+                    <span className="inline-flex items-center gap-1 rounded bg-[#F4ECE4]/80 px-1.5 py-0.5 text-[10px] font-medium text-[#8C2524]">
+                      <span>✓</span> Verified Bride
                     </span>
-                  )}
-                </div>
-              </article>
-            ))}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         )}
       </div>

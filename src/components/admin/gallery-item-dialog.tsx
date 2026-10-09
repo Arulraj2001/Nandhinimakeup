@@ -88,6 +88,7 @@ function GalleryItemDialogInner({
       title: item?.title || "",
       caption: item?.caption || "",
       service_category_id: item?.service_category_id || null,
+      instagram_url: item?.instagram_url || "",
       is_featured: item?.is_featured ?? false,
       is_published: item?.is_published ?? true,
       sort_order: item?.sort_order ?? 0,
@@ -423,6 +424,19 @@ function GalleryItemDialogInner({
               {...form.register("caption")}
               className="border-border bg-page-background text-foreground focus-visible:ring-foreground w-full rounded-md border p-2.5 text-sm focus-visible:ring-1 focus-visible:outline-none"
               placeholder="Details on the look, skin tone matching, and hair style..."
+            />
+          </FormField>
+
+          <FormField
+            id="instagram_url"
+            label="Instagram Reel or Post URL (Optional)"
+            hint="e.g. https://www.instagram.com/reel/... or https://www.instagram.com/p/..."
+            error={form.formState.errors.instagram_url?.message}
+          >
+            <Input
+              id="instagram_url"
+              {...form.register("instagram_url")}
+              placeholder="https://www.instagram.com/reel/... or @nandhinimakeup"
             />
           </FormField>
 

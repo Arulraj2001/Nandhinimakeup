@@ -6,6 +6,7 @@ import Image from "next/image";
 import type { GalleryItemWithDetails } from "@/types/gallery";
 import { BeforeAfterSlider } from "@/components/public/before-after-slider";
 import { getPublicMediaUrl } from "@/lib/utils/media";
+import { resolveInstagramData } from "@/lib/utils/instagram";
 import type { LightboxImageItem } from "@/components/public/image-lightbox";
 
 // Lightbox dynamically loaded on first open to keep initial bundle tiny
@@ -72,68 +73,115 @@ export function GalleryGrid({ items }: GalleryGridProps) {
             );
           }
 
-          // Single image card
           const imageUrl = item.media
             ? getPublicMediaUrl(item.media.storage_path)
             : null;
+          const insta = resolveInstagramData(item.instagram_url, item.caption);
 
           return (
             <article
               key={item.id}
               className="border-border bg-page-background group flex flex-col overflow-hidden rounded-xl border transition-shadow duration-300 hover:shadow-md"
             >
-              <button
-                type="button"
-                onClick={() => handleOpenLightbox(item.id)}
-                aria-label={`Open ${item.title || "photo"} in lightbox`}
-                className="bg-surface focus-visible:ring-foreground relative aspect-[4/5] w-full cursor-pointer overflow-hidden text-left focus-visible:ring-2 focus-visible:outline-none"
-              >
-                {imageUrl ? (
-                  <Image
-                    src={imageUrl}
-                    alt={item.media?.alt_text || item.title || "Gallery photo"}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-300 will-change-transform group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="text-foreground/40 flex h-full w-full items-center justify-center text-xs">
-                    No image available
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => handleOpenLightbox(item.id)}
+                  aria-label={`Open ${item.title || "photo"} in lightbox`}
+                  className="bg-surface focus-visible:ring-foreground relative aspect-[4/5] w-full cursor-pointer overflow-hidden text-left focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  {imageUrl ? (
+                    <Image
+                      src={imageUrl}
+                      alt={item.media?.alt_text || item.title || "Gallery photo"}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 will-change-transform group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="text-foreground/40 flex h-full w-full items-center justify-center text-xs">
+                      No image available
+                    </div>
+                  )}
+
+                  {/* Subtle zoom icon hint on hover */}
+                  <div className="bg-foreground/20 absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <span className="bg-page-background/90 text-foreground rounded-full p-2.5 shadow-sm">
+                      <svg
+                        className="h-5 w-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        <line x1="11" y1="8" x2="11" y2="14" />
+                        <line x1="8" y1="11" x2="14" y2="11" />
+                      </svg>
+                    </span>
+                  </div>
+                </button>
+
+                {/* Top Instagram badge if linked */}
+                {insta.url && (
+                  <div className="pointer-events-auto absolute top-3 right-3 z-10">
+                    <a
+                      href={insta.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Watch on Instagram"
+                      className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white shadow-xs backdrop-blur-md transition-all hover:bg-[#8C2524] hover:border-white/50"
+                    >
+                      <svg
+                        className="h-3 w-3 text-[#E87A5D]"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                      </svg>
+                      <span>{insta.type === "reel" ? "Reel" : "Instagram"}</span>
+                      <span className="text-[10px]">↗</span>
+                    </a>
                   </div>
                 )}
+              </div>
 
-                {/* Subtle zoom icon hint on hover */}
-                <div className="bg-foreground/20 absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  <span className="bg-page-background/90 text-foreground rounded-full p-2.5 shadow-sm">
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                      <line x1="11" y1="8" x2="11" y2="14" />
-                      <line x1="8" y1="11" x2="14" y2="11" />
-                    </svg>
-                  </span>
-                </div>
-              </button>
+              {(item.title || item.caption || insta.url) && (
+                <div className="flex flex-1 flex-col justify-between p-4">
+                  <div>
+                    {item.title && (
+                      <h3 className="font-heading text-foreground text-base font-semibold">
+                        {item.title}
+                      </h3>
+                    )}
+                    {item.caption && (
+                      <p className="text-foreground/70 mt-1 text-xs leading-relaxed">
+                        {item.caption}
+                      </p>
+                    )}
+                  </div>
 
-              {(item.title || item.caption) && (
-                <div className="flex flex-1 flex-col p-4">
-                  {item.title && (
-                    <h3 className="font-heading text-foreground text-base font-semibold">
-                      {item.title}
-                    </h3>
-                  )}
-                  {item.caption && (
-                    <p className="text-foreground/70 mt-1 text-xs leading-relaxed">
-                      {item.caption}
-                    </p>
+                  {insta.url && (
+                    <div className="mt-3 pt-2.5 border-t border-[#E5DFD7]/80 flex justify-end">
+                      <a
+                        href={insta.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold tracking-wider text-[#8C2524] uppercase transition-colors hover:text-[#731E1D]"
+                      >
+                        <span>Watch on Instagram</span>
+                        <span>↗</span>
+                      </a>
+                    </div>
                   )}
                 </div>
               )}

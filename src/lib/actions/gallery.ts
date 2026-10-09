@@ -72,24 +72,42 @@ export async function saveGalleryItem(
       ? parsed.data.before_media_id || null
       : null;
 
+  const payload = {
+    type: parsed.data.type,
+    media_id: parsed.data.media_id,
+    before_media_id: beforeMediaId,
+    title: parsed.data.title.trim(),
+    caption: parsed.data.caption.trim(),
+    service_category_id: parsed.data.service_category_id || null,
+    instagram_url: parsed.data.instagram_url
+      ? parsed.data.instagram_url.trim()
+      : null,
+    is_featured: parsed.data.is_featured,
+    is_published: parsed.data.is_published,
+    sort_order: parsed.data.sort_order,
+  };
+
   if (parsed.data.id) {
     // Update
-    const { data, error } = await auth.data.supabase
+    let { data, error } = await auth.data.supabase
       .from("gallery_items")
-      .update({
-        type: parsed.data.type,
-        media_id: parsed.data.media_id,
-        before_media_id: beforeMediaId,
-        title: parsed.data.title.trim(),
-        caption: parsed.data.caption.trim(),
-        service_category_id: parsed.data.service_category_id || null,
-        is_featured: parsed.data.is_featured,
-        is_published: parsed.data.is_published,
-        sort_order: parsed.data.sort_order,
-      })
+      .update(payload)
       .eq("id", parsed.data.id)
       .select()
       .single();
+
+    if (error && (error as { code?: string }).code === "42703") {
+      const { instagram_url: _unused, ...fallbackPayload } = payload;
+      void _unused;
+      const retry = await auth.data.supabase
+        .from("gallery_items")
+        .update(fallbackPayload)
+        .eq("id", parsed.data.id)
+        .select()
+        .single();
+      data = retry.data;
+      error = retry.error;
+    }
 
     if (error || !data) {
       return actionError(error?.message || "Failed to update gallery item.");
@@ -108,21 +126,29 @@ export async function saveGalleryItem(
 
     const nextOrder = (maxOrderData?.sort_order ?? -1) + 1;
 
-    const { data, error } = await auth.data.supabase
+    let { data, error } = await auth.data.supabase
       .from("gallery_items")
       .insert({
-        type: parsed.data.type,
-        media_id: parsed.data.media_id,
-        before_media_id: beforeMediaId,
-        title: parsed.data.title.trim(),
-        caption: parsed.data.caption.trim(),
-        service_category_id: parsed.data.service_category_id || null,
-        is_featured: parsed.data.is_featured,
-        is_published: parsed.data.is_published,
+        ...payload,
         sort_order: parsed.data.sort_order || nextOrder,
       })
       .select()
       .single();
+
+    if (error && (error as { code?: string }).code === "42703") {
+      const { instagram_url: _unused, ...fallbackPayload } = payload;
+      void _unused;
+      const retry = await auth.data.supabase
+        .from("gallery_items")
+        .insert({
+          ...fallbackPayload,
+          sort_order: parsed.data.sort_order || nextOrder,
+        })
+        .select()
+        .single();
+      data = retry.data;
+      error = retry.error;
+    }
 
     if (error || !data) {
       return actionError(error?.message || "Failed to create gallery item.");

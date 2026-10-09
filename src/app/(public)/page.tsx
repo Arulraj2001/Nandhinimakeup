@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { getPublicSiteSettings, getPublicMedia } from "@/lib/data/settings";
 import { getPublicFeaturedServices } from "@/lib/data/services";
 import { getPublicFeaturedProducts } from "@/lib/data/products";
@@ -14,6 +13,7 @@ import { HomeHero } from "@/components/public/home/home-hero";
 import { HomeCounters } from "@/components/public/home/home-counters";
 import { CategoryMarquee } from "@/components/public/home/category-marquee";
 import { TestimonialsCarousel } from "@/components/public/home/testimonials-carousel";
+import { RecentWorksInstagram } from "@/components/public/home/recent-works-instagram";
 import { ServiceCard } from "@/components/public/service-card";
 import { ProductCard } from "@/components/public/product-card";
 import { BlogCard } from "@/components/public/blog/blog-card";
@@ -65,8 +65,8 @@ export default async function HomePage() {
     getPublicFeaturedProducts(8),
     getPublicFeaturedGalleryItems({ type: "before_after", limit: 3 }),
     getPublicServiceCategories(),
-    getPublicTestimonials({ featuredOnly: true, limit: 6 }),
-    getPublicFeaturedGalleryItems({ limit: 6 }),
+    getPublicTestimonials({ featuredOnly: true, limit: 8 }),
+    getPublicFeaturedGalleryItems({ limit: 12 }),
     getPublicBlogPosts({ page: 1, limit: 3 }),
   ]);
 
@@ -246,61 +246,12 @@ export default async function HomePage() {
         <TestimonialsCarousel testimonials={featuredTestimonials} />
       )}
 
-      {/* 8. Gallery Teaser (Up to six items linking to /gallery, skipped if empty) */}
+      {/* 8. Recent Works on Instagram (Moving animation, colored grid, links to Reels & Posts) */}
       {galleryTeaser.length > 0 && (
-        <EditorialSection className="border-t border-[#E5DFD7] bg-[#F4ECE4]/40 py-16 sm:py-20 md:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <EditorialEyebrow
-                  eyebrow="✦ Real Moments ✦"
-                  colorClass="text-[#C5A059]"
-                />
-                <h2 className="font-heading text-3xl font-semibold tracking-tight text-[#1C1917] sm:text-4xl">
-                  Artistry in Detail
-                </h2>
-                <p className="mt-2 max-w-xl text-sm text-[#57534E] sm:text-base">
-                  A glimpse into our makeup craft, hair design, and bridal
-                  elegance across Salem &amp; Tamil Nadu.
-                </p>
-              </div>
-
-              <Link
-                href="/gallery"
-                className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-[#8C2524] uppercase transition-colors hover:text-[#731E1D]"
-              >
-                View Full Gallery <span>→</span>
-              </Link>
-            </div>
-
-            <EditorialStaggerGrid className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-              {galleryTeaser.map((item) => {
-                const img = item.media;
-                if (!img) return null;
-                return (
-                  <Link
-                    key={item.id}
-                    href="/gallery"
-                    className="group relative aspect-[3/4] overflow-hidden rounded-lg border border-[#E5DFD7] bg-white transition-all hover:border-[#C5A059]/80 hover:shadow-xs focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
-                  >
-                    <Image
-                      src={getPublicMediaUrl(img.storage_path)}
-                      alt={img.alt_text || item.title || "Gallery thumbnail"}
-                      fill
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                      className="object-cover transition-transform duration-300 ease-out will-change-transform group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-[#1C1917]/30 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                      <span className="rounded bg-[#FAF8F5]/90 px-2 py-1 text-[11px] font-semibold text-[#8C2524] uppercase tracking-wider backdrop-blur-xs">
-                        View Look →
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </EditorialStaggerGrid>
-          </div>
-        </EditorialSection>
+        <RecentWorksInstagram
+          items={galleryTeaser}
+          instagramUrl={settings.social.instagram_primary || undefined}
+        />
       )}
 
       {/* 9. Bridal Journal / Beauty Notes (Up to three articles, skipped if empty) */}

@@ -19,6 +19,7 @@ export const saveGalleryItemSchema = z
     title: z.string(),
     caption: z.string(),
     service_category_id: z.string().uuid().nullable().optional(),
+    instagram_url: z.string().trim().nullable().optional(),
     is_featured: z.boolean(),
     is_published: z.boolean(),
     sort_order: z.number().int(),

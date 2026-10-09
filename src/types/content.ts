@@ -26,6 +26,7 @@ export const saveTestimonialSchema = z.object({
     .min(1, "Rating must be between 1 and 5")
     .max(5, "Rating must be between 1 and 5"),
   source: z.enum(["google", "instagram", "whatsapp", "direct"]),
+  instagram_url: z.string().trim().nullable().optional(),
   is_featured: z.boolean(),
   is_published: z.boolean(),
   sort_order: z.number().int(),

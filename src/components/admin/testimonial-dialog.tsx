@@ -63,6 +63,7 @@ function TestimonialDialogInner({
       quote: item?.quote || "",
       rating: item?.rating ?? 5,
       source: item?.source || "direct",
+      instagram_url: item?.instagram_url || "",
       is_featured: item?.is_featured ?? false,
       is_published: item?.is_published ?? true,
       sort_order: item?.sort_order ?? 0,
@@ -119,6 +120,17 @@ function TestimonialDialogInner({
               <Input
                 {...form.register("occasion")}
                 placeholder="e.g. Bridal Makeup"
+              />
+            </FormField>
+
+            <FormField
+              label="Instagram Profile or Post URL (Optional)"
+              hint="e.g. @priya_bridal or https://www.instagram.com/p/..."
+              error={form.formState.errors.instagram_url?.message}
+            >
+              <Input
+                {...form.register("instagram_url")}
+                placeholder="https://www.instagram.com/... or @handle"
               />
             </FormField>
 

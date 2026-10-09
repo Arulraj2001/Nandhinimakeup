@@ -187,6 +187,57 @@ h3 {
   animation-play-state: paused;
 }
 
+.animate-marquee-slow {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+
+.animate-marquee-slow:hover,
+.animate-marquee-slow:focus-within {
+  animation-play-state: paused;
+}
+
+.animate-marquee-cards {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.animate-marquee-cards:hover,
+.animate-marquee-cards:focus-within {
+  animation-play-state: paused;
+}
+
+/* Luxury Editorial Colored Grid Backgrounds */
+.bg-bridal-grid-gold {
+  background-color: #FAF7F2;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(197, 160, 89, 0.18) 0%, transparent 65%),
+    linear-gradient(to right, rgba(197, 160, 89, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(197, 160, 89, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 36px 36px, 36px 36px;
+}
+
+.bg-bridal-grid-crimson {
+  background-color: #FAF6F3;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(140, 37, 36, 0.12) 0%, rgba(197, 160, 89, 0.08) 50%, transparent 75%),
+    linear-gradient(to right, rgba(140, 37, 36, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(197, 160, 89, 0.10) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+}
+
+.bg-instagram-gradient {
+  background: linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%);
+}
+
+.text-instagram-gradient {
+  background: linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Editorial Ken Burns Subtle Ambient Drift (Hero Portrait) */
 @keyframes kenBurnsSubtle {
   0% {
@@ -269,6 +320,8 @@ h3 {
   }
 
   .animate-marquee,
+  .animate-marquee-slow,
+  .animate-marquee-cards,
   .animate-fade-in-up,
   .animate-ken-burns,
   .animate-gold-shimmer,
@@ -283,7 +336,9 @@ h3 {
     color: #faf8f5 !important;
   }
 
-  .animate-marquee {
+  .animate-marquee,
+  .animate-marquee-slow,
+  .animate-marquee-cards {
     width: auto;
     flex-wrap: wrap;
     justify-content: center;

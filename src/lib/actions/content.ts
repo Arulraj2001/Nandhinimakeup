@@ -62,22 +62,40 @@ export async function saveTestimonial(
     return actionError("Validation failed", parsed.error.flatten().fieldErrors);
   }
 
+  const payload = {
+    customer_name: parsed.data.customer_name.trim(),
+    occasion: parsed.data.occasion ? parsed.data.occasion.trim() : null,
+    quote: parsed.data.quote.trim(),
+    rating: parsed.data.rating,
+    source: parsed.data.source,
+    instagram_url: parsed.data.instagram_url
+      ? parsed.data.instagram_url.trim()
+      : null,
+    is_featured: parsed.data.is_featured,
+    is_published: parsed.data.is_published,
+    sort_order: parsed.data.sort_order,
+  };
+
   if (parsed.data.id) {
-    const { data, error } = await auth.data.supabase
+    let { data, error } = await auth.data.supabase
       .from("testimonials")
-      .update({
-        customer_name: parsed.data.customer_name.trim(),
-        occasion: parsed.data.occasion ? parsed.data.occasion.trim() : null,
-        quote: parsed.data.quote.trim(),
-        rating: parsed.data.rating,
-        source: parsed.data.source,
-        is_featured: parsed.data.is_featured,
-        is_published: parsed.data.is_published,
-        sort_order: parsed.data.sort_order,
-      })
+      .update(payload)
       .eq("id", parsed.data.id)
       .select()
       .single();
+
+    if (error && (error as { code?: string }).code === "42703") {
+      const { instagram_url: _unused, ...fallbackPayload } = payload;
+      void _unused;
+      const retry = await auth.data.supabase
+        .from("testimonials")
+        .update(fallbackPayload)
+        .eq("id", parsed.data.id)
+        .select()
+        .single();
+      data = retry.data;
+      error = retry.error;
+    }
 
     if (error || !data) {
       return actionError(error?.message || "Failed to update testimonial.");
@@ -95,20 +113,29 @@ export async function saveTestimonial(
 
     const nextOrder = (maxOrderData?.sort_order ?? -1) + 1;
 
-    const { data, error } = await auth.data.supabase
+    let { data, error } = await auth.data.supabase
       .from("testimonials")
       .insert({
-        customer_name: parsed.data.customer_name.trim(),
-        occasion: parsed.data.occasion ? parsed.data.occasion.trim() : null,
-        quote: parsed.data.quote.trim(),
-        rating: parsed.data.rating,
-        source: parsed.data.source,
-        is_featured: parsed.data.is_featured,
-        is_published: parsed.data.is_published,
+        ...payload,
         sort_order: parsed.data.sort_order || nextOrder,
       })
       .select()
       .single();
+
+    if (error && (error as { code?: string }).code === "42703") {
+      const { instagram_url: _unused, ...fallbackPayload } = payload;
+      void _unused;
+      const retry = await auth.data.supabase
+        .from("testimonials")
+        .insert({
+          ...fallbackPayload,
+          sort_order: parsed.data.sort_order || nextOrder,
+        })
+        .select()
+        .single();
+      data = retry.data;
+      error = retry.error;
+    }
 
     if (error || !data) {
       return actionError(error?.message || "Failed to create testimonial.");
