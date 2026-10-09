@@ -1114,26 +1114,26 @@ function AnalyticsSettingsForm({
         <FormField
           id="google_analytics_id"
           label="Google Analytics Measurement ID"
-          hint="Format: G-XXXXXXXXXX (e.g. G-ABC1234567)"
+          hint="GA4 Measurement ID (starts with G-). Found under Admin > Data Streams in Google Analytics."
           error={form.formState.errors.google_analytics_id?.message}
         >
           <Input
             id="google_analytics_id"
             {...form.register("google_analytics_id")}
-            placeholder="G-XXXXXXXXXX"
+            placeholder="e.g. G-ABC123XYZ0"
           />
         </FormField>
 
         <FormField
           id="search_console_code"
           label="Google Search Console Verification Code"
-          hint="Verification token from your Search Console HTML tag or DNS"
+          hint="HTML tag verification code from Search Console (e.g. abc123XYZ... or the full <meta> tag)."
           error={form.formState.errors.search_console_code?.message}
         >
           <Input
             id="search_console_code"
             {...form.register("search_console_code")}
-            placeholder="google-site-verification=..."
+            placeholder="e.g. abc123XYZ... (or paste <meta> tag)"
           />
         </FormField>
       </div>

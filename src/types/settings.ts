@@ -116,12 +116,13 @@ export type BrandingSettings = z.infer<typeof brandingSettingsSchema>;
 export const analyticsSettingsSchema = z.object({
   google_analytics_id: z
     .string()
+    .trim()
     .regex(
       /^G-[A-Z0-9]+$/i,
       "Google Analytics ID must match format G-XXXXXXXXXX"
     )
     .or(z.literal("")),
-  search_console_code: z.string(),
+  search_console_code: z.string().trim(),
 });
 
 export type AnalyticsSettings = z.infer<typeof analyticsSettingsSchema>;

@@ -8,6 +8,7 @@ import {
 } from "@/lib/actions/action-result";
 import { revalidateCacheTag } from "@/lib/utils/revalidate";
 import { createClient } from "@/lib/supabase/server";
+import { extractSearchConsoleToken } from "@/lib/seo/metadata-builder";
 import {
   type SiteSettingsData,
   type BusinessSettings,
@@ -308,7 +309,24 @@ export async function saveAnalyticsSettings(
     return actionError(auth.error);
   }
 
-  const parsed = analyticsSettingsSchema.safeParse(input);
+  const rawObj =
+    input && typeof input === "object"
+      ? (input as Record<string, unknown>)
+      : {};
+  const cleanedSearchConsole =
+    typeof rawObj.search_console_code === "string"
+      ? extractSearchConsoleToken(rawObj.search_console_code)
+      : "";
+  const cleanedGaId =
+    typeof rawObj.google_analytics_id === "string"
+      ? rawObj.google_analytics_id.trim().toUpperCase()
+      : "";
+
+  const parsed = analyticsSettingsSchema.safeParse({
+    ...rawObj,
+    google_analytics_id: cleanedGaId,
+    search_console_code: cleanedSearchConsole,
+  });
   if (!parsed.success) {
     return actionError("Validation failed", parsed.error.flatten().fieldErrors);
   }

@@ -74,6 +74,21 @@ const STATIC_PATHS = new Set([
 ]);
 
 /**
+ * Extracts clean Google Search Console verification token from raw string or <meta> tag.
+ */
+export function extractSearchConsoleToken(rawInput?: string | null): string {
+  if (!rawInput) return "";
+  const trimmed = rawInput.trim();
+  // Extract token from full meta tag if pasted: <meta name="google-site-verification" content="..." />
+  const match = trimmed.match(/content=["']([^"']+)["']/i);
+  if (match) {
+    return match[1].trim();
+  }
+  // Strip outer quotes if any
+  return trimmed.replace(/^["']|["']$/g, "").trim();
+}
+
+/**
  * Builds standard, compliant Next.js Metadata for any public page.
  * Implements resolution hierarchy: Entity/Page override -> Content default -> Global default.
  */
@@ -210,6 +225,10 @@ export async function buildMetadata(
     }
   }
 
+  const searchConsoleToken = extractSearchConsoleToken(
+    settings.analytics?.search_console_code
+  );
+
   return {
     title: finalTitle,
     description: finalDescription,
@@ -217,6 +236,11 @@ export async function buildMetadata(
       canonical: canonicalUrl,
     },
     robots,
+    verification: searchConsoleToken
+      ? {
+          google: searchConsoleToken,
+        }
+      : undefined,
     openGraph: {
       type: options.type || "website",
       title: finalTitle,
