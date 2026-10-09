@@ -83,7 +83,7 @@ function GalleryItemDialogInner({
     defaultValues: {
       id: item?.id,
       type: item?.type || "single",
-      media_id: item?.media_id || "",
+      media_id: item?.media_id || null,
       before_media_id: item?.before_media_id || null,
       title: item?.title || "",
       caption: item?.caption || "",
@@ -216,7 +216,7 @@ function GalleryItemDialogInner({
                     type="button"
                     onClick={() => {
                       setMainMedia(null);
-                      form.setValue("media_id", "", {
+                      form.setValue("media_id", null, {
                         shouldDirty: true,
                         shouldValidate: true,
                       });

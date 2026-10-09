@@ -216,6 +216,18 @@ export function RecentWorksInstagram({
                           className="absolute inset-0 bg-gradient-to-t from-[#1C1917]/90 via-[#1C1917]/25 to-black/30 transition-opacity duration-300 group-hover:opacity-95"
                         />
                       </>
+                    ) : insta.embedUrl ? (
+                      <div className="absolute inset-0 z-0 bg-black">
+                        <iframe
+                          src={insta.embedUrl}
+                          className="h-full w-full border-0 pointer-events-auto"
+                          loading="lazy"
+                          scrolling="no"
+                          allowTransparency
+                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                          title={item.title || "Instagram Look"}
+                        />
+                      </div>
                     ) : (
                       <>
                         <div

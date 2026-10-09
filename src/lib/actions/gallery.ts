@@ -110,6 +110,11 @@ export async function saveGalleryItem(
     }
 
     if (error || !data) {
+      if ((error as { code?: string })?.code === "23502") {
+        return actionError(
+          "Please select a photo, or apply migration 20261009080000 in Supabase SQL editor to allow Instagram-only looks."
+        );
+      }
       return actionError(error?.message || "Failed to update gallery item.");
     }
 
@@ -151,6 +156,11 @@ export async function saveGalleryItem(
     }
 
     if (error || !data) {
+      if ((error as { code?: string })?.code === "23502") {
+        return actionError(
+          "Please select a photo, or apply migration 20261009080000 in Supabase SQL editor to allow Instagram-only looks."
+        );
+      }
       return actionError(error?.message || "Failed to create gallery item.");
     }
 

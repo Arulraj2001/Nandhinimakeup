@@ -7,6 +7,7 @@ import type { GalleryItemWithDetails } from "@/types/gallery";
 import { BeforeAfterSlider } from "@/components/public/before-after-slider";
 import { getPublicMediaUrl } from "@/lib/utils/media";
 import { resolveInstagramData } from "@/lib/utils/instagram";
+import { InstagramReelEmbed } from "@/components/public/instagram-reel-embed";
 import type { LightboxImageItem } from "@/components/public/image-lightbox";
 
 // Lightbox dynamically loaded on first open to keep initial bundle tiny
@@ -91,62 +92,63 @@ export function GalleryGrid({ items }: GalleryGridProps) {
                 key={item.id}
                 className="group flex flex-col overflow-hidden rounded-xl border border-[#E5DFD7] bg-white transition-all duration-300 hover:border-[#C5A059] hover:shadow-md"
               >
-                <a
-                  href={insta.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Watch ${item.title || "bridal look"} on Instagram`}
-                  className="relative flex aspect-[4/5] w-full flex-col justify-between overflow-hidden bg-gradient-to-br from-[#1C1917] via-[#2F1818] to-[#1C1917] p-3.5 text-white focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
-                >
-                  {/* Ambient background glow */}
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-radial from-[#DD2A7B]/25 via-[#8C2524]/15 to-transparent pointer-events-none"
+                {insta.embedUrl ? (
+                  <InstagramReelEmbed
+                    embedUrl={insta.embedUrl}
+                    url={insta.url}
+                    title={item.title || "Instagram Look"}
+                    height={320}
                   />
-
-                  {/* Top Bar */}
-                  <div className="relative z-10 flex items-center justify-between">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-md">
-                      <svg
-                        className="h-3 w-3 text-[#E87A5D]"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                      </svg>
-                      <span>Reel</span>
-                    </span>
-
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white text-xs transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#8C2524]">
-                      ↗
-                    </span>
-                  </div>
-
-                  {/* Center Play Button */}
-                  <div className="relative z-10 flex flex-col items-center justify-center gap-1.5 py-4 text-center">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white shadow-md backdrop-blur-md transition-transform duration-300 group-hover:scale-115 group-hover:bg-[#8C2524]">
-                      <svg className="h-5 w-5 fill-current ml-0.5" viewBox="0 0 24 24">
-                        <polygon points="5 3 19 12 5 21 5 3" />
-                      </svg>
+                ) : (
+                  <a
+                    href={insta.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Watch ${item.title || "bridal look"} on Instagram`}
+                    className="relative flex aspect-[4/5] w-full flex-col justify-between overflow-hidden bg-gradient-to-br from-[#1C1917] via-[#2F1818] to-[#1C1917] p-3.5 text-white focus-visible:ring-2 focus-visible:ring-[#8C2524] focus-visible:outline-none"
+                  >
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-radial from-[#DD2A7B]/25 via-[#8C2524]/15 to-transparent pointer-events-none"
+                    />
+                    <div className="relative z-10 flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-md">
+                        <svg
+                          className="h-3 w-3 text-[#E87A5D]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                        <span>Reel</span>
+                      </span>
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white text-xs transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#8C2524]">
+                        ↗
+                      </span>
                     </div>
-                    <span className="text-[11px] font-medium text-white/90 drop-shadow-xs">
-                      Watch on Instagram
-                    </span>
-                  </div>
-
-                  {/* Bottom Category Badge */}
-                  <div className="relative z-10">
-                    <span className="rounded bg-white/15 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-[#C5A059] uppercase backdrop-blur-xs">
-                      {item.service_category?.name || "Instagram Look"}
-                    </span>
-                  </div>
-                </a>
+                    <div className="relative z-10 flex flex-col items-center justify-center gap-1.5 py-4 text-center">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white shadow-md backdrop-blur-md transition-transform duration-300 group-hover:scale-115 group-hover:bg-[#8C2524]">
+                        <svg className="h-5 w-5 fill-current ml-0.5" viewBox="0 0 24 24">
+                          <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                      </div>
+                      <span className="text-[11px] font-medium text-white/90 drop-shadow-xs">
+                        Watch on Instagram
+                      </span>
+                    </div>
+                    <div className="relative z-10">
+                      <span className="rounded bg-white/15 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-[#C5A059] uppercase backdrop-blur-xs">
+                        {item.service_category?.name || "Instagram Look"}
+                      </span>
+                    </div>
+                  </a>
+                )}
 
                 {/* Footer Metadata */}
                 {(item.title || item.caption) && (
