@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { m } from "motion/react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { Hero3DParticles } from "./hero-3d-particles";
 
 interface HomeHeroProps {
   headline: string;
@@ -65,7 +66,50 @@ export function HomeHero({
   const [btnOffset, setBtnOffset] = React.useState({ x: 0, y: 0 });
   const [isWipeDone, setIsWipeDone] = React.useState(false);
 
-  // Desktop magnetic micro-pull (max 4px)
+  // 3D Perspective Tilt Card State & Dynamic Specular Glare
+  const [cardTilt, setCardTilt] = React.useState({
+    rotateX: 0,
+    rotateY: 0,
+    glareX: 50,
+    glareY: 50,
+    isHovered: false,
+  });
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reducedMotion) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Smooth tilt angles (max ±7 degrees)
+    const rotateX = ((centerY - y) / centerY) * 7;
+    const rotateY = ((x - centerX) / centerX) * 7;
+
+    const glareX = (x / rect.width) * 100;
+    const glareY = (y / rect.height) * 100;
+
+    setCardTilt({
+      rotateX,
+      rotateY,
+      glareX,
+      glareY,
+      isHovered: true,
+    });
+  };
+
+  const handleCardMouseLeave = () => {
+    setCardTilt({
+      rotateX: 0,
+      rotateY: 0,
+      glareX: 50,
+      glareY: 50,
+      isHovered: false,
+    });
+  };
+
+  // Desktop magnetic micro-pull for CTA button
   const handleBtnMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (reducedMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -112,7 +156,6 @@ export function HomeHero({
           }}
         >
           <defs>
-            {/* Soft Warm Gold Beam Gradient 1 */}
             <linearGradient
               id="spotlightRay1"
               x1="0"
@@ -127,7 +170,6 @@ export function HomeHero({
               <stop offset="100%" stopColor="#FAF8F5" stopOpacity="0" />
             </linearGradient>
 
-            {/* Bright Center Beam Gradient 2 */}
             <linearGradient
               id="spotlightRay2"
               x1="0"
@@ -142,7 +184,6 @@ export function HomeHero({
               <stop offset="100%" stopColor="#FAF8F5" stopOpacity="0" />
             </linearGradient>
 
-            {/* Wide Ambient Beam Gradient 3 */}
             <linearGradient
               id="spotlightRay3"
               x1="0"
@@ -168,37 +209,28 @@ export function HomeHero({
             </filter>
           </defs>
 
-          {/* Splitting Ray A: Steep downward fan */}
           <polygon
             points="0,0 120,680 260,680"
             fill="url(#spotlightRay1)"
             filter="url(#spotlightFeather)"
           />
-
-          {/* Splitting Ray B: Main radiant beam shooting toward CTAs */}
           <polygon
             points="0,0 340,680 520,680"
             fill="url(#spotlightRay2)"
             filter="url(#spotlightFeather)"
           />
-
-          {/* Splitting Ray C: Angled beam crossing the headline */}
           <polygon
             points="0,0 600,680 780,620"
             fill="url(#spotlightRay1)"
             opacity="0.85"
             filter="url(#spotlightFeather)"
           />
-
-          {/* Splitting Ray D: Upper beam illuminating toward the bridal portrait */}
           <polygon
             points="0,0 820,520 980,420"
             fill="url(#spotlightRay3)"
             opacity="0.75"
             filter="url(#spotlightFeather)"
           />
-
-          {/* Splitting Ray E: High wide horizon wash */}
           <polygon
             points="0,0 1000,340 1000,180"
             fill="url(#spotlightRay2)"
@@ -208,13 +240,16 @@ export function HomeHero({
         </m.svg>
       </div>
 
-      {/* 2. Luxury subtle editorial gold grid texture */}
+      {/* 2. Interactive 3D Gold Diya Dust & Spatial Ambient Particles */}
+      <Hero3DParticles />
+
+      {/* 3. Luxury subtle editorial gold grid texture */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 opacity-40 bg-[linear-gradient(to_right,rgba(197,160,89,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(197,160,89,0.08)_1px,transparent_1px)] bg-[size:36px_36px]"
+        className="pointer-events-none absolute inset-0 z-0 opacity-35 bg-[linear-gradient(to_right,rgba(197,160,89,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(197,160,89,0.08)_1px,transparent_1px)] bg-[size:36px_36px]"
       />
 
-      {/* 3. Ambient Floating Champagne Gold Light Glow (Top Right) */}
+      {/* 4. Ambient Floating Champagne Gold Light Glow (Top Right) */}
       <m.div
         aria-hidden="true"
         className="pointer-events-none absolute -top-24 right-4 sm:right-1/4 h-80 w-80 sm:h-96 sm:w-96 rounded-full bg-gradient-to-br from-[#C5A059]/20 via-[#E8DCC4]/30 to-transparent blur-3xl z-0"
@@ -235,7 +270,7 @@ export function HomeHero({
         }}
       />
 
-      {/* 4. Ambient Floating Bridal Kumkum Rose Glow (Bottom Left) */}
+      {/* 5. Ambient Floating Bridal Kumkum Rose Glow (Bottom Left) */}
       <m.div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-20 left-4 sm:left-12 h-72 w-72 sm:h-80 sm:w-80 rounded-full bg-gradient-to-tr from-[#8C2524]/12 via-[#C5A059]/10 to-transparent blur-3xl z-0"
@@ -256,7 +291,7 @@ export function HomeHero({
         }}
       />
 
-      {/* 5. Floating Heritage Gold Sparkles (✦) */}
+      {/* 6. Floating Heritage Gold Sparkles (✦) */}
       <m.div
         aria-hidden="true"
         className="pointer-events-none absolute top-14 left-[8%] z-0 select-none text-base text-[#C5A059]"
@@ -420,24 +455,37 @@ export function HomeHero({
             </m.div>
           </div>
 
-          {/* Editorial Bridal Image Framing with Prabhavali Temple Arch & Subtle Ambient Aura */}
+          {/* Interactive 3D Perspective Tilt Card with Multi-Layer Z-Depth */}
           {heroImageUrl && (
             <div className="flex justify-center lg:col-span-5">
-              <div className="relative w-full max-w-sm sm:max-w-md">
-                {/* Royal South Indian Temple Prabhavali Arch & Warm Halo behind the portrait */}
+              <div
+                className="relative w-full max-w-sm sm:max-w-md transition-transform"
+                style={{ perspective: 1200 }}
+                onMouseMove={handleCardMouseMove}
+                onMouseLeave={handleCardMouseLeave}
+              >
+                {/* Layer 1 (Z: -20px): Royal South Indian Temple Prabhavali Arch & Warm Halo */}
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute -inset-6 -z-10 flex items-center justify-center overflow-visible"
+                  style={{
+                    transform: reducedMotion
+                      ? undefined
+                      : `translate3d(${cardTilt.rotateY * -1.2}px, ${cardTilt.rotateX * 1.2}px, -20px)`,
+                    transition: cardTilt.isHovered
+                      ? "transform 80ms ease-out"
+                      : "transform 500ms ease-out",
+                  }}
                 >
                   {/* Warm Golden Halo Aura (Breathing Light Glow, NOT spinning) */}
                   <m.div
-                    className="absolute h-full w-full max-h-[520px] max-w-[430px] rounded-full bg-gradient-to-b from-[#C5A059]/20 via-[#FAF0DB]/25 to-transparent blur-2xl"
+                    className="absolute h-full w-full max-h-[520px] max-w-[430px] rounded-full bg-gradient-to-b from-[#C5A059]/22 via-[#FAF0DB]/25 to-transparent blur-2xl"
                     animate={
                       reducedMotion
                         ? false
                         : {
                             scale: [0.98, 1.05, 0.98],
-                            opacity: [0.45, 0.7, 0.45],
+                            opacity: [0.45, 0.75, 0.45],
                           }
                     }
                     transition={{
@@ -463,9 +511,21 @@ export function HomeHero({
                         y2="500"
                         gradientUnits="userSpaceOnUse"
                       >
-                        <stop offset="0%" stopColor="#C5A059" stopOpacity="0.55" />
-                        <stop offset="60%" stopColor="#C5A059" stopOpacity="0.25" />
-                        <stop offset="100%" stopColor="#E5DFD7" stopOpacity="0.05" />
+                        <stop
+                          offset="0%"
+                          stopColor="#C5A059"
+                          stopOpacity="0.55"
+                        />
+                        <stop
+                          offset="60%"
+                          stopColor="#C5A059"
+                          stopOpacity="0.25"
+                        />
+                        <stop
+                          offset="100%"
+                          stopColor="#E5DFD7"
+                          stopOpacity="0.05"
+                        />
                       </linearGradient>
                     </defs>
 
@@ -537,10 +597,18 @@ export function HomeHero({
                   </svg>
                 </div>
 
-                {/* Hairline Antique Gold Offset Border */}
+                {/* Layer 2 (Z: 10px): Hairline Antique Gold Offset Border */}
                 <m.div
                   aria-hidden="true"
                   className="pointer-events-none absolute -bottom-3 -right-3 h-full w-full rounded-lg border border-[#C5A059]/50 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1"
+                  style={{
+                    transform: reducedMotion
+                      ? undefined
+                      : `translate3d(${cardTilt.rotateY * 0.8}px, ${cardTilt.rotateX * -0.8}px, 10px)`,
+                    transition: cardTilt.isHovered
+                      ? "transform 80ms ease-out"
+                      : "transform 500ms ease-out",
+                  }}
                   initial={reducedMotion ? false : { opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
@@ -550,26 +618,22 @@ export function HomeHero({
                   }}
                 />
 
-                {/* Floating Element 1: Top-Left Floating Trust Badge (Overlapping portrait) */}
+                {/* Layer 3 (Z: 38px): Floating Top-Left Trust Card (Holographic Z-elevation) */}
                 <m.div
-                  className="absolute -top-4 -left-3 sm:-left-6 z-20 rounded-xl border border-[#C5A059]/50 bg-white/95 px-3.5 py-2 shadow-lg backdrop-blur-md"
+                  className="absolute -top-4 -left-3 sm:-left-6 z-30 rounded-xl border border-[#C5A059]/50 bg-white/95 px-3.5 py-2 shadow-xl backdrop-blur-md"
+                  style={{
+                    transform: reducedMotion
+                      ? undefined
+                      : `translate3d(${cardTilt.rotateY * 2.2}px, ${cardTilt.rotateX * -2.2}px, 38px)`,
+                    transition: cardTilt.isHovered
+                      ? "transform 80ms ease-out"
+                      : "transform 500ms ease-out",
+                  }}
                   initial={
                     reducedMotion ? false : { opacity: 0, scale: 0.9, y: 10 }
                   }
-                  animate={
-                    reducedMotion
-                      ? { opacity: 1, scale: 1 }
-                      : {
-                          opacity: 1,
-                          scale: 1,
-                          y: [-4, 4, -4],
-                        }
-                  }
-                  transition={{
-                    y: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
-                    duration: 0.6,
-                    delay: 0.75,
-                  }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.75 }}
                 >
                   <div className="flex items-center gap-2">
                     <span className="relative flex h-2 w-2">
@@ -586,64 +650,73 @@ export function HomeHero({
                   </p>
                 </m.div>
 
-                {/* Main Portrait Frame (with reduced height: aspect-[8/9]) */}
-                <m.div
-                  className="relative aspect-[8/9] w-full overflow-hidden rounded-lg border border-[#E5DFD7] bg-white shadow-md"
-                  initial={
-                    reducedMotion
-                      ? false
-                      : { clipPath: "inset(0 0 100% 0)", opacity: 0 }
-                  }
-                  animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
-                  transition={{
-                    duration: 0.9,
-                    delay: 0.55,
-                    ease: [0.22, 1, 0.36, 1],
+                {/* Layer 4: Main 3D Tilting Portrait Frame with Specular Glare */}
+                <div
+                  className="relative aspect-[8/9] w-full overflow-hidden rounded-lg border border-[#E5DFD7] bg-white shadow-xl transition-shadow duration-300"
+                  style={{
+                    transform: reducedMotion
+                      ? undefined
+                      : `rotateX(${cardTilt.rotateX}deg) rotateY(${cardTilt.rotateY}deg) scale3d(${cardTilt.isHovered ? 1.02 : 1}, ${cardTilt.isHovered ? 1.02 : 1}, 1)`,
+                    transition: cardTilt.isHovered
+                      ? "transform 80ms ease-out, box-shadow 200ms ease-out"
+                      : "transform 500ms ease-out, box-shadow 500ms ease-out",
+                    transformStyle: "preserve-3d",
                   }}
-                  onAnimationComplete={() => setIsWipeDone(true)}
                 >
                   <m.div
-                    className={`relative h-full w-full ${isWipeDone && !reducedMotion ? "animate-ken-burns" : ""}`}
-                    initial={reducedMotion ? false : { scale: 1.08 }}
-                    animate={{ scale: 1.0 }}
+                    className="relative h-full w-full"
+                    initial={
+                      reducedMotion
+                        ? false
+                        : { clipPath: "inset(0 0 100% 0)", opacity: 0 }
+                    }
+                    animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
                     transition={{
                       duration: 0.9,
                       delay: 0.55,
                       ease: [0.22, 1, 0.36, 1],
                     }}
+                    onAnimationComplete={() => setIsWipeDone(true)}
                   >
-                    <Image
-                      src={heroImageUrl}
-                      alt={heroImageAlt || headline}
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 90vw, 42vw"
-                      className="object-cover"
-                    />
+                    <div
+                      className={`relative h-full w-full ${isWipeDone && !reducedMotion ? "animate-ken-burns" : ""}`}
+                    >
+                      <Image
+                        src={heroImageUrl}
+                        alt={heroImageAlt || headline}
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 90vw, 42vw"
+                        className="object-cover"
+                      />
+                    </div>
                   </m.div>
 
-                  {/* Floating Element 2: Bottom-Right Floating Luxury Tag Badge */}
+                  {/* Dynamic Specular Light Glare reflection across glass surface */}
+                  {cardTilt.isHovered && !reducedMotion && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 z-20 mix-blend-overlay transition-opacity duration-200"
+                      style={{
+                        background: `radial-gradient(circle 380px at ${cardTilt.glareX}% ${cardTilt.glareY}%, rgba(255,255,255,0.7) 0%, rgba(201,160,82,0.2) 35%, transparent 75%)`,
+                      }}
+                    />
+                  )}
+
+                  {/* Layer 5 (Z: 28px): Bottom-Right Floating Luxury Tag Badge */}
                   <m.div
-                    className="absolute right-3 bottom-3 z-10 rounded-lg border border-[#C5A059]/50 bg-[#FAF8F5]/95 px-3.5 py-2 shadow-md backdrop-blur-md"
-                    initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-                    animate={
-                      reducedMotion
-                        ? { opacity: 1, y: 0 }
-                        : {
-                            opacity: 1,
-                            y: [0, -5, 0],
-                          }
-                    }
-                    transition={{
-                      y: {
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0.5,
-                      },
-                      duration: 0.5,
-                      delay: 0.85,
+                    className="absolute right-3 bottom-3 z-30 rounded-lg border border-[#C5A059]/50 bg-[#FAF8F5]/95 px-3.5 py-2 shadow-lg backdrop-blur-md"
+                    style={{
+                      transform: reducedMotion
+                        ? undefined
+                        : `translate3d(${cardTilt.rotateY * 1.6}px, ${cardTilt.rotateX * -1.6}px, 28px)`,
+                      transition: cardTilt.isHovered
+                        ? "transform 80ms ease-out"
+                        : "transform 500ms ease-out",
                     }}
+                    initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.85 }}
                   >
                     <div className="flex items-center gap-1.5">
                       <span className="text-[10px] text-[#C5A059]">✦</span>
@@ -658,7 +731,7 @@ export function HomeHero({
                       </span>
                     </div>
                   </m.div>
-                </m.div>
+                </div>
               </div>
             </div>
           )}
