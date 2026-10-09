@@ -46,7 +46,6 @@ export function InstagramReelEmbed({
         }`}
         loading="lazy"
         scrolling="no"
-        allowTransparency
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
         onLoad={() => setIsLoaded(true)}
         title={title}

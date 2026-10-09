@@ -223,7 +223,6 @@ export function RecentWorksInstagram({
                           className="h-full w-full border-0 pointer-events-auto"
                           loading="lazy"
                           scrolling="no"
-                          allowTransparency
                           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                           title={item.title || "Instagram Look"}
                         />
