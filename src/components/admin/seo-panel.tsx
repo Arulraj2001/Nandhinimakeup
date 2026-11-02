@@ -23,6 +23,7 @@ export interface SeoPanelContext {
     altText?: string;
   } | null;
   firstParagraphText?: string;
+  fullContentText?: string;
   isBlogPost?: boolean;
   wordCount?: number;
   hasInternalLink?: boolean;
@@ -44,12 +45,141 @@ export interface SeoPanelProps {
   focusKeyword: string;
   onFocusKeywordChange: (val: string) => void;
 
+  secondaryKeywords?: string;
+  onSecondaryKeywordsChange?: (val: string) => void;
+
   canonicalUrl?: string;
   onCanonicalUrlChange?: (val: string) => void;
   showCanonicalUrl?: boolean;
 
   socialImageMedia?: MediaItem | null;
   context: SeoPanelContext;
+  onSlugChange?: (val: string) => void;
+}
+
+const STOP_WORDS = new Set([
+  "a",
+  "an",
+  "and",
+  "are",
+  "as",
+  "at",
+  "be",
+  "by",
+  "for",
+  "from",
+  "has",
+  "he",
+  "in",
+  "is",
+  "it",
+  "its",
+  "of",
+  "on",
+  "that",
+  "the",
+  "to",
+  "was",
+  "were",
+  "will",
+  "with",
+  "vs",
+  "or",
+  "your",
+  "our",
+]);
+
+interface KeywordMatchResult {
+  passed: boolean;
+  note: string;
+  missingTerms: string[];
+}
+
+function checkKeywordInText(
+  rawKeyword: string,
+  targetText: string,
+  type: "title" | "description" | "slug" | "paragraph"
+): KeywordMatchResult {
+  const kwClean = rawKeyword.trim().toLowerCase();
+  const targetClean = targetText.toLowerCase();
+
+  if (!kwClean) {
+    return { passed: false, note: "No keyword provided", missingTerms: [] };
+  }
+
+  // Check if multiple comma-separated keywords provided
+  const candidateKeywords = kwClean.includes(",")
+    ? kwClean
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [kwClean];
+
+  // 1. Exact phrase match against any candidate keyword
+  for (const candidate of candidateKeywords) {
+    const formattedCandidate =
+      type === "slug"
+        ? candidate.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+        : candidate;
+    if (targetClean.includes(formattedCandidate)) {
+      return {
+        passed: true,
+        note:
+          type === "title"
+            ? "Exact keyword match found in title"
+            : type === "description"
+            ? "Exact keyword match found in description"
+            : type === "slug"
+            ? "Keyword found in URL slug"
+            : "Keyword found in opening text",
+        missingTerms: [],
+      };
+    }
+  }
+
+  // 2. Term-by-term match (all significant words present)
+  const primary = candidateKeywords[0];
+  const terms = primary
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length > 1 && !STOP_WORDS.has(w));
+
+  if (terms.length === 0) {
+    return {
+      passed: targetClean.includes(primary),
+      note: targetClean.includes(primary)
+        ? "Found in text"
+        : "Not found in text",
+      missingTerms: targetClean.includes(primary) ? [] : [primary],
+    };
+  }
+
+  const missing = terms.filter((term) => !targetClean.includes(term));
+
+  if (missing.length === 0) {
+    return {
+      passed: true,
+      note:
+        type === "title"
+          ? "All keyword terms appear in title"
+          : type === "description"
+          ? "All keyword terms appear in description"
+          : type === "slug"
+          ? "All keyword terms appear in URL slug"
+          : "All keyword terms appear in opening text",
+      missingTerms: [],
+    };
+  }
+
+  // 3. Attention state with specific missing terms
+  const missingLabel = missing.map((m) => `"${m}"`).join(", ");
+  return {
+    passed: false,
+    note:
+      type === "paragraph" && !targetClean
+        ? "Intro paragraph empty or not loaded"
+        : `Missing keyword term${missing.length > 1 ? "s" : ""}: ${missingLabel}`,
+    missingTerms: missing,
+  };
 }
 
 export function SeoPanel({
@@ -63,11 +193,14 @@ export function SeoPanel({
   onNoindexChange,
   focusKeyword,
   onFocusKeywordChange,
+  secondaryKeywords = "",
+  onSecondaryKeywordsChange,
   canonicalUrl,
   onCanonicalUrlChange,
   showCanonicalUrl = false,
   socialImageMedia,
   context,
+  onSlugChange,
 }: SeoPanelProps) {
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [previewDevice, setPreviewDevice] = React.useState<
@@ -167,42 +300,139 @@ export function SeoPanel({
     },
   ];
 
-  if (kw) {
-    checklist.push(
-      {
-        id: "kw-title",
-        label: `Focus keyword "${kw}" appears in Title`,
-        passed: titleToCheck.includes(kw),
-        note: titleToCheck.includes(kw)
-          ? "Found in title"
-          : "Not found in title",
-      },
-      {
-        id: "kw-desc",
-        label: `Focus keyword "${kw}" appears in Description`,
-        passed: descToCheck.includes(kw),
-        note: descToCheck.includes(kw)
-          ? "Found in description"
-          : "Not found in description",
-      },
-      {
-        id: "kw-slug",
-        label: `Focus keyword appears in URL Slug`,
-        passed: slugToCheck.includes(kw.replace(/\s+/g, "-")),
-        note: slugToCheck.includes(kw.replace(/\s+/g, "-"))
-          ? "Found in slug"
-          : "Not found in slug",
-      },
-      {
-        id: "kw-first-para",
-        label: `Focus keyword appears in first paragraph`,
-        passed: firstParaToCheck.includes(kw),
-        note: firstParaToCheck.includes(kw)
-          ? "Found in first paragraph"
-          : "Not found in intro text",
-      }
-    );
+  const kwTitleResult = kw ? checkKeywordInText(kw, titleToCheck, "title") : null;
+  const kwDescResult = kw ? checkKeywordInText(kw, descToCheck, "description") : null;
+  const kwSlugResult = kw ? checkKeywordInText(kw, slugToCheck, "slug") : null;
+  const kwParaResult = kw ? checkKeywordInText(kw, firstParaToCheck, "paragraph") : null;
+
+  if (kw && kwTitleResult) {
+    checklist.push({
+      id: "kw-title",
+      label: `Focus keyword "${focusKeyword.trim()}" in Title`,
+      passed: kwTitleResult.passed,
+      note: kwTitleResult.note,
+    });
   }
+  if (kw && kwDescResult) {
+    checklist.push({
+      id: "kw-desc",
+      label: `Focus keyword "${focusKeyword.trim()}" in Description`,
+      passed: kwDescResult.passed,
+      note: kwDescResult.note,
+    });
+  }
+  if (kw && kwSlugResult) {
+    checklist.push({
+      id: "kw-slug",
+      label: `Focus keyword in URL Slug`,
+      passed: kwSlugResult.passed,
+      note: kwSlugResult.note,
+    });
+  }
+  if (kw && kwParaResult) {
+    checklist.push({
+      id: "kw-first-para",
+      label: `Focus keyword in opening paragraph`,
+      passed: kwParaResult.passed,
+      note: kwParaResult.note,
+    });
+  }
+
+  if (secondaryKeywords?.trim()) {
+    const rawSecondaryList = secondaryKeywords
+      .split(",")
+      .map((k) => k.trim())
+      .filter((k) => k.length > 0);
+
+    const fullContentTextClean = (
+      context.fullContentText ||
+      context.firstParagraphText ||
+      ""
+    ).toLowerCase();
+
+    for (let idx = 0; idx < rawSecondaryList.length; idx++) {
+      const secKw = rawSecondaryList[idx];
+      const secKwClean = secKw.toLowerCase();
+
+      let occurrences = 0;
+      if (fullContentTextClean && secKwClean) {
+        try {
+          const escaped = secKwClean.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          const matches = fullContentTextClean.match(new RegExp(escaped, "gi"));
+          occurrences = matches ? matches.length : 0;
+        } catch {
+          occurrences = fullContentTextClean.includes(secKwClean) ? 1 : 0;
+        }
+      }
+
+      const inTitleOrDesc =
+        titleToCheck.includes(secKwClean) || descToCheck.includes(secKwClean);
+
+      checklist.push({
+        id: `kw-secondary-${idx}`,
+        label: `Secondary keyword "${secKw}" present in content`,
+        passed: occurrences > 0 || inTitleOrDesc,
+        note:
+          occurrences > 0
+            ? `Found in content (${occurrences} mention${occurrences > 1 ? "s" : ""})`
+            : inTitleOrDesc
+              ? "Mentioned in title/meta description"
+              : "Not found in content body",
+      });
+    }
+  }
+
+  const handleAutoAlignMetadata = () => {
+    if (!focusKeyword.trim()) return;
+    const cleanKw = focusKeyword.trim();
+
+    // 1. Align Title if not already matching
+    const curTitleRes = checkKeywordInText(
+      cleanKw,
+      seoTitle || context.generatedTitle || "",
+      "title"
+    );
+    if (!curTitleRes.passed) {
+      const baseTitle = (seoTitle || context.generatedTitle || "Bridal Guide")
+        .replace(/\s*\|\s*Nandhini.*$/i, "")
+        .trim();
+      let newTitle = `${cleanKw}: ${baseTitle}`;
+      if (newTitle.length > 60) {
+        newTitle = `${cleanKw} Guide | Nandhini`.slice(0, 60);
+      }
+      onSeoTitleChange(newTitle);
+    }
+
+    // 2. Align Description if not already matching
+    const curDescRes = checkKeywordInText(
+      cleanKw,
+      seoDescription || context.generatedDescription || "",
+      "description"
+    );
+    if (!curDescRes.passed) {
+      const newDesc = `Looking for expert ${cleanKw}? Discover the right finish and styling for your wedding ceremonies at Nandhini Studio Salem. Book a consultation.`;
+      onSeoDescriptionChange(newDesc.slice(0, 160));
+    }
+
+    // 3. Align Slug if onSlugChange is provided and not already matching
+    if (onSlugChange) {
+      const curSlugRes = checkKeywordInText(cleanKw, cleanSlug, "slug");
+      if (!curSlugRes.passed) {
+        const kwSlug = cleanKw
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+        const currentSlugSuffix = cleanSlug.replace(
+          new RegExp(`^${kwSlug}-?`),
+          ""
+        );
+        const combined = `${kwSlug}-${currentSlugSuffix || "guide"}`
+          .slice(0, 50)
+          .replace(/-+$/, "");
+        onSlugChange(combined);
+      }
+    }
+  };
 
   if (context.isBlogPost) {
     const wordCount = context.wordCount || 0;
@@ -317,28 +547,47 @@ export function SeoPanel({
         </p>
       </div>
 
-      {/* Focus Keyword & Noindex Row */}
+      {/* Focus Keyword & Secondary Keywords Row */}
       <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <label
             htmlFor="focus_keyword"
             className="text-foreground text-sm font-medium"
           >
-            Focus Keyword (Admin Helper)
+            Focus Keyword (Primary)
           </label>
           <Input
             id="focus_keyword"
             value={focusKeyword}
             onChange={(e) => onFocusKeywordChange(e.target.value)}
-            placeholder="e.g. bridal makeup salem"
+            placeholder="e.g. HD bridal makeup Salem"
           />
           <p className="text-muted-foreground text-xs">
-            Internal on-page reference. Used only for the deterministic
-            checklist below.
+            Primary search target. Checked in Title, URL Slug, Meta Description &amp; Intro.
           </p>
         </div>
 
-        <div className="border-border bg-muted/20 space-y-1.5 rounded-lg border p-3">
+        <div className="space-y-1.5">
+          <label
+            htmlFor="secondary_keywords"
+            className="text-foreground text-sm font-medium"
+          >
+            Secondary Keywords (Supporting)
+          </label>
+          <Input
+            id="secondary_keywords"
+            value={secondaryKeywords}
+            onChange={(e) => onSecondaryKeywordsChange?.(e.target.value)}
+            placeholder="e.g. glossy bridal makeup, muhurtham look"
+          />
+          <p className="text-muted-foreground text-xs">
+            Comma-separated secondary phrases. Audited for mentions across the article body.
+          </p>
+        </div>
+      </div>
+
+      {/* Indexing Directive */}
+      <div className="border-border bg-muted/20 space-y-1.5 rounded-lg border p-3">
           <label className="text-foreground block text-sm font-medium">
             Search Indexing Directive
           </label>
@@ -354,11 +603,10 @@ export function SeoPanel({
               Block search engines (<code className="text-xs">noindex</code>)
             </span>
           </label>
-          <p className="text-muted-foreground pt-1 text-xs">
-            When checked, search engines are instructed not to index this
-            specific page.
-          </p>
-        </div>
+        <p className="text-muted-foreground pt-1 text-xs">
+          When checked, search engines are instructed not to index this
+          specific page.
+        </p>
       </div>
 
       {/* Optional Canonical URL (for Static Pages) */}
@@ -447,6 +695,7 @@ export function SeoPanel({
 
       <MediaPicker
         open={pickerOpen}
+        defaultPreset="blog_featured"
         selectedIds={seoSocialImageId ? [seoSocialImageId] : []}
         onClose={() => setPickerOpen(false)}
         onSelect={(items) => {
@@ -532,14 +781,30 @@ export function SeoPanel({
 
       {/* Deterministic Checklist */}
       <div className="border-border bg-page-background space-y-3 rounded-xl border p-4">
-        <div className="border-border border-b pb-2">
-          <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
-            SEO Audit Checklist (Deterministic)
-          </h4>
-          <p className="text-muted-foreground text-xs">
-            On-page content rules and length compliance without arbitrary
-            scoring.
-          </p>
+        <div className="border-border border-b pb-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h4 className="text-muted-foreground text-xs font-semibold tracking-wider uppercase">
+              SEO Audit Checklist (Deterministic)
+            </h4>
+            <p className="text-muted-foreground text-xs">
+              On-page content rules and length compliance without arbitrary
+              scoring.
+            </p>
+          </div>
+          {focusKeyword.trim() &&
+            (kwTitleResult?.passed === false ||
+              kwDescResult?.passed === false ||
+              kwSlugResult?.passed === false) && (
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={handleAutoAlignMetadata}
+                className="shrink-0 h-7 text-[11px] border-[#C9A052]/60 text-[#8C2524] hover:bg-[#FAF7F2] dark:text-[#C9A052] dark:hover:bg-muted font-medium"
+              >
+                ⚡ Auto-Align Metadata
+              </Button>
+            )}
         </div>
 
         <div className="divide-border/60 divide-y">

@@ -4,6 +4,7 @@
 import * as React from "react";
 import { getMediaList, type MediaItem } from "@/lib/actions/media";
 import { MediaUploadDialog } from "@/components/admin/media-upload-dialog";
+import type { CompressionPreset } from "@/lib/utils/image-compression";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -18,6 +19,7 @@ interface MediaPickerProps {
   selectedIds?: string[];
   onClose: () => void;
   onSelect: (selected: MediaItem[]) => void;
+  defaultPreset?: CompressionPreset;
 }
 
 export function MediaPicker({
@@ -26,6 +28,7 @@ export function MediaPicker({
   selectedIds = [],
   onClose,
   onSelect,
+  defaultPreset = "blog_featured",
 }: MediaPickerProps) {
   const [items, setItems] = React.useState<MediaItem[]>([]);
   const [selected, setSelected] = React.useState<MediaItem[]>([]);
@@ -246,6 +249,7 @@ export function MediaPicker({
       {/* Upload Dialog nested */}
       <MediaUploadDialog
         open={uploadOpen}
+        defaultPreset={defaultPreset}
         onClose={() => setUploadOpen(false)}
         onSuccess={(uploaded) => {
           setRefreshKey((k) => k + 1);

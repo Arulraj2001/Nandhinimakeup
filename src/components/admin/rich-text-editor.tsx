@@ -5,12 +5,62 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import ImageExtension from "@tiptap/extension-image";
+import { Table } from "@tiptap/extension-table";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { Mark } from "@tiptap/react";
 import {
   MediaPicker,
   getPublicMediaUrl,
 } from "@/components/admin/media-picker";
 import type { MediaItem } from "@/lib/actions/media";
 import { type RichTextDoc, isSafeUrl } from "@/lib/utils/rich-text";
+
+const HighlightMark = Mark.create({
+  name: "highlight",
+  parseHTML() {
+    return [{ tag: "mark" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "mark",
+      {
+        class: "bg-amber-200/70 text-amber-950 px-1 py-0.5 rounded font-medium",
+        ...HTMLAttributes,
+      },
+      0,
+    ];
+  },
+});
+
+const GoldMark = Mark.create({
+  name: "gold",
+  parseHTML() {
+    return [{ tag: "span", class: "text-gold" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "span",
+      { class: "text-amber-700 font-semibold", ...HTMLAttributes },
+      0,
+    ];
+  },
+});
+
+const MaroonMark = Mark.create({
+  name: "maroon",
+  parseHTML() {
+    return [{ tag: "span", class: "text-maroon" }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return [
+      "span",
+      { class: "text-red-900 font-semibold", ...HTMLAttributes },
+      0,
+    ];
+  },
+});
 
 // Custom Image extension storing mediaId, width, and height attributes
 const MediaImageExtension = ImageExtension.extend({
@@ -51,6 +101,8 @@ export function RichTextEditor({
 }: RichTextEditorProps) {
   const [mediaPickerOpen, setMediaPickerOpen] = React.useState(false);
 
+  const isInternalChangeRef = React.useRef(false);
+
   const editor = useEditor({
     immediatelyRender: false,
     editable: !disabled,
@@ -63,6 +115,30 @@ export function RichTextEditor({
         code: false,
         strike: false,
       }),
+      Table.configure({
+        resizable: false,
+        HTMLAttributes: {
+          class: "w-full border-collapse border border-zinc-300 my-4 text-xs",
+        },
+      }),
+      TableRow.configure({
+        HTMLAttributes: {
+          class: "border-b border-zinc-200",
+        },
+      }),
+      TableHeader.configure({
+        HTMLAttributes: {
+          class: "bg-zinc-100 p-2 font-bold text-left border border-zinc-300 text-xs",
+        },
+      }),
+      TableCell.configure({
+        HTMLAttributes: {
+          class: "p-2 border border-zinc-300 text-xs",
+        },
+      }),
+      HighlightMark,
+      GoldMark,
+      MaroonMark,
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -81,6 +157,7 @@ export function RichTextEditor({
     ],
     content: value || { type: "doc", content: [] },
     onUpdate: ({ editor: currentEditor }) => {
+      isInternalChangeRef.current = true;
       onChange(currentEditor.getJSON() as RichTextDoc);
     },
   });
@@ -88,6 +165,10 @@ export function RichTextEditor({
   // Sync value changes from parent if different
   React.useEffect(() => {
     if (!editor) return;
+    if (isInternalChangeRef.current) {
+      isInternalChangeRef.current = false;
+      return;
+    }
     const currentJson = JSON.stringify(editor.getJSON());
     const incomingJson = JSON.stringify(value || { type: "doc", content: [] });
     if (currentJson !== incomingJson) {

@@ -45,6 +45,10 @@ export function extractPlainText(
           "listItem",
           "bulletList",
           "orderedList",
+          "table",
+          "tableRow",
+          "tableCell",
+          "tableHeader",
         ].includes(node.type)
       ) {
         chunks.push(" ");

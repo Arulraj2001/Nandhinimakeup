@@ -9,6 +9,8 @@ import { getPublicMediaUrl } from "@/lib/utils/media";
 import { RichTextRenderer } from "@/components/public/rich-text-renderer";
 import { extractPlainText } from "@/lib/utils/rich-text";
 import { BlogCard } from "@/components/public/blog/blog-card";
+import { AuthorBio } from "@/components/public/blog/author-bio";
+import { BlogQuoteCallout } from "@/components/public/blog/blog-lead-modules";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -207,8 +209,25 @@ async function BlogPostDetailContent({ params }: BlogPostPageProps) {
         <RichTextRenderer content={post.content} />
       </div>
 
+      {/* High-Intent Bridal Date & Quote WhatsApp Trigger */}
+      <BlogQuoteCallout
+        postTitle={post.title}
+        whatsappNumber={settings.business.whatsapp_number}
+      />
+
+      {/* Author Bio (E-E-A-T Signal) */}
+      <div className="mt-10">
+        <AuthorBio
+          authorName={post.author_name || undefined}
+          whatsappNumber={settings.business.whatsapp_number}
+          studioAddress={
+            settings.business.full_address || settings.business.street_address
+          }
+        />
+      </div>
+
       {/* Closing Call-To-Action Block */}
-      <div className="border-border bg-surface mt-14 space-y-4 rounded-xl border p-8 text-center shadow-xs">
+      <div className="border-border bg-surface mt-10 space-y-4 rounded-xl border p-8 text-center shadow-xs">
         <h2 className="font-heading text-foreground text-xl font-semibold sm:text-2xl">
           Elevate Your Look with Nandhini
         </h2>

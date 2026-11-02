@@ -28,12 +28,16 @@ import { slugify } from "@/lib/utils/slug";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImportPostDialog } from "./import-post-dialog";
+import type { ParsedMarkdownArticle } from "@/lib/utils/markdown-to-tiptap";
 
 interface PostEditDialogProps {
   open: boolean;
   post: BlogPostWithDetails | null;
   categories: BlogCategory[];
   defaultAuthorName?: string;
+  initialImportedArticle?: ParsedMarkdownArticle | null;
+  initialImportCategoryId?: string;
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -43,6 +47,8 @@ export function PostEditDialog({
   post,
   categories,
   defaultAuthorName = "Nandhini Makeup & Jewellery",
+  initialImportedArticle,
+  initialImportCategoryId,
   onClose,
   onSuccess,
 }: PostEditDialogProps) {
@@ -72,13 +78,70 @@ export function PostEditDialog({
   );
   const [noindex, setNoindex] = React.useState(false);
   const [focusKeyword, setFocusKeyword] = React.useState("");
+  const [secondaryKeywords, setSecondaryKeywords] = React.useState("");
 
   const [isSaving, setIsSaving] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [hasChanges, setHasChanges] = React.useState(false);
+  const [importDialogOpen, setImportDialogOpen] = React.useState(false);
+
+  const hasInitializedRef = React.useRef(false);
+  const prevPostIdRef = React.useRef<string | null>(null);
+  const prevImportRef = React.useRef<ParsedMarkdownArticle | null>(null);
 
   React.useEffect(() => {
-    if (post) {
+    if (!open) {
+      hasInitializedRef.current = false;
+      return;
+    }
+
+    const isNewOpen = !hasInitializedRef.current;
+    const isPostChanged = post?.id !== prevPostIdRef.current;
+    const isNewImport = Boolean(
+      initialImportedArticle && initialImportedArticle !== prevImportRef.current
+    );
+
+    if (!isNewOpen && !isPostChanged && !isNewImport) {
+      return;
+    }
+
+    hasInitializedRef.current = true;
+    prevPostIdRef.current = post?.id || null;
+    prevImportRef.current = initialImportedArticle || null;
+
+    if (initialImportedArticle) {
+      setTitle(initialImportedArticle.title);
+      setSlug(initialImportedArticle.slug);
+      setIsSlugManual(true);
+      setCategoryId(
+        initialImportCategoryId ||
+          categories.find(
+            (c) =>
+              c.name.toLowerCase() ===
+              initialImportedArticle.categoryName?.toLowerCase()
+          )?.id ||
+          categories[0]?.id ||
+          ""
+      );
+      setExcerpt(initialImportedArticle.excerpt || "");
+      setContent(initialImportedArticle.content);
+      setFeaturedMedia(null);
+      setAuthorName(initialImportedArticle.authorName || defaultAuthorName);
+      setStatus("draft");
+      setPublishedAt(new Date().toISOString().slice(0, 16));
+      setIsFeatured(false);
+      setSeoTitle(
+        initialImportedArticle.seoTitle || initialImportedArticle.title
+      );
+      setSeoDescription(
+        initialImportedArticle.seoDescription || initialImportedArticle.excerpt
+      );
+      setSeoSocialMedia(null);
+      setNoindex(false);
+      setFocusKeyword(initialImportedArticle.focusKeyword || "");
+      setSecondaryKeywords(initialImportedArticle.secondaryKeywords || "");
+      setHasChanges(true);
+    } else if (post) {
       setTitle(post.title);
       setSlug(post.slug);
       setIsSlugManual(true);
@@ -94,7 +157,16 @@ export function PostEditDialog({
       setSeoDescription(post.seo_description || "");
       setSeoSocialMedia(post.seo_social_image || null);
       setNoindex(Boolean(post.noindex));
-      setFocusKeyword(post.focus_keyword || "");
+      const rawKw = post.focus_keyword || "";
+      if (rawKw.includes("|")) {
+        const [primary, ...rest] = rawKw.split("|");
+        setFocusKeyword(primary?.trim() || "");
+        setSecondaryKeywords(rest.join("|").trim());
+      } else {
+        setFocusKeyword(rawKw);
+        setSecondaryKeywords("");
+      }
+      setHasChanges(false);
     } else {
       setTitle("");
       setSlug("");
@@ -112,9 +184,17 @@ export function PostEditDialog({
       setSeoSocialMedia(null);
       setNoindex(false);
       setFocusKeyword("");
+      setSecondaryKeywords("");
+      setHasChanges(false);
     }
-    setHasChanges(false);
-  }, [post, categories, defaultAuthorName, open]);
+  }, [
+    post,
+    categories,
+    defaultAuthorName,
+    open,
+    initialImportedArticle,
+    initialImportCategoryId,
+  ]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -134,11 +214,11 @@ export function PostEditDialog({
     return calculateReadingTime(content);
   }, [content]);
 
-  const { wordCount, firstParagraph, hasInternalLink } = React.useMemo(() => {
+  const { wordCount, firstParagraph, fullText, hasInternalLink } = React.useMemo(() => {
     let firstP = "";
     let internalLink = false;
-    const fullText = extractPlainText(content);
-    const words = fullText ? fullText.split(/\s+/).filter(Boolean).length : 0;
+    const extractedText = extractPlainText(content);
+    const words = extractedText ? extractedText.split(/\s+/).filter(Boolean).length : 0;
 
     function walk(node: RichTextNode | RichTextDoc) {
       if ("type" in node && node.type === "paragraph" && !firstP) {
@@ -172,6 +252,7 @@ export function PostEditDialog({
     return {
       wordCount: words,
       firstParagraph: firstP,
+      fullText: extractedText,
       hasInternalLink: internalLink,
     };
   }, [content]);
@@ -221,7 +302,9 @@ export function PostEditDialog({
         seo_description: seoDescription.trim() || null,
         seo_social_image_id: seoSocialMedia?.id || null,
         noindex,
-        focus_keyword: focusKeyword.trim() || null,
+        focus_keyword: secondaryKeywords.trim()
+          ? `${focusKeyword.trim()} | ${secondaryKeywords.trim()}`
+          : focusKeyword.trim() || null,
       };
 
       const res = await saveBlogPost(payload);
@@ -293,6 +376,28 @@ export function PostEditDialog({
           </div>
 
           <div className="flex items-center gap-2">
+            {post && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:border-destructive text-xs"
+                onClick={handleDelete}
+                disabled={isDeleting || isSaving}
+                title="Delete this post"
+              >
+                {isDeleting ? "Deleting..." : "🗑 Delete Post"}
+              </Button>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setImportDialogOpen(true)}
+              className="border-[#C9A052]/50 text-xs hover:bg-[#FAF7F2] dark:hover:bg-muted"
+            >
+              📥 Import Markdown
+            </Button>
             {post && (
               <Link
                 href={`/admin/blog/preview/${post.id}`}
@@ -410,6 +515,9 @@ export function PostEditDialog({
                 {featuredMedia ? "Change Image" : "Select Featured Image"}
               </Button>
             </div>
+            <p className="text-muted-foreground text-xs">
+              <span className="text-amber-700 dark:text-amber-400 font-medium">Google Discover Tip:</span> Use high-resolution images at least 1200px wide in 16:9 ratio (e.g. 1200×675px or 1600×900px) for maximum Discover feed visibility.
+            </p>
           </div>
 
           {/* Excerpt with Character Counter */}
@@ -554,6 +662,16 @@ export function PostEditDialog({
                 setFocusKeyword(val);
                 setHasChanges(true);
               }}
+              secondaryKeywords={secondaryKeywords}
+              onSecondaryKeywordsChange={(val) => {
+                setSecondaryKeywords(val);
+                setHasChanges(true);
+              }}
+              onSlugChange={(val) => {
+                setSlug(val);
+                setIsSlugManual(true);
+                setHasChanges(true);
+              }}
               context={{
                 slug,
                 pathPrefix: "/blog",
@@ -566,6 +684,7 @@ export function PostEditDialog({
                     }
                   : null,
                 firstParagraphText: firstParagraph,
+                fullContentText: fullText,
                 isBlogPost: true,
                 wordCount,
                 hasInternalLink,
@@ -574,22 +693,7 @@ export function PostEditDialog({
           </div>
 
           {/* Action Buttons */}
-          <div className="border-border flex items-center justify-between border-t pt-4">
-            {post ? (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="text-destructive border-destructive/50 hover:bg-destructive/10"
-                onClick={handleDelete}
-                disabled={isDeleting || isSaving}
-              >
-                {isDeleting ? "Deleting..." : "Delete Post"}
-              </Button>
-            ) : (
-              <div />
-            )}
-
+          <div className="border-border flex items-center justify-end border-t pt-4">
             <div className="flex items-center gap-3">
               <Button
                 type="button"
@@ -615,6 +719,7 @@ export function PostEditDialog({
         <MediaPicker
           open={mediaPickerOpen}
           mode="single"
+          defaultPreset="blog_featured"
           onClose={() => setMediaPickerOpen(false)}
           onSelect={(items) => {
             if (items.length > 0) {
@@ -622,6 +727,38 @@ export function PostEditDialog({
               setHasChanges(true);
             }
             setMediaPickerOpen(false);
+          }}
+        />
+
+        <ImportPostDialog
+          open={importDialogOpen}
+          categories={categories}
+          onClose={() => setImportDialogOpen(false)}
+          onImport={(parsed, matchedCatId) => {
+            setTitle(parsed.title);
+            setSlug(parsed.slug);
+            setIsSlugManual(true);
+            if (matchedCatId) {
+              setCategoryId(matchedCatId);
+            }
+            setExcerpt(parsed.excerpt);
+            setContent(parsed.content);
+            if (parsed.authorName) {
+              setAuthorName(parsed.authorName);
+            }
+            if (parsed.seoTitle) {
+              setSeoTitle(parsed.seoTitle);
+            }
+            if (parsed.seoDescription) {
+              setSeoDescription(parsed.seoDescription);
+            }
+            if (parsed.focusKeyword) {
+              setFocusKeyword(parsed.focusKeyword);
+            }
+            if (parsed.secondaryKeywords) {
+              setSecondaryKeywords(parsed.secondaryKeywords);
+            }
+            setHasChanges(true);
           }}
         />
       </div>

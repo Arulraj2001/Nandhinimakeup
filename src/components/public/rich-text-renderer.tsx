@@ -166,12 +166,58 @@ function renderNode(node: RichTextNode, key: string): React.ReactNode {
       );
     }
 
+    case "table": {
+      return (
+        <div
+          key={key}
+          className="my-8 overflow-x-auto rounded-xl border border-[#E9D4AE]/70 bg-white shadow-xs dark:border-border/60 dark:bg-card"
+        >
+          <table className="w-full min-w-[500px] border-collapse text-left text-sm text-[#1C1917] dark:text-foreground">
+            {renderChildren(node.content, key)}
+          </table>
+        </div>
+      );
+    }
+
+    case "tableRow": {
+      return (
+        <tr
+          key={key}
+          className="border-b border-[#E9D4AE]/30 transition-colors odd:bg-[#FAF7F2]/40 even:bg-white hover:bg-[#FAF7F2]/80 dark:border-border/40 dark:odd:bg-muted/20 dark:even:bg-card dark:hover:bg-muted/40"
+        >
+          {renderChildren(node.content, key)}
+        </tr>
+      );
+    }
+
+    case "tableHeader": {
+      return (
+        <th
+          key={key}
+          className="border-b-2 border-[#C9A052] bg-[#FAF7F2] px-4 py-3 font-heading text-xs font-bold tracking-wider text-[#8C2524] uppercase dark:border-[#C9A052]/60 dark:bg-muted/60 dark:text-[#E9D4AE]"
+        >
+          {renderChildren(node.content, key)}
+        </th>
+      );
+    }
+
+    case "tableCell": {
+      return (
+        <td
+          key={key}
+          className="px-4 py-3 text-xs leading-relaxed text-[#1C1917]/90 sm:text-sm dark:text-foreground/90"
+        >
+          {renderChildren(node.content, key)}
+        </td>
+      );
+    }
+
     case "text": {
       return renderTextWithMarks(node.text || "", node.marks, key);
     }
 
     default:
-      // Drop any unknown or disallowed node type (e.g. table, raw HTML, script, etc.)
+      // Drop any unknown or disallowed node type (e.g. raw HTML, script, etc.)
       return null;
   }
 }
@@ -207,7 +253,7 @@ function renderTextWithMarks(
         currentElement = (
           <strong
             key={markKey}
-            className="font-semibold text-[#1C1917]"
+            className="font-semibold text-[#1C1917] dark:text-foreground"
           >
             {currentElement}
           </strong>
@@ -216,6 +262,39 @@ function renderTextWithMarks(
 
       case "italic":
         currentElement = <em key={markKey}>{currentElement}</em>;
+        break;
+
+      case "highlight":
+        currentElement = (
+          <mark
+            key={markKey}
+            className="rounded bg-[#E9D4AE]/50 px-1.5 py-0.5 font-medium text-[#8C2524] dark:bg-[#C9A052]/25 dark:text-[#E9D4AE]"
+          >
+            {currentElement}
+          </mark>
+        );
+        break;
+
+      case "gold":
+        currentElement = (
+          <span
+            key={markKey}
+            className="font-semibold text-[#C9A052] dark:text-[#E9D4AE]"
+          >
+            {currentElement}
+          </span>
+        );
+        break;
+
+      case "maroon":
+        currentElement = (
+          <span
+            key={markKey}
+            className="font-semibold text-[#8C2524] dark:text-[#E07A78]"
+          >
+            {currentElement}
+          </span>
+        );
         break;
 
       case "link": {
@@ -233,7 +312,7 @@ function renderTextWithMarks(
           <a
             key={markKey}
             href={href}
-            className="font-medium text-[#8C2524] underline underline-offset-2 transition-colors hover:text-[#731E1D]"
+            className="font-medium text-[#8C2524] underline underline-offset-2 transition-colors hover:text-[#731E1D] dark:text-[#E9D4AE] dark:hover:text-[#F3E5CB]"
             {...(isExternal
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}
@@ -245,7 +324,7 @@ function renderTextWithMarks(
       }
 
       default:
-        // Drop any disallowed mark (e.g. color, font-family, highlight)
+        // Drop any disallowed mark
         break;
     }
   }

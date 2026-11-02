@@ -12,6 +12,8 @@ import {
 import type { BlogCategory, BlogPostWithDetails } from "@/types/blog";
 import { PostEditDialog } from "./post-edit-dialog";
 import { CategoryDialog } from "./category-dialog";
+import { ImportPostDialog } from "./import-post-dialog";
+import type { ParsedMarkdownArticle } from "@/lib/utils/markdown-to-tiptap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -48,6 +50,11 @@ export function BlogClient({
   const [editingPost, setEditingPost] =
     React.useState<BlogPostWithDetails | null>(null);
   const [postDialogOpen, setPostDialogOpen] = React.useState(false);
+  const [importDialogOpen, setImportDialogOpen] = React.useState(false);
+  const [importedArticle, setImportedArticle] =
+    React.useState<ParsedMarkdownArticle | null>(null);
+  const [importedCategoryId, setImportedCategoryId] =
+    React.useState<string>("");
 
   const [editingCategory, setEditingCategory] =
     React.useState<BlogCategory | null>(null);
@@ -189,14 +196,24 @@ export function BlogClient({
               </select>
             </div>
 
-            <Button
-              onClick={() => {
-                setEditingPost(null);
-                setPostDialogOpen(true);
-              }}
-            >
-              + Create Post
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setImportDialogOpen(true)}
+                className="border-[#C9A052]/50 text-xs hover:bg-[#FAF7F2] dark:hover:bg-muted"
+              >
+                📥 Import from Markdown
+              </Button>
+              <Button
+                onClick={() => {
+                  setImportedArticle(null);
+                  setEditingPost(null);
+                  setPostDialogOpen(true);
+                }}
+              >
+                + Create Post
+              </Button>
+            </div>
           </div>
 
           {/* Posts Table */}
@@ -377,10 +394,28 @@ export function BlogClient({
         post={editingPost}
         categories={categories}
         defaultAuthorName={defaultAuthorName}
-        onClose={() => setPostDialogOpen(false)}
+        initialImportedArticle={importedArticle}
+        initialImportCategoryId={importedCategoryId}
+        onClose={() => {
+          setPostDialogOpen(false);
+          setImportedArticle(null);
+        }}
         onSuccess={() => {
           refreshPosts();
           refreshCategories();
+        }}
+      />
+
+      {/* Import Markdown Dialog */}
+      <ImportPostDialog
+        open={importDialogOpen}
+        categories={categories}
+        onClose={() => setImportDialogOpen(false)}
+        onImport={(parsed, catId) => {
+          setImportedArticle(parsed);
+          setImportedCategoryId(catId);
+          setEditingPost(null);
+          setPostDialogOpen(true);
         }}
       />
 

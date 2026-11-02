@@ -372,6 +372,25 @@ export function buildBlogPostStructuredData({
   const cleanSiteUrl = siteUrl.replace(/\/+$/, "");
   const postUrl = `${cleanSiteUrl}/blog/${post.slug}`;
 
+  const authorName = post.author_name || "Nandhini";
+  const authorSchema: Record<string, unknown> = {
+    "@type": "Person",
+    name: authorName,
+    jobTitle: "Lead Bridal Makeup Artist & Jewellery Stylist",
+    url: `${cleanSiteUrl}/about`,
+    worksFor: {
+      "@type": "LocalBusiness",
+      name: settings.business.business_name,
+      url: cleanSiteUrl,
+    },
+  };
+
+  const publisherSchema: Record<string, unknown> = {
+    "@type": "Organization",
+    name: settings.business.business_name,
+    url: cleanSiteUrl,
+  };
+
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -381,15 +400,8 @@ export function buildBlogPostStructuredData({
     mainEntityOfPage: postUrl,
     datePublished: post.published_at || post.created_at,
     dateModified: post.updated_at || post.published_at || post.created_at,
-    author: {
-      "@type": "Person",
-      name: post.author_name || settings.business.business_name,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: settings.business.business_name,
-      url: cleanSiteUrl,
-    },
+    author: authorSchema,
+    publisher: publisherSchema,
   };
 
   if (post.excerpt) {
@@ -397,7 +409,8 @@ export function buildBlogPostStructuredData({
   }
 
   if (post.featured_image?.storage_path) {
-    schema.image = getPublicMediaUrl(post.featured_image.storage_path);
+    const imgUrl = getPublicMediaUrl(post.featured_image.storage_path);
+    schema.image = [imgUrl];
   }
 
   return schema;
