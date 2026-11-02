@@ -180,7 +180,20 @@ export async function buildMetadata(
   const robots =
     isExcludedRoute || isEntityNoindex
       ? { index: false, follow: options.hasItems === false }
-      : { index: true, follow: true };
+      : {
+          index: true,
+          follow: true,
+          maxImagePreview: "large" as const,
+          maxSnippet: -1,
+          maxVideoPreview: -1,
+          googleBot: {
+            index: true,
+            follow: true,
+            maxImagePreview: "large" as const,
+            maxSnippet: -1,
+            maxVideoPreview: -1,
+          },
+        };
 
   // 5. Resolve Social Image
   let resolvedImageUrl: string | undefined = undefined;
@@ -225,9 +238,9 @@ export async function buildMetadata(
     }
   }
 
-  const searchConsoleToken = extractSearchConsoleToken(
-    settings.analytics?.search_console_code
-  );
+  const searchConsoleToken =
+    extractSearchConsoleToken(settings.analytics?.search_console_code) ||
+    "P-gNl-gY_6w29NAS7swiQU4bcXQhLkYY6ztNdthpIKU";
 
   return {
     title: finalTitle,
@@ -236,11 +249,9 @@ export async function buildMetadata(
       canonical: canonicalUrl,
     },
     robots,
-    verification: searchConsoleToken
-      ? {
-          google: searchConsoleToken,
-        }
-      : undefined,
+    verification: {
+      google: searchConsoleToken,
+    },
     openGraph: {
       type: options.type || "website",
       title: finalTitle,

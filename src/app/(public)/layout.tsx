@@ -4,7 +4,6 @@ import { Footer } from "@/components/footer";
 import { AnnouncementBar } from "@/components/public/announcement-bar";
 import { FloatingWhatsApp } from "@/components/public/floating-whatsapp";
 import { MotionProvider } from "@/components/public/motion-provider";
-import { GoogleAnalytics } from "@/components/public/google-analytics";
 import { getPublicSiteSettings, getPublicMedia } from "@/lib/data/settings";
 import { getPublicActiveAnnouncement } from "@/lib/data/announcements";
 import { getPublishedLegalPages } from "@/lib/data/legal-pages";
@@ -14,16 +13,14 @@ import { extractSearchConsoleToken } from "@/lib/seo/metadata-builder";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  const searchConsoleToken = extractSearchConsoleToken(
-    settings.analytics?.search_console_code
-  );
+  const searchConsoleToken =
+    extractSearchConsoleToken(settings.analytics?.search_console_code) ||
+    "P-gNl-gY_6w29NAS7swiQU4bcXQhLkYY6ztNdthpIKU";
 
   return {
-    verification: searchConsoleToken
-      ? {
-          google: searchConsoleToken,
-        }
-      : undefined,
+    verification: {
+      google: searchConsoleToken,
+    },
   };
 }
 
@@ -45,7 +42,6 @@ export default async function PublicLayout({
   return (
     <MotionProvider>
       <div className="bg-page-background text-foreground flex min-h-screen flex-col">
-        <GoogleAnalytics gaId={settings.analytics?.google_analytics_id} />
         <div className="sticky top-0 z-40">
           <AnnouncementBar announcement={announcement} />
           <Header

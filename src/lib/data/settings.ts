@@ -100,7 +100,16 @@ export async function getPublicSiteSettings(): Promise<SiteSettingsData> {
   const rawAnalytics = map.get("analytics") as
     Record<string, unknown> | undefined;
   const analytics: AnalyticsSettings = rawAnalytics
-    ? { ...DEFAULT_ANALYTICS_SETTINGS, ...rawAnalytics }
+    ? {
+        google_analytics_id:
+          (typeof rawAnalytics.google_analytics_id === "string" &&
+            rawAnalytics.google_analytics_id.trim()) ||
+          DEFAULT_ANALYTICS_SETTINGS.google_analytics_id,
+        search_console_code:
+          (typeof rawAnalytics.search_console_code === "string" &&
+            rawAnalytics.search_console_code.trim()) ||
+          DEFAULT_ANALYTICS_SETTINGS.search_console_code,
+      }
     : DEFAULT_ANALYTICS_SETTINGS;
 
   const rawHome = map.get("home") as Record<string, unknown> | undefined;

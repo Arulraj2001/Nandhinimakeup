@@ -237,8 +237,8 @@ export const DEFAULT_BRANDING_SETTINGS: BrandingSettings = {
 };
 
 export const DEFAULT_ANALYTICS_SETTINGS: AnalyticsSettings = {
-  google_analytics_id: "",
-  search_console_code: "",
+  google_analytics_id: "G-5TDQ8B7R8J",
+  search_console_code: "P-gNl-gY_6w29NAS7swiQU4bcXQhLkYY6ztNdthpIKU",
 };
 
 export const DEFAULT_HOME_SETTINGS: HomeSettings = {

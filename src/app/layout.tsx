@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Cormorant_Garamond, Poppins } from "next/font/google";
 import { siteConfig } from "@/lib/config/site";
 import { env } from "@/lib/config/env";
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.shortDescription,
+  verification: {
+    google: "P-gNl-gY_6w29NAS7swiQU4bcXQhLkYY6ztNdthpIKU",
+  },
   robots: env.ALLOW_INDEXING
     ? {
         index: true,
@@ -49,6 +53,24 @@ export default function RootLayout({
       className={`${cormorant.variable} ${poppins.variable}`}
     >
       <body className="bg-page-background text-foreground min-h-screen font-sans antialiased">
+        {/* Google tag (gtag.js) */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-5TDQ8B7R8J"
+        />
+        <Script
+          id="google-analytics-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'G-5TDQ8B7R8J');
+            `,
+          }}
+        />
         {children}
       </body>
     </html>
